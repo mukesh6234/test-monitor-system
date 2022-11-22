@@ -1,4 +1,5 @@
 import React from "react";
+
 // ** Next Imports
 import { Link } from "react-router-dom";
 
@@ -22,9 +23,8 @@ import CanViewNavLink from "layouts/components/acl/CanViewNavLink";
 import useBgColor from "@core/hooks/useBgColor";
 
 // ** Util Import
-import { hexToRGBA } from "@core/layouts/utils/hex-to-rgba";
+import { hexToRGBA } from "@core/utils/hex-to-rgba";
 import { handleURLQueries } from "@core/layouts/utils";
-import { useRouter } from "hooks/useRoute";
 
 // ** Styled Components
 const MenuNavLink = styled(ListItemButton)(({ theme }) => ({
@@ -56,7 +56,6 @@ const VerticalNavLink = ({
 }) => {
   // ** Hooks
   const theme = useTheme();
-  const router = useRouter();
   const bgColors = useBgColor();
 
   // ** Vars
@@ -77,7 +76,10 @@ const VerticalNavLink = ({
   };
 
   const isNavLinkActive = () => {
-    if (router.pathname === item.path || handleURLQueries(router, item.path)) {
+    if (
+      window.location.pathname === item.path ||
+      handleURLQueries({ query: {} }, item.path)
+    ) {
       return true;
     } else {
       return false;
@@ -109,7 +111,7 @@ const VerticalNavLink = ({
           }),
         }}
       >
-        <Link passHref href={item.path === undefined ? "/" : `${item.path}`}>
+        <Link  to={item.path === undefined ? "/" : `${item.path}`}>
           <MenuNavLink
             component={"a"}
             {...(item.disabled && { tabIndex: -1 })}

@@ -1,5 +1,5 @@
 // ** React Imports
-import React,{ useState, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -23,7 +23,7 @@ import CustomChip from '@core/components/mui/chip'
 import CustomAvatar from '@core/components/mui/avatar'
 
 // ** Util Import
-import { getInitials } from '@core/layouts/utils/get-initials'
+import { getInitials } from '@core/utils/get-initials'
 
 // ** Styled Menu component
 const Menu = styled(MuiMenu)(({ theme }) => ({

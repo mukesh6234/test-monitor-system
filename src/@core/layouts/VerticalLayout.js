@@ -1,80 +1,93 @@
+import React from "react";
+
 // ** React Imports
-import React,{ useState } from 'react'
+import { useState } from "react";
 
 // ** MUI Imports
-import Fab from '@mui/material/Fab'
-import { styled } from '@mui/material/styles'
-import Box from '@mui/material/Box'
+import Fab from "@mui/material/Fab";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 
 // ** Icon Imports
-import Icon from '@core/components/icon'
+import Icon from "@core/components/icon";
 
 // ** Theme Config Import
-import themeConfig from 'configs/themeConfig'
+import themeConfig from "configs/themeConfig";
 
 // ** Components
-import AppBar from './components/vertical/appBar'
-import Customizer from '@core/components/customizer'
-import Navigation from './components/vertical/navigation'
-import Footer from './components/shared-components/footer'
-import ScrollToTop from '@core/components/scroll-to-top'
+import AppBar from "./components/vertical/appBar";
+import Navigation from "./components/vertical/navigation";
+import Footer from "./components/shared-components/footer";
+import ScrollToTop from "@core/components/scroll-to-top";
 
 // ** Util Import
-import { hexToRGBA } from '@core/layouts/utils/hex-to-rgba'
+import { hexToRGBA } from "@core/utils/hex-to-rgba";
 
-const VerticalLayoutWrapper = styled('div')({
-  height: '100%',
-  display: 'flex'
-})
+const VerticalLayoutWrapper = styled("div")({
+  height: "100%",
+  display: "flex",
+});
 
 const MainContentWrapper = styled(Box)({
   flexGrow: 1,
   minWidth: 0,
-  display: 'flex',
-  minHeight: '100vh',
-  flexDirection: 'column'
-})
+  display: "flex",
+  minHeight: "100vh",
+  flexDirection: "column",
+});
 
 const AppBarBgBlur = styled(Box)({
   top: 0,
   zIndex: 10,
-  width: '100%',
-  position: 'fixed',
-  backdropFilter: 'saturate(200%) blur(10px)'
-})
+  width: "100%",
+  position: "fixed",
+  backdropFilter: "saturate(200%) blur(10px)",
+});
 
-const ContentWrapper = styled('main')(({ theme }) => ({
+const ContentWrapper = styled("main")(({ theme }) => ({
   flexGrow: 1,
-  width: '100%',
+  width: "100%",
   padding: theme.spacing(6),
-  transition: 'padding .25s ease-in-out',
-  [theme.breakpoints.down('sm')]: {
+  transition: "padding .25s ease-in-out",
+  [theme.breakpoints.down("sm")]: {
     paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4)
-  }
-}))
+    paddingRight: theme.spacing(4),
+  },
+}));
 
-const VerticalLayout = props => {
+const VerticalLayout = (props) => {
   // ** Props
-  const { hidden, settings, children, scrollToTop, footerProps, contentHeightFixed, verticalLayoutProps } = props
+  const {
+    settings,
+    children,
+    scrollToTop,
+    footerProps,
+    contentHeightFixed,
+    verticalLayoutProps,
+  } = props;
+
+  console.log(verticalLayoutProps, "verticalLayout");
 
   // ** Vars
-  const { skin, appBar, navHidden, appBarBlur, contentWidth } = settings
-  const navigationBorderWidth = skin === 'bordered' ? 1 : 0
-  const { navigationSize, disableCustomizer, collapsedNavigationSize } = themeConfig
-  const navWidth = navigationSize
-  const collapsedNavWidth = collapsedNavigationSize
+  const { skin, appBar, navHidden, appBarBlur, contentWidth } = settings;
+  console.log(navHidden, "hidden hidden hidden", settings.lastLayout);
+  const navigationBorderWidth = skin === "bordered" ? 1 : 0;
+  const { navigationSize, collapsedNavigationSize } =
+    themeConfig;
+  const navWidth = navigationSize;
+  const collapsedNavWidth = collapsedNavigationSize;
 
   // ** States
-  const [navVisible, setNavVisible] = useState(false)
+  const [navVisible, setNavVisible] = useState(false);
 
   // ** Toggle Functions
-  const toggleNavVisibility = () => setNavVisible(!navVisible)
+  const toggleNavVisibility = () => setNavVisible(!navVisible);
 
   return (
     <>
-      <VerticalLayoutWrapper className='layout-wrapper'>
-        {navHidden && !(navHidden && settings.lastLayout === 'horizontal') ? null : (
+      <VerticalLayoutWrapper className="layout-wrapper">
+        {navHidden &&
+        !(navHidden && settings.lastLayout === "horizontal") ? null : (
           <Navigation
             navWidth={navWidth}
             navVisible={navVisible}
@@ -94,18 +107,21 @@ const VerticalLayout = props => {
           />
         )}
         <MainContentWrapper
-          className='layout-content-wrapper'
-          sx={{ ...(contentHeightFixed && { maxHeight: '100vh' }) }}
+          className="layout-content-wrapper"
+          sx={{ ...(contentHeightFixed && { maxHeight: "100vh" }) }}
         >
-          {appBarBlur && appBar === 'fixed' && (
+          {appBarBlur && appBar === "fixed" && (
             <AppBarBgBlur
               sx={{
-                height: theme => theme.spacing(skin === 'bordered' ? 4.5 : 3.25),
-                background: theme =>
+                height: (theme) =>
+                  theme.spacing(skin === "bordered" ? 4.5 : 3.25),
+                background: (theme) =>
                   hexToRGBA(
-                    skin === 'bordered' ? theme.palette.background.paper : theme.palette.background.default,
+                    skin === "bordered"
+                      ? theme.palette.background.paper
+                      : theme.palette.background.default,
                     0.6
-                  )
+                  ),
               }}
             />
           )}
@@ -118,39 +134,41 @@ const VerticalLayout = props => {
           />
 
           <ContentWrapper
-            className='layout-page-content'
+            className="layout-page-content"
             sx={{
               ...(contentHeightFixed && {
-                overflow: 'hidden',
-                '& > :first-of-type': { height: '100%' }
+                overflow: "hidden",
+                "& > :first-of-type": { height: "100%" },
               }),
-              ...(contentWidth === 'boxed' && {
-                mx: 'auto',
-                '@media (min-width:1440px)': { maxWidth: 1440 },
-                '@media (min-width:1200px)': { maxWidth: '100%' }
-              })
+              ...(contentWidth === "boxed" && {
+                mx: "auto",
+                "@media (min-width:1440px)": { maxWidth: 1440 },
+                "@media (min-width:1200px)": { maxWidth: "100%" },
+              }),
             }}
           >
             {children}
           </ContentWrapper>
 
-          <Footer footerStyles={footerProps?.sx} footerContent={footerProps?.content} {...props} />
+          <Footer
+            footerStyles={footerProps?.sx}
+            footerContent={footerProps?.content}
+            {...props}
+          />
         </MainContentWrapper>
       </VerticalLayoutWrapper>
-
-      {disableCustomizer || hidden ? null : <Customizer />}
 
       {scrollToTop ? (
         scrollToTop(props)
       ) : (
-        <ScrollToTop className='mui-fixed'>
-          <Fab color='primary' size='small' aria-label='scroll back to top'>
-            <Icon icon='bx:up-arrow-alt' />
+        <ScrollToTop className="mui-fixed">
+          <Fab color="primary" size="small" aria-label="scroll back to top">
+            <Icon icon="bx:up-arrow-alt" />
           </Fab>
         </ScrollToTop>
       )}
     </>
-  )
-}
+  );
+};
 
-export default VerticalLayout
+export default VerticalLayout;

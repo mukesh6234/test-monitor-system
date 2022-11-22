@@ -164,7 +164,7 @@ const ShortcutsDropdown = (props) => {
             }}
           >
             {shortcuts.map((shortcut) => (
-              <Link key={shortcut.title} href={shortcut.url}>
+              <Link key={shortcut.title} to={shortcut.url}>
                 <Grid
                   item
                   xs={6}

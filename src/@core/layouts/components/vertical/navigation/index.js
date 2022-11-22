@@ -1,96 +1,113 @@
 // ** React Import
-import React,{ useRef, useState } from 'react'
+import React, { useRef, useState } from "react";
 
 // ** MUI Import
-import List from '@mui/material/List'
-import Box from '@mui/material/Box'
-import { styled, useTheme } from '@mui/material/styles'
+import List from "@mui/material/List";
+import Box from "@mui/material/Box";
+import { styled, useTheme } from "@mui/material/styles";
 
 // ** Third Party Components
-import PerfectScrollbar from 'react-perfect-scrollbar'
-import themeConfig from 'configs/themeConfig'
+import PerfectScrollbar from "react-perfect-scrollbar";
+import themeConfig from "configs/themeConfig";
 
 // ** Component Imports
-import Drawer from './Drawer'
-import VerticalNavItems from './VerticalNavItems'
-import VerticalNavHeader from './VerticalNavHeader'
+import Drawer from "./Drawer";
+import VerticalNavItems from "./VerticalNavItems";
+import VerticalNavHeader from "./VerticalNavHeader";
 
 // ** Util Import
-import { hexToRGBA } from '@core/layouts/utils/hex-to-rgba'
+import { hexToRGBA } from "@core/utils/hex-to-rgba";
 
 const StyledBoxForShadow = styled(Box)(({ theme }) => ({
   top: 72,
   zIndex: 2,
   opacity: 0,
-  width: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
+  width: "100%",
+  position: "absolute",
+  pointerEvents: "none",
   height: theme.mixins.toolbar.minHeight,
-  transition: 'opacity .15s ease-in-out',
-  '&.scrolled': {
-    opacity: 1
-  }
-}))
+  transition: "opacity .15s ease-in-out",
+  "&.scrolled": {
+    opacity: 1,
+  },
+}));
 
-const Navigation = props => {
+const Navigation = (props) => {
   // ** Props
-  const { hidden, settings, afterNavMenuContent, beforeNavMenuContent, navMenuContent: userNavMenuContent } = props
+  const {
+    hidden,
+    settings,
+    afterNavMenuContent,
+    beforeNavMenuContent,
+    navMenuContent: userNavMenuContent,
+  } = props;
 
   // ** States
-  const [navHover, setNavHover] = useState(false)
-  const [groupActive, setGroupActive] = useState([])
-  const [currentActiveGroup, setCurrentActiveGroup] = useState([])
+  const [navHover, setNavHover] = useState(false);
+  const [groupActive, setGroupActive] = useState([]);
+  const [currentActiveGroup, setCurrentActiveGroup] = useState([]);
 
   // ** Ref
-  const shadowRef = useRef(null)
+  const shadowRef = useRef(null);
 
   // ** Hooks
-  const theme = useTheme()
-  const { mode } = settings
+  const theme = useTheme();
+  const { mode } = settings;
 
   // ** Var
-  const { afterVerticalNavMenuContentPosition, beforeVerticalNavMenuContentPosition } = themeConfig
+  const {
+    afterVerticalNavMenuContentPosition,
+    beforeVerticalNavMenuContentPosition,
+  } = themeConfig;
 
   // ** Fixes Navigation InfiniteScroll
-  const handleInfiniteScroll = ref => {
+  const handleInfiniteScroll = (ref) => {
     if (ref) {
       // @ts-ignore
-      ref._getBoundingClientRect = ref.getBoundingClientRect
+      ref._getBoundingClientRect = ref.getBoundingClientRect;
       ref.getBoundingClientRect = () => {
         // @ts-ignore
-        const original = ref._getBoundingClientRect()
+        const original = ref._getBoundingClientRect();
 
-        return { ...original, height: Math.floor(original.height) }
-      }
+        return { ...original, height: Math.floor(original.height) };
+      };
     }
-  }
+  };
 
   // ** Scroll Menu
-  const scrollMenu = container => {
-    if (beforeVerticalNavMenuContentPosition === 'static' || !beforeNavMenuContent) {
-      container = hidden ? container.target : container
+  const scrollMenu = (container) => {
+    if (
+      beforeVerticalNavMenuContentPosition === "static" ||
+      !beforeNavMenuContent
+    ) {
+      container = hidden ? container.target : container;
       if (shadowRef && container.scrollTop > 0) {
         // @ts-ignore
-        if (!shadowRef.current.classList.contains('scrolled')) {
+        if (!shadowRef.current.classList.contains("scrolled")) {
           // @ts-ignore
-          shadowRef.current.classList.add('scrolled')
+          shadowRef.current.classList.add("scrolled");
         }
       } else {
         // @ts-ignore
-        shadowRef.current.classList.remove('scrolled')
+        shadowRef.current.classList.remove("scrolled");
       }
     }
-  }
+  };
 
   const shadowBgColor = () => {
-    if (mode === 'semi-dark') {
-      return `linear-gradient(${theme.palette.customColors.darkPaperBg} 5%,${hexToRGBA(
+    if (mode === "semi-dark") {
+      return `linear-gradient(${
+        theme.palette.customColors.darkPaperBg
+      } 5%,${hexToRGBA(
         theme.palette.customColors.darkPaperBg,
         0.85
-      )} 30%,${hexToRGBA(theme.palette.customColors.darkPaperBg, 0.5)} 65%,${hexToRGBA(
+      )} 30%,${hexToRGBA(
+        theme.palette.customColors.darkPaperBg,
+        0.5
+      )} 65%,${hexToRGBA(
         theme.palette.customColors.darkPaperBg,
         0.3
-      )} 75%,transparent)`
+      )} 75%,transparent)`;
     } else {
       return `linear-gradient(${theme.palette.background.paper} 5%,${hexToRGBA(
         theme.palette.background.paper,
@@ -98,38 +115,48 @@ const Navigation = props => {
       )} 30%,${hexToRGBA(theme.palette.background.paper, 0.5)} 65%,${hexToRGBA(
         theme.palette.background.paper,
         0.3
-      )} 75%,transparent)`
+      )} 75%,transparent)`;
     }
-  }
-  const ScrollWrapper = hidden ? Box : PerfectScrollbar
+  };
+  const ScrollWrapper = hidden ? Box : PerfectScrollbar;
 
   return (
     <Drawer {...props} navHover={navHover} setNavHover={setNavHover}>
       <VerticalNavHeader {...props} navHover={navHover} />
-      {beforeNavMenuContent && beforeVerticalNavMenuContentPosition === 'fixed' ? beforeNavMenuContent(props) : null}
-      {(beforeVerticalNavMenuContentPosition === 'static' || !beforeNavMenuContent) && (
-        <StyledBoxForShadow ref={shadowRef} sx={{ background: shadowBgColor() }} />
+      {beforeNavMenuContent && beforeVerticalNavMenuContentPosition === "fixed"
+        ? beforeNavMenuContent(props)
+        : null}
+      {(beforeVerticalNavMenuContentPosition === "static" ||
+        !beforeNavMenuContent) && (
+        <StyledBoxForShadow
+          ref={shadowRef}
+          sx={{ background: shadowBgColor() }}
+        />
       )}
-      <Box sx={{ position: 'relative', overflow: 'hidden' }}>
+      <Box sx={{ position: "relative", overflow: "hidden" }}>
         <ScrollWrapper
           {...(hidden
             ? {
-                onScroll: container => scrollMenu(container),
-                sx: { height: '100%', overflowY: 'auto', overflowX: 'hidden' }
+                onScroll: (container) => scrollMenu(container),
+                sx: { height: "100%", overflowY: "auto", overflowX: "hidden" },
               }
             : {
                 options: { wheelPropagation: false },
-                onScrollY: container => scrollMenu(container),
-                containerRef: ref => handleInfiniteScroll(ref)
+                onScrollY: (container) => scrollMenu(container),
+                containerRef: (ref) => handleInfiniteScroll(ref),
               })}
         >
-          {beforeNavMenuContent && beforeVerticalNavMenuContentPosition === 'static'
+          {beforeNavMenuContent &&
+          beforeVerticalNavMenuContentPosition === "static"
             ? beforeNavMenuContent(props)
             : null}
           {userNavMenuContent ? (
             userNavMenuContent(props)
           ) : (
-            <List className='nav-items' sx={{ py: 1, '& > :first-child': { mt: '0' } }}>
+            <List
+              className="nav-items"
+              sx={{ py: 1, "& > :first-child": { mt: "0" } }}
+            >
               <VerticalNavItems
                 navHover={navHover}
                 groupActive={groupActive}
@@ -140,12 +167,17 @@ const Navigation = props => {
               />
             </List>
           )}
-          {afterNavMenuContent && afterVerticalNavMenuContentPosition === 'static' ? afterNavMenuContent(props) : null}
+          {afterNavMenuContent &&
+          afterVerticalNavMenuContentPosition === "static"
+            ? afterNavMenuContent(props)
+            : null}
         </ScrollWrapper>
       </Box>
-      {afterNavMenuContent && afterVerticalNavMenuContentPosition === 'fixed' ? afterNavMenuContent(props) : null}
+      {afterNavMenuContent && afterVerticalNavMenuContentPosition === "fixed"
+        ? afterNavMenuContent(props)
+        : null}
     </Drawer>
-  )
-}
+  );
+};
 
-export default Navigation
+export default Navigation;

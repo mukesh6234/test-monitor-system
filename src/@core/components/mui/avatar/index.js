@@ -1,7 +1,5 @@
-import React from "react";
-
 // ** React Imports
-import { forwardRef } from "react";
+import React, { forwardRef } from "react";
 
 // ** MUI Imports
 import MuiAvatar from "@mui/material/Avatar";

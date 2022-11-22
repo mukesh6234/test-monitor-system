@@ -17,8 +17,8 @@ import Typography from "@mui/material/Typography";
 import Icon from "@core/components/icon";
 
 // ** Context
-import { useAuth } from "hooks/useAuth";
-import { useRouter } from "hooks/useRoute";
+// import { useAuth } from "hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 // ** Styled Components
 const BadgeContentSpan = styled("span")(({ theme }) => ({
@@ -37,8 +37,7 @@ const UserDropdown = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   // ** Hooks
-  const router = useRouter();
-  const { logout } = useAuth();
+  const { logout } = () => {};
 
   // ** Vars
   const { direction } = settings;
@@ -48,8 +47,9 @@ const UserDropdown = (props) => {
   };
 
   const handleDropdownClose = (url) => {
+    const Router = useNavigate();
     if (url) {
-      router.push(url);
+      <Router to={url} />;
     }
     setAnchorEl(null);
   };

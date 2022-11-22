@@ -1,5 +1,6 @@
+import React from "react";
 // ** React Imports
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 // ** Component Imports
 import { AbilityContext } from "layouts/components/acl/Can";

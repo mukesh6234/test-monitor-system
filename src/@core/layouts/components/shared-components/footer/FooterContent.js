@@ -1,5 +1,4 @@
 import React from "react";
-
 // ** MUI Imports
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
@@ -25,7 +24,7 @@ const FooterContent = () => {
           ❤️
         </Box>
         {` by `}
-        <Link target="_blank" href="https://themeselection.com/">
+        <Link target="_blank" to="https://themeselection.com/">
           ThemeSelection
         </Link>
       </Typography>
@@ -38,19 +37,19 @@ const FooterContent = () => {
             "& :not(:last-child)": { mr: 4 },
           }}
         >
-          <Link target="_blank" href="https://themeselection.com/license/">
+          <Link target="_blank" to="https://themeselection.com/license/">
             License
           </Link>
-          <Link target="_blank" href="https://themeselection.com/">
+          <Link target="_blank" to="https://themeselection.com/">
             More Themes
           </Link>
           <Link
             target="_blank"
-            href="https://demos.themeselection.com/sneat-mui-react-nextjs-admin-template/documentation/"
+            to="https://demos.themeselection.com/sneat-mui-react-nextjs-admin-template/documentation/"
           >
             Documentation
           </Link>
-          <Link target="_blank" href="https://themeselection.com/support/">
+          <Link target="_blank" to="https://themeselection.com/support/">
             Support
           </Link>
         </Box>
