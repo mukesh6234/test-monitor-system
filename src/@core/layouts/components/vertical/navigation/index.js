@@ -10,7 +10,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import themeConfig from "configs/themeConfig";
 
-// ** Component Imports
+// ** Component ImportsNavigation
 import Drawer from "./Drawer";
 import VerticalNavItems from "./VerticalNavItems";
 import VerticalNavHeader from "./VerticalNavHeader";
@@ -119,6 +119,7 @@ const Navigation = (props) => {
     }
   };
   const ScrollWrapper = hidden ? Box : PerfectScrollbar;
+  console.log(groupActive,"groupActive",currentActiveGroup);
 
   return (
     <Drawer {...props} navHover={navHover} setNavHover={setNavHover}>
@@ -165,6 +166,7 @@ const Navigation = (props) => {
                 setCurrentActiveGroup={setCurrentActiveGroup}
                 {...props}
               />
+            
             </List>
           )}
           {afterNavMenuContent &&

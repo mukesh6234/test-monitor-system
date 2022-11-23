@@ -88,7 +88,7 @@ const Drawer = (props) => {
   const userNavMenuProps = Object.assign({}, navMenuProps);
   delete userNavMenuProps.sx;
   delete userNavMenuProps.PaperProps;
-
+console.log(hidden,"jjjj");
   return (
     <SwipeableDrawer
       className="layout-vertical-nav"

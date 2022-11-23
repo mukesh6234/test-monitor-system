@@ -14,7 +14,7 @@ function App() {
   const routePath = createBrowserRouter(
     createRoutesFromElements(
       <Route
-        path="/dashboard"
+        path="/"
         element={
           <ThemeComponent settings={settings}>
             <UserLayout>

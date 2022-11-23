@@ -14,7 +14,7 @@ const CanViewNavLink = (props) => {
 
   return ability && ability.can(navLink?.action, navLink?.subject) ? (
     <>{children}</>
-  ) : null;
+  ) : <>{children}</>;
 };
 
 export default CanViewNavLink;

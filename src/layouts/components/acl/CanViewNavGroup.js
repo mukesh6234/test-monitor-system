@@ -30,7 +30,7 @@ const CanViewNavGroup = props => {
     return ability && ability.can(item.action, item.subject) && hasAnyVisibleChild
   }
 
-  return navGroup && canViewMenuGroup(navGroup) ? <>{children}</> : null
+  return navGroup && canViewMenuGroup(navGroup) ? <>{children}</> : <>{children}</>
 }
 
 export default CanViewNavGroup

@@ -33,6 +33,7 @@ import useBgColor from "@core/hooks/useBgColor";
 // ** Util Imports
 import { hexToRGBA } from "@core/utils/hex-to-rgba";
 import { hasActiveChild, removeChildren } from "@core/layouts/utils";
+import Translations from "layouts/components/Translations";
 
 const MenuItemTextWrapper = styled(Box)(() => ({
   width: "100%",
@@ -58,7 +59,7 @@ const VerticalNavGroup = (props) => {
     setCurrentActiveGroup,
     navigationBorderWidth,
   } = props;
-
+console.log(groupActive, "ppppp");
   // ** Hooks & Vars
   const theme = useTheme();
   const currentURL = window.location.pathname;
@@ -67,7 +68,8 @@ const VerticalNavGroup = (props) => {
 
   // ** Accordion menu group open toggle
   const toggleActiveGroup = (item, parent) => {
-    let openGroup = groupActive;
+    console.log(parent,"parent");
+    let openGroup = ["Pages"];
 
     // ** If Group is already open and clicked, close the group
     if (openGroup.includes(item.title)) {
@@ -323,7 +325,7 @@ const VerticalNavGroup = (props) => {
                     !navHover)) && {
                   noWrap: true,
                 })}
-              ></Typography>
+              >      <Translations text={item.title} /></Typography>
               <Box
                 className="menu-item-meta"
                 sx={{

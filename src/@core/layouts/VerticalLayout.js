@@ -72,8 +72,7 @@ const VerticalLayout = (props) => {
   const { skin, appBar, navHidden, appBarBlur, contentWidth } = settings;
   console.log(navHidden, "hidden hidden hidden", settings.lastLayout);
   const navigationBorderWidth = skin === "bordered" ? 1 : 0;
-  const { navigationSize, collapsedNavigationSize } =
-    themeConfig;
+  const { navigationSize, collapsedNavigationSize } = themeConfig;
   const navWidth = navigationSize;
   const collapsedNavWidth = collapsedNavigationSize;
 
@@ -82,6 +81,7 @@ const VerticalLayout = (props) => {
 
   // ** Toggle Functions
   const toggleNavVisibility = () => setNavVisible(!navVisible);
+
 
   return (
     <>

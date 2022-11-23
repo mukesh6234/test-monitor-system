@@ -25,6 +25,7 @@ import useBgColor from "@core/hooks/useBgColor";
 // ** Util Import
 import { hexToRGBA } from "@core/utils/hex-to-rgba";
 import { handleURLQueries } from "@core/layouts/utils";
+import Translations from "layouts/components/Translations";
 
 // ** Styled Components
 const MenuNavLink = styled(ListItemButton)(({ theme }) => ({
@@ -230,7 +231,7 @@ const VerticalNavLink = ({
                     !navHover)) && {
                   noWrap: true,
                 })}
-              ></Typography>
+              > <Translations text={item.title} /></Typography>
               {item.badgeContent ? (
                 <Chip
                   label={item.badgeContent}

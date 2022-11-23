@@ -3,13 +3,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 // ** MUI Imports
-import IconButton from "@mui/material/IconButton";
+// import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
 
 // ** Custom Icon Import
-import Icon from "@core/components/icon";
+// import Icon from "@core/components/icon";
 
 // ** Configs
 import themeConfig from "configs/themeConfig";
@@ -35,31 +35,31 @@ const StyledLink = styled("a")({
 const VerticalNavHeader = (props) => {
   // ** Props
   const {
-    hidden,
+    // hidden,
     navHover,
     settings,
-    saveSettings,
+    // saveSettings,
     collapsedNavWidth,
-    toggleNavVisibility,
+    // toggleNavVisibility,
     navigationBorderWidth,
-    menuLockedIcon: userMenuLockedIcon,
+    // menuLockedIcon: userMenuLockedIcon,
     navMenuBranding: userNavMenuBranding,
-    menuUnlockedIcon: userMenuUnlockedIcon,
+    // menuUnlockedIcon: userMenuUnlockedIcon,
   } = props;
 
   // ** Hooks & Vars
   const theme = useTheme();
-  const { mode, skin, direction, navCollapsed } = settings;
+  const { mode,  navCollapsed } = settings;
   const menuCollapsedStyles =
     navCollapsed && !navHover ? { opacity: 0 } : { opacity: 1 };
 
-  const handleButtonClick = () => {
-    if (hidden) {
-      toggleNavVisibility();
-    } else {
-      saveSettings({ ...settings, navCollapsed: !navCollapsed });
-    }
-  };
+  // const handleButtonClick = () => {
+  //   if (hidden) {
+  //     toggleNavVisibility();
+  //   } else {
+  //     saveSettings({ ...settings, navCollapsed: !navCollapsed });
+  //   }
+  // };
 
   const menuHeaderPaddingLeft = () => {
     if (navCollapsed && !navHover) {
@@ -73,29 +73,29 @@ const VerticalNavHeader = (props) => {
     }
   };
 
-  const svgRotationDeg = () => {
-    if (navCollapsed) {
-      if (direction === "rtl") {
-        if (navHover) {
-          return 0;
-        } else {
-          return 180;
-        }
-      } else {
-        if (navHover) {
-          return 180;
-        } else {
-          return 0;
-        }
-      }
-    } else {
-      if (direction === "rtl") {
-        return 180;
-      } else {
-        return 0;
-      }
-    }
-  };
+  // const svgRotationDeg = () => {
+  //   if (navCollapsed) {
+  //     if (direction === "rtl") {
+  //       if (navHover) {
+  //         return 0;
+  //       } else {
+  //         return 180;
+  //       }
+  //     } else {
+  //       if (navHover) {
+  //         return 180;
+  //       } else {
+  //         return 0;
+  //       }
+  //     }
+  //   } else {
+  //     if (direction === "rtl") {
+  //       return 180;
+  //     } else {
+  //       return 0;
+  //     }
+  //   }
+  // };
 
   return (
     <MenuHeaderWrapper
@@ -151,7 +151,7 @@ const VerticalNavHeader = (props) => {
         </Link>
       )}
 
-      {userMenuLockedIcon === null && userMenuUnlockedIcon === null ? null : (
+      {/* {userMenuLockedIcon === null && userMenuUnlockedIcon === null ? null : (
         <IconButton
           disableRipple
           disableFocusRipple
@@ -215,7 +215,7 @@ const VerticalNavHeader = (props) => {
             )}
           </Box>
         </IconButton>
-      )}
+      )} */}
     </MenuHeaderWrapper>
   );
 };
