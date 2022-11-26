@@ -1,8 +1,8 @@
 // ** React Imports
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 
 // ** Component Imports
-import { AbilityContext } from 'layouts/components/acl/Can'
+import { AbilityContext } from './Can'
 
 const CanViewNavGroup = props => {
   // ** Props
@@ -30,7 +30,7 @@ const CanViewNavGroup = props => {
     return ability && ability.can(item.action, item.subject) && hasAnyVisibleChild
   }
 
-  return navGroup && canViewMenuGroup(navGroup) ? <>{children}</> : <>{children}</>
+  return navGroup && canViewMenuGroup(navGroup) ? <>{children}</> : null
 }
 
 export default CanViewNavGroup

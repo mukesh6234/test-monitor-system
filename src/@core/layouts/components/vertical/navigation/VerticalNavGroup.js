@@ -1,7 +1,8 @@
 // ** React Imports
-import React, { useEffect, Fragment } from "react";
+import { useEffect, Fragment } from "react";
 
 // ** Next Import
+import { useRouter } from "next/router";
 
 // ** MUI Imports
 import Chip from "@mui/material/Chip";
@@ -17,23 +18,26 @@ import ListItemButton from "@mui/material/ListItemButton";
 import clsx from "clsx";
 
 // ** Icon Imports
-import Icon from "@core/components/icon";
+import Icon from "../../../../components/icon";
 
 // ** Configs Import
-import themeConfig from "configs/themeConfig";
+import themeConfig from "../../../../../configs/themeConfig";
 
 // ** Custom Components Imports
 import VerticalNavItems from "./VerticalNavItems";
-import UserIcon from "layouts/components/UserIcon";
-import CanViewNavGroup from "layouts/components/acl/CanViewNavGroup";
+import Translations from "layouts/components/Translations";
+// import CanViewNavGroup from 'layouts/components/acl/CanViewNavGroup'
 
 // ** Hook Import
-import useBgColor from "@core/hooks/useBgColor";
+// import useBgColor from 'src/@core/hooks/useBgColor'
 
 // ** Util Imports
 import { hexToRGBA } from "@core/utils/hex-to-rgba";
+// import { hasActiveChild, removeChildren } from "../../../../utils";
+import UserIcon from "layouts/components/UserIcon";
+import CanViewNavGroup from "layouts/components/acl/CanViewNavGroup";
+import UseBgColor from "@core/hooks/useBgColor";
 import { hasActiveChild, removeChildren } from "@core/layouts/utils";
-import Translations from "layouts/components/Translations";
 
 const MenuItemTextWrapper = styled(Box)(() => ({
   width: "100%",
@@ -59,17 +63,19 @@ const VerticalNavGroup = (props) => {
     setCurrentActiveGroup,
     navigationBorderWidth,
   } = props;
-console.log(groupActive, "ppppp");
+  console.log(groupActive, "ppppp");
+
   // ** Hooks & Vars
   const theme = useTheme();
-  const currentURL = window.location.pathname;
-  const bgColors = useBgColor();
+  const router = useRouter();
+  const currentURL = router.asPath;
+  const bgColors = UseBgColor();
   const { direction, mode, navCollapsed, verticalNavToggleType } = settings;
 
   // ** Accordion menu group open toggle
   const toggleActiveGroup = (item, parent) => {
-    console.log(parent,"parent");
-    let openGroup = ["Pages"];
+    console.log(currentActiveGroup, "parent");
+    let openGroup = groupActive;
 
     // ** If Group is already open and clicked, close the group
     if (openGroup.includes(item.title)) {
@@ -135,7 +141,8 @@ console.log(groupActive, "ppppp");
     if (navCollapsed && !navHover) {
       setGroupActive([]);
     }
-  }, [window.location.pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.asPath]);
   useEffect(() => {
     if (navCollapsed && !navHover) {
       setGroupActive([]);
@@ -146,11 +153,13 @@ console.log(groupActive, "ppppp");
     ) {
       setGroupActive([...currentActiveGroup]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navCollapsed, navHover]);
   useEffect(() => {
     if (groupActive.length === 0 && !navCollapsed) {
       setGroupActive([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navHover]);
   const icon = parent && !item.icon ? themeConfig.navSubItemIcon : item.icon;
   const menuGroupCollapsedStyles =
@@ -325,7 +334,9 @@ console.log(groupActive, "ppppp");
                     !navHover)) && {
                   noWrap: true,
                 })}
-              >      <Translations text={item.title} /></Typography>
+              >
+                <Translations text={item.title} />
+              </Typography>
               <Box
                 className="menu-item-meta"
                 sx={{

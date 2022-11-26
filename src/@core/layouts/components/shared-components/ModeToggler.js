@@ -1,32 +1,30 @@
-import React from "react";
-
 // ** MUI Imports
-import IconButton from "@mui/material/IconButton";
+import IconButton from '@mui/material/IconButton'
 
 // ** Icon Imports
-import Icon from "@core/components/icon";
+import Icon from '../../../components/icon'
 
-const ModeToggler = (props) => {
+const ModeToggler = props => {
   // ** Props
-  const { settings, saveSettings } = props;
+  const { settings, saveSettings } = props
 
-  const handleModeChange = (mode) => {
-    saveSettings({ ...settings, mode: mode });
-  };
+  const handleModeChange = mode => {
+    saveSettings({ ...settings, mode: mode })
+  }
 
   const handleModeToggle = () => {
-    if (settings.mode === "light") {
-      handleModeChange("dark");
+    if (settings.mode === 'light') {
+      handleModeChange('dark')
     } else {
-      handleModeChange("light");
+      handleModeChange('light')
     }
-  };
+  }
 
   return (
-    <IconButton color="inherit" aria-haspopup="true" onClick={handleModeToggle}>
-      <Icon icon={settings.mode === "dark" ? "bx:sun" : "bx:moon"} />
+    <IconButton color='inherit' aria-haspopup='true' onClick={handleModeToggle}>
+      <Icon icon={settings.mode === 'dark' ? 'bx:sun' : 'bx:moon'} />
     </IconButton>
-  );
-};
+  )
+}
 
-export default ModeToggler;
+export default ModeToggler

@@ -1,27 +1,23 @@
-import React from "react";
-
 // ** React Imports
 import { useState } from "react";
 
 // ** MUI Imports
-import Fab from "@mui/material/Fab";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
 // ** Icon Imports
-import Icon from "@core/components/icon";
 
 // ** Theme Config Import
-import themeConfig from "configs/themeConfig";
+import themeConfig from "../../configs/themeConfig";
 
 // ** Components
 import AppBar from "./components/vertical/appBar";
-import Navigation from "./components/vertical/navigation";
+import Customizer from "../../@core/components/customizer";
+import Navigation from "../../@core/layouts/components/vertical/navigation";
 import Footer from "./components/shared-components/footer";
-import ScrollToTop from "@core/components/scroll-to-top";
 
 // ** Util Import
-import { hexToRGBA } from "@core/utils/hex-to-rgba";
+import { hexToRGBA } from "../../@core/utils/hex-to-rgba";
 
 const VerticalLayoutWrapper = styled("div")({
   height: "100%",
@@ -58,6 +54,7 @@ const ContentWrapper = styled("main")(({ theme }) => ({
 const VerticalLayout = (props) => {
   // ** Props
   const {
+    hidden,
     settings,
     children,
     scrollToTop,
@@ -66,13 +63,11 @@ const VerticalLayout = (props) => {
     verticalLayoutProps,
   } = props;
 
-  console.log(verticalLayoutProps, "verticalLayout");
-
   // ** Vars
   const { skin, appBar, navHidden, appBarBlur, contentWidth } = settings;
-  console.log(navHidden, "hidden hidden hidden", settings.lastLayout);
   const navigationBorderWidth = skin === "bordered" ? 1 : 0;
-  const { navigationSize, collapsedNavigationSize } = themeConfig;
+  const { navigationSize, disableCustomizer, collapsedNavigationSize } =
+    themeConfig;
   const navWidth = navigationSize;
   const collapsedNavWidth = collapsedNavigationSize;
 
@@ -81,8 +76,7 @@ const VerticalLayout = (props) => {
 
   // ** Toggle Functions
   const toggleNavVisibility = () => setNavVisible(!navVisible);
-
-
+  console.log(verticalLayoutProps.navMenu.content, "000000", props);
   return (
     <>
       <VerticalLayoutWrapper className="layout-wrapper">
@@ -158,15 +152,7 @@ const VerticalLayout = (props) => {
         </MainContentWrapper>
       </VerticalLayoutWrapper>
 
-      {scrollToTop ? (
-        scrollToTop(props)
-      ) : (
-        <ScrollToTop className="mui-fixed">
-          <Fab color="primary" size="small" aria-label="scroll back to top">
-            <Icon icon="bx:up-arrow-alt" />
-          </Fab>
-        </ScrollToTop>
-      )}
+      {disableCustomizer || hidden ? null : <Customizer />}
     </>
   );
 };

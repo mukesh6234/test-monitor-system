@@ -1,5 +1,5 @@
 // ** Hook Import
-import { useSettings } from '@core/hooks/useSettings'
+import { useSettings } from '../../@core/hooks/useSettings'
 
 const GlobalStyles = theme => {
   // ** Hook & Var

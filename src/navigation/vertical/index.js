@@ -17,7 +17,7 @@ const navigation = () => {
         {
           title: 'eCommerce',
           path: '/dashboards/ecommerce'
-        }
+        },
       ]
     },
     {

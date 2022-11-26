@@ -1,5 +1,6 @@
 // ** Hook Import
-import { useSettings } from '@core/hooks/useSettings'
+
+import { useSettings } from "@core/hooks/useSettings"
 
 const Accordion = theme => {
   // Hook & Var

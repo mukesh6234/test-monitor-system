@@ -1,27 +1,26 @@
-import React from "react";
 // ** MUI Imports
-import { styled, useTheme } from "@mui/material/styles";
-import MuiSwipeableDrawer from "@mui/material/SwipeableDrawer";
+import { styled, useTheme } from '@mui/material/styles'
+import MuiSwipeableDrawer from '@mui/material/SwipeableDrawer'
 
 const SwipeableDrawer = styled(MuiSwipeableDrawer)({
-  overflow: "hidden",
-  transition: "width .25s ease-in-out",
-  "& ul": {
-    listStyle: "none",
+  overflow: 'hidden',
+  transition: 'width .25s ease-in-out',
+  '& ul': {
+    listStyle: 'none'
   },
-  "& .MuiListItem-gutters": {
+  '& .MuiListItem-gutters': {
     paddingLeft: 4,
-    paddingRight: 4,
+    paddingRight: 4
   },
-  "& .MuiDrawer-paper": {
-    left: "unset",
-    right: "unset",
-    overflow: "hidden",
-    transition: "width .25s ease-in-out, box-shadow .25s ease-in-out",
-  },
-});
+  '& .MuiDrawer-paper': {
+    left: 'unset',
+    right: 'unset',
+    overflow: 'hidden',
+    transition: 'width .25s ease-in-out, box-shadow .25s ease-in-out'
+  }
+})
 
-const Drawer = (props) => {
+const Drawer = props => {
   // ** Props
   const {
     hidden,
@@ -34,26 +33,26 @@ const Drawer = (props) => {
     navMenuProps,
     setNavVisible,
     collapsedNavWidth,
-    navigationBorderWidth,
-  } = props;
+    navigationBorderWidth
+  } = props
 
   // ** Hook
-  const theme = useTheme();
+  const theme = useTheme()
 
   // ** Vars
-  const { mode, skin, navCollapsed } = settings;
+  const { mode, skin, navCollapsed } = settings
 
   const drawerBgColor = () => {
-    if (mode === "semi-dark") {
+    if (mode === 'semi-dark') {
       return {
-        backgroundColor: "customColors.darkPaperBg",
-      };
+        backgroundColor: 'customColors.darkPaperBg'
+      }
     } else {
       return {
-        backgroundColor: "background.paper",
-      };
+        backgroundColor: 'background.paper'
+      }
     }
-  };
+  }
 
   // Drawer Props for Mobile & Tablet screens
   const MobileDrawerProps = {
@@ -61,9 +60,9 @@ const Drawer = (props) => {
     onOpen: () => setNavVisible(true),
     onClose: () => setNavVisible(false),
     ModalProps: {
-      keepMounted: true, // Better open performance on mobile.
-    },
-  };
+      keepMounted: true // Better open performance on mobile.
+    }
+  }
 
   // Drawer Props for Laptop & Desktop screens
   const DesktopDrawerProps = {
@@ -71,57 +70,49 @@ const Drawer = (props) => {
     onOpen: () => null,
     onClose: () => null,
     onMouseEnter: () => {
-      setNavHover(true);
+      setNavHover(true)
     },
     onMouseLeave: () => {
-      setNavHover(false);
-    },
-  };
-  let userNavMenuStyle = {};
-  let userNavMenuPaperStyle = {};
+      setNavHover(false)
+    }
+  }
+  let userNavMenuStyle = {}
+  let userNavMenuPaperStyle = {}
   if (navMenuProps && navMenuProps.sx) {
-    userNavMenuStyle = navMenuProps.sx;
+    userNavMenuStyle = navMenuProps.sx
   }
   if (navMenuProps && navMenuProps.PaperProps && navMenuProps.PaperProps.sx) {
-    userNavMenuPaperStyle = navMenuProps.PaperProps.sx;
+    userNavMenuPaperStyle = navMenuProps.PaperProps.sx
   }
-  const userNavMenuProps = Object.assign({}, navMenuProps);
-  delete userNavMenuProps.sx;
-  delete userNavMenuProps.PaperProps;
-console.log(hidden,"jjjj");
+  const userNavMenuProps = Object.assign({}, navMenuProps)
+  delete userNavMenuProps.sx
+  delete userNavMenuProps.PaperProps
+
   return (
     <SwipeableDrawer
-      className="layout-vertical-nav"
-      variant={hidden ? "temporary" : "permanent"}
+      className='layout-vertical-nav'
+      variant={hidden ? 'temporary' : 'permanent'}
       {...(hidden ? { ...MobileDrawerProps } : { ...DesktopDrawerProps })}
       PaperProps={{
         sx: {
           ...drawerBgColor(),
-          ...(!hidden && skin !== "bordered" && { boxShadow: 6 }),
+          ...(!hidden && skin !== 'bordered' && { boxShadow: 6 }),
           width: navCollapsed && !navHover ? collapsedNavWidth : navWidth,
-          borderRight:
-            navigationBorderWidth === 0
-              ? 0
-              : `${navigationBorderWidth}px solid ${theme.palette.divider}`,
-          ...userNavMenuPaperStyle,
+          borderRight: navigationBorderWidth === 0 ? 0 : `${navigationBorderWidth}px solid ${theme.palette.divider}`,
+          ...userNavMenuPaperStyle
         },
-        ...navMenuProps?.PaperProps,
+        ...navMenuProps?.PaperProps
       }}
       sx={{
         width: navCollapsed ? collapsedNavWidth : navWidth,
-        ...(navCollapsed && !navHover
-          ? {}
-          : {
-              overflow: "visible",
-              "& .MuiDrawer-paper": { overflow: "visible" },
-            }),
-        ...userNavMenuStyle,
+        ...(navCollapsed && !navHover ? {} : { overflow: 'visible', '& .MuiDrawer-paper': { overflow: 'visible' } }),
+        ...userNavMenuStyle
       }}
       {...userNavMenuProps}
     >
       {children}
     </SwipeableDrawer>
-  );
-};
+  )
+}
 
-export default Drawer;
+export default Drawer

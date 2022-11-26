@@ -1,21 +1,19 @@
 // ** React Import
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react'
 
 // ** Layout Components
-import VerticalLayout from "./VerticalLayout";
-import HorizontalLayout from "./HorizontalLayout";
+import VerticalLayout from './VerticalLayout'
 
-const Layout = (props) => {
+const Layout = props => {
   // ** Props
-  const { hidden, children, settings, saveSettings } = props;
-
+  const { hidden, children, settings, saveSettings } = props
   // ** Ref
-  const isCollapsed = useRef(settings.navCollapsed);
+  const isCollapsed = useRef(settings.navCollapsed)
   useEffect(() => {
     if (hidden) {
       if (settings.navCollapsed) {
-        saveSettings({ ...settings, navCollapsed: false, layout: "vertical" });
-        isCollapsed.current = true;
+        saveSettings({ ...settings, navCollapsed: false, layout: 'vertical' })
+        isCollapsed.current = true
       } else {
         // if (settings.layout === 'horizontal') {
         //   saveSettings({ ...settings, layout: 'vertical' })
@@ -23,24 +21,18 @@ const Layout = (props) => {
       }
     } else {
       if (isCollapsed.current) {
-        saveSettings({
-          ...settings,
-          navCollapsed: true,
-          layout: settings.lastLayout,
-        });
-        isCollapsed.current = false;
+        saveSettings({ ...settings, navCollapsed: true, layout: settings.lastLayout })
+        isCollapsed.current = false
       } else {
         if (settings.lastLayout !== settings.layout) {
-          saveSettings({ ...settings, layout: settings.lastLayout });
+          saveSettings({ ...settings, layout: settings.lastLayout })
         }
       }
     }
-  }, [hidden]);
-  if (settings.layout === "horizontal") {
-    return <HorizontalLayout {...props}>{children}</HorizontalLayout>;
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hidden])
 
-  return <VerticalLayout {...props}>{children}</VerticalLayout>;
-};
+  return <VerticalLayout {...props}>{children}</VerticalLayout>
+}
 
-export default Layout;
+export default Layout

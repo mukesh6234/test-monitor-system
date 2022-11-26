@@ -1,11 +1,10 @@
-import React from "react";
 // ** MUI Imports
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import MuiToolbar from "@mui/material/Toolbar";
 
 // ** Util Import
-import { hexToRGBA } from "@core/utils/hex-to-rgba";
+import { hexToRGBA } from "../../../../utils/hex-to-rgba";
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   transition: "none",

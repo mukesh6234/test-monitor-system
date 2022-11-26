@@ -1,8 +1,10 @@
 // ** Theme Config Imports
-import themeConfig from 'configs/themeConfig'
+
+import { hexToRGBA } from "@core/utils/hex-to-rgba"
+import themeConfig from "configs/themeConfig"
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+// import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 
 const Button = theme => {
   return {

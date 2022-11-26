@@ -2,7 +2,7 @@
 import { useTheme } from '@mui/material/styles'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from '../utils/hex-to-rgba'
 
 const UseBgColor = () => {
   // ** Hooks

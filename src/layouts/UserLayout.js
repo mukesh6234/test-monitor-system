@@ -1,4 +1,3 @@
-import React from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 // ** Layout Imports
@@ -7,23 +6,19 @@ import Layout from "@core/layouts/Layout";
 
 // ** Navigation Imports
 import VerticalNavItems from "navigation/vertical";
-// import HorizontalNavItems from "navigation/horizontal";
 
 // ** Component Import
 // Uncomment the below line (according to the layout type) when using server-side menu
 // import ServerSideVerticalNavItems from './components/vertical/ServerSideNavItems'
 // import ServerSideHorizontalNavItems from './components/horizontal/ServerSideNavItems'
 import VerticalAppBarContent from "./components/vertical/AppBarContent";
-// import HorizontalAppBarContent from "./components/horizontal/AppBarContent";
 
 // ** Hook Import
-import { useSettings } from "@core/hooks/useSettings";
+import { useSettings } from "../@core/hooks/useSettings";
 
 const UserLayout = ({ children, contentHeightFixed }) => {
-  console.log(children, "children");
   // ** Hooks
   const { settings, saveSettings } = useSettings();
-  console.log(settings, "settings settings");
 
   // ** Vars for server side navigation
   // const { menuItems: verticalMenuItems } = ServerSideVerticalNavItems()
@@ -36,6 +31,7 @@ const UserLayout = ({ children, contentHeightFixed }) => {
    *  to know more about what values can be passed to this hook.
    *  ! Do not change this value unless you know what you are doing. It can break the template.
    */
+
   const hidden = useMediaQuery((theme) => theme.breakpoints.down("lg"));
   if (hidden && settings.layout === "horizontal") {
     settings.layout = "vertical";
@@ -65,25 +61,6 @@ const UserLayout = ({ children, contentHeightFixed }) => {
           ),
         },
       }}
-      // {...(settings.layout === "horizontal" && {
-      //   horizontalLayoutProps: {
-      //     navMenu: {
-      //       navItems: HorizontalNavItems(),
-
-      //       // Uncomment the below line when using server-side menu in horizontal layout and comment the above line
-      //       // navItems: horizontalMenuItems
-      //     },
-      //     appBar: {
-      //       content: () => (
-      //         <HorizontalAppBarContent
-      //           hidden={hidden}
-      //           settings={settings}
-      //           saveSettings={saveSettings}
-      //         />
-      //       ),
-      //     },
-      //   },
-      // })}
     >
       {children}
     </Layout>

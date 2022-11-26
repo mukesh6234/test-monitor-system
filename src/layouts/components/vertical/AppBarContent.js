@@ -1,16 +1,15 @@
-import React from "react";
 // ** MUI Imports
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 
 // ** Icon Imports
-import Icon from "@core/components/icon";
+import Icon from "../../../@core/components/icon";
 
 // ** Components
-import ModeToggler from "@core/layouts/components/shared-components/ModeToggler";
-import UserDropdown from "@core/layouts/components/shared-components/UserDropdown";
-import NotificationDropdown from "@core/layouts/components/shared-components/NotificationDropdown";
-import ShortcutsDropdown from "@core/layouts/components/shared-components/ShortcutsDropdown";
+import Autocomplete from "../../../layouts/components/Autocomplete";
+import ModeToggler from "../../../@core/layouts/components/shared-components/ModeToggler";
+import UserDropdown from "../../../@core/layouts/components/shared-components/UserDropdown";
+import LanguageDropdown from "../../../@core/layouts/components/shared-components/LanguageDropdown";
 
 const notifications = [
   {
@@ -111,6 +110,7 @@ const shortcuts = [
 const AppBarContent = (props) => {
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props;
+  console.log(props, "111111111111111");
 
   return (
     <Box
@@ -134,17 +134,14 @@ const AppBarContent = (props) => {
             <Icon icon="bx:menu" />
           </IconButton>
         ) : null}
+        <Autocomplete hidden={hidden} settings={settings} />
       </Box>
       <Box
         className="actions-right"
         sx={{ display: "flex", alignItems: "center" }}
       >
+        <LanguageDropdown settings={settings} saveSettings={saveSettings} />
         <ModeToggler settings={settings} saveSettings={saveSettings} />
-        <ShortcutsDropdown settings={settings} shortcuts={shortcuts} />
-        <NotificationDropdown
-          settings={settings}
-          notifications={notifications}
-        />
         <UserDropdown settings={settings} />
       </Box>
     </Box>

@@ -1,4 +1,4 @@
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from "@core/utils/hex-to-rgba"
 
 const Slider = theme => {
   return {
