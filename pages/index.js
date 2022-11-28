@@ -25,10 +25,10 @@ const Home = () => {
   const router = useRouter()
   useEffect(() => {
     if (auth.user && auth.user.role) {
-      const homeRoute = getHomeRoute(auth.user.role)
+      // const homeRoute = getHomeRoute(auth.user.role)
 
+      router.replace("/acl")
       // Redirect user to Home URL
-      router.replace(homeRoute)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

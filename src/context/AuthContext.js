@@ -95,27 +95,15 @@ const AuthProvider = ({ children }) => {
     router.push('/login')
   }
 
-  const handleRegister = (params, errorCallback) => {
-    axios
-      .post(authConfig.registerEndpoint, params)
-      .then(res => {
-        if (res.data.error) {
-          if (errorCallback) errorCallback(res.data.error)
-        } else {
-          handleLogin({ email: params.email, password: params.password })
-        }
-      })
-      .catch(err => (errorCallback ? errorCallback(err) : null))
-  }
 
   const values = {
-    user,
+    user:{user:"mukesh",role:"admin"},
     loading,
     setUser,
     setLoading,
     login: handleLogin,
     logout: handleLogout,
-    register: handleRegister
+
   }
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>

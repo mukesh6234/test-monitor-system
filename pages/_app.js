@@ -103,8 +103,8 @@ const App = (props) => {
   return (
     <CacheProvider value={emotionCache}>
    
-   {/* SEO content */}
-         <Head>
+ 
+         {/* <Head>
         <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
         <meta
           name="description"
@@ -115,7 +115,7 @@ const App = (props) => {
           content="Material Design, MUI, Admin Template, React Admin Template"
         />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
+      </Head> */}
 
       <AuthProvider>
         <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>

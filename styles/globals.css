@@ -8,8 +8,9 @@ body {
 }
 
 code {
-  font-family: 'Public Sans', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  font-family: "Public Sans", sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue";
   padding: 0.1rem 0.4rem;
   font-size: 90%;
   color: #00a0ff;
@@ -17,6 +18,20 @@ code {
   background-color: rgba(0, 160, 255, 0.08);
 }
 
-code[class*='language-'] {
+code[class*="language-"] {
   padding: 0;
 }
+
+span {
+  color: #7a86a1;
+}
+
+.card-layout {
+  background: #ffffff;
+  box-shadow: 3px 3px 18px rgba(145, 85, 253, 0.11);
+  border-radius: 8px;
+  padding: 10px;
+}
+ p{
+  margin: 10px 0;
+ }
