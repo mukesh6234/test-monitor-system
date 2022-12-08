@@ -1,39 +1,43 @@
 // ** React Imports
-import { useEffect } from 'react'
+import { useEffect } from "react";
 
 // ** Next Imports
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 // ** Spinner Import
-import Spinner from '../src/@core/components/spinner'
-import { useAuth } from 'hooks/useAuth'
+import Spinner from "../src/@core/components/spinner";
+import { useAuth } from "hooks/useAuth";
+
 
 // ** Hook Imports
-// import { useAuth } from 'src/hooks/useAuth'
+
 
 /**
  *  Set Home URL based on User Roles
  */
-export const getHomeRoute = role => {
-  if (role === 'client') return '/acl'
-  else return '/dashboards/analytics'
-}
+export const getHomeRoute = (role) => {
+  if (role === "client") return "/acl";
+  else return "/project";
+};
 
 const Home = () => {
   // ** Hooks
-  const auth = useAuth()
-  const router = useRouter()
+  const auth = useAuth();
+  const router = useRouter();
   useEffect(() => {
-    if (auth.user && auth.user.role) {
-      // const homeRoute = getHomeRoute(auth.user.role)
+    if (auth.user && auth.user.role_group) {
+      console.log("11111111111",auth.user.role_group);
+      const homeRoute = getHomeRoute(auth.user.role_group.name);
 
-      router.replace("/acl")
+      router.replace(homeRoute);
       // Redirect user to Home URL
+    } else {
+      console.log("11111111111");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
-  return <Spinner sx={{ height: '100%' }} />
-}
+  return <Spinner sx={{ height: "100%" }} />;
+};
 
-export default Home
+export default Home;

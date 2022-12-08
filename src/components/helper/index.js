@@ -1,0 +1,27 @@
+export function titleize(str) {
+  if (!str) {
+    return str;
+  }
+
+  return str
+    .split(" ")
+    .map(function (string) {
+      return string?.charAt(0).toUpperCase() + string.slice(1);
+    })
+    .join(" ")
+    .split("_")
+    .map(function (string) {
+      return string?.charAt(0).toUpperCase() + string.slice(1);
+    })
+    .join(" ");
+}
+
+export function SliceName(str, size) {
+  if (!str) {
+    return "Empty";
+  }
+  if (str.length > 23) {
+    return str.slice(0, size) + "....";
+  }
+  return str;
+}

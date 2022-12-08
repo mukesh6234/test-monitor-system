@@ -83,11 +83,12 @@ const VerticalNavLink = ({
       return false
     }
   }
-
+console.log(item,"item");
   return (
     <CanViewNavLink navLink={item}>
+      
       <ListItem
-        disablePadding
+        // disablePadding
         className='nav-link'
         disabled={item.disabled || false}
         sx={{
@@ -109,7 +110,7 @@ const VerticalNavLink = ({
           })
         }}
       >
-        <Link passHref href={item.path === undefined ? '/' : `${item.path}`}>
+        <Link passHref href={item.path === undefined ? '/' : `${item.path}`} style={{textDecoration:"none",width:"220px"}}>
           <MenuNavLink
             component={'a'}
             {...(item.disabled && { tabIndex: -1 })}
@@ -194,6 +195,7 @@ const VerticalNavLink = ({
                 {...((themeConfig.menuTextTruncate || (!themeConfig.menuTextTruncate && navCollapsed && !navHover)) && {
                   noWrap: true
                 })}
+         
               >
                 <Translations text={item.title} />
               </Typography>

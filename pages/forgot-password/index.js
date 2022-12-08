@@ -3,7 +3,6 @@ import Link from "next/link";
 
 // ** MUI Components
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -11,14 +10,19 @@ import { styled, useTheme } from "@mui/material/styles";
 
 // ** Icon Imports
 import Icon from "../../src/@core/components/icon";
-
+import toast from "react-hot-toast";
 import themeConfig from "configs/themeConfig";
 import BlankLayout from "@core/layouts/BlankLayout";
 import { useSettings } from "@core/hooks/useSettings";
-// import forgetBackground from "../../public/images/pages/forgetPassword-background.png";
-// import BoyWithPhone from "../../public/images/pages/boy-with-phone.png";
-import loginImage from "../../public/images/pages/boy-with-phone.png"
+import loginImage from "../../public/images/pages/boy-with-phone.png";
 import Image from "next/image";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { forgotPassword } from "../api/authentication";
+import { FormControl } from "@mui/material";
+import { useRouter } from "next/router";
+import TextInput from "@core/components/input/textInput";
 
 // Styled Components
 const ForgotPasswordIllustration = styled("img")({
@@ -51,16 +55,48 @@ const LinkStyled = styled("a")(({ theme }) => ({
   justifyContent: "center",
   color: theme.palette.primary.main,
 }));
+const schema = yup.object().shape({
+  email: yup.string().email().required(),
+});
 
+const defaultValues = {
+  email: "",
+};
 const ForgotPassword = () => {
   // ** Hooks
   const theme = useTheme();
   const { settings } = useSettings();
   const hidden = useMediaQuery(theme.breakpoints.down("lg"));
-
+  const router = useRouter();
   // ** Var
   const { skin } = settings;
-
+  const {
+    control,
+    setError,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues,
+    mode: "onBlur",
+    resolver: yupResolver(schema),
+  });
+  const onSubmit = (data) => {
+    const { email } = data;
+    let otpEmail = { user_name: email };
+    forgotPassword(otpEmail)
+      .then(({ message, data }) => {
+        toast.success(message);
+        router.push(`/verifyOTP/${data}`);
+        // setOtpAuth(data);
+        // setVerify(true);
+      })
+      .catch((err) => {
+        setError("email", {
+          type: "manual",
+          message: err[1] ? err[1]?.data : err.message,
+        });
+      });
+  };
   return (
     <Box className="content-right">
       {!hidden ? (
@@ -84,7 +120,7 @@ const ForgotPassword = () => {
             alt="forgot-password-illustration"
             placeholder="blur"
             width={700}
-            style={{ height: "auto", maxWidth: "100%",}}
+            style={{ height: "auto", maxWidth: "100%" }}
           />
           {/* <Image src={BoyWithPhone}   alt="forgot-password-illustration" placeholder='blur' height={"100%"} width={700} style={{position:"absolute"}}/> */}
         </Box>
@@ -118,17 +154,27 @@ const ForgotPassword = () => {
             Enter your email and we&prime;ll send you instructions to reset your
             password
           </Typography>
-          <form
-            noValidate
-            autoComplete="off"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <TextField
-              autoFocus
-              type="email"
-              label="Email"
-              sx={{ display: "flex", mb: 6 }}
-            />
+          <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+            <FormControl fullWidth sx={{ mb: 6 }}>
+              <Controller
+                name="email"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextInput
+                    label={"Email"}
+                    fullWidth
+                    autoFocus={true}
+                    placeholder={"Enter your email address"}
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    errors={Boolean(errors.email)}
+                    helperText={errors.email && errors.email.message}
+                  />
+                )}
+              />
+            </FormControl>
             <Button
               fullWidth
               size="large"
@@ -136,7 +182,7 @@ const ForgotPassword = () => {
               variant="contained"
               sx={{ mb: 4 }}
             >
-              Send reset link
+              Send OTP
             </Button>
             <Typography
               variant="body2"

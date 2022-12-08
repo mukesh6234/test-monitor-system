@@ -188,7 +188,7 @@ const PermissionsTable = () => {
           </Typography>
           <Alert severity='warning' sx={{ maxWidth: '500px' }} icon={false}>
             <AlertTitle>Warning!</AlertTitle>
-            By editing the permission name, you might break the system permissions functionality. Please ensure you're
+            By editing the permission name, you might break the system permissions functionality. Please ensure you&apos;re
             absolutely certain before proceeding.
           </Alert>
 

@@ -21,10 +21,10 @@ const AclGuard = props => {
   // ** Props
   const { aclAbilities, children, guestGuard } = props
   const [ability, setAbility] = useState(undefined)
-
   // ** Hooks
   const auth = useAuth()
   const router = useRouter()
+  console.log(props,"propsprops",router.route);
 
   // If guestGuard is true and user is not logged in or its an error page, render the page without checking access
   if (guestGuard || router.route === '/404' || router.route === '/500' || router.route === '/') {
@@ -32,12 +32,14 @@ const AclGuard = props => {
   }
 
   // User is logged in, build ability for the user based on his role
-  if (auth.user && auth.user.role && !ability) {
-    setAbility(buildAbilityFor(auth.user.role, aclAbilities.subject))
+  if (auth.user && auth.user.role_group && !ability) {
+    setAbility(buildAbilityFor(auth.user.role_group.name, aclAbilities.subject))
   }
 
   // Check the access of current user and render pages
+  console.log("lllll",ability);
   if (ability && ability.can(aclAbilities.action, aclAbilities.subject)) {
+
     return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
   }
 

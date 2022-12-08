@@ -22,16 +22,19 @@ code[class*="language-"] {
   padding: 0;
 }
 
-span {
-  color: #7a86a1;
+p {
+  margin: 10px 0;
+}
+.MuiDataGrid-columnHeaders{
+  border-top: 0 !important;
 }
 
-.card-layout {
-  background: #ffffff;
-  box-shadow: 3px 3px 18px rgba(145, 85, 253, 0.11);
-  border-radius: 8px;
-  padding: 10px;
+.search .MuiOutlinedInput-notchedOutline {
+  border: none !important;
 }
- p{
-  margin: 10px 0;
- }
+.search .Mui-focused {
+  box-shadow: none !important;
+}
+.search .MuiOutlinedInput-input{
+  padding: 0 !important;
+}

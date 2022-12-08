@@ -1,296 +1,320 @@
 // ** React Imports
-import { useEffect, useCallback, useRef, useState } from 'react'
+import { useEffect, useCallback, useRef, useState } from "react";
 
 // ** Next Imports
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 // ** MUI Imports
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import List from '@mui/material/List'
-import MuiDialog from '@mui/material/Dialog'
-import ListItem from '@mui/material/ListItem'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { styled, useTheme } from '@mui/material/styles'
-import ListItemButton from '@mui/material/ListItemButton'
-import InputAdornment from '@mui/material/InputAdornment'
-import MuiAutocomplete from '@mui/material/Autocomplete'
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import MuiDialog from "@mui/material/Dialog";
+import ListItem from "@mui/material/ListItem";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { styled, useTheme } from "@mui/material/styles";
+import ListItemButton from "@mui/material/ListItemButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import MuiAutocomplete from "@mui/material/Autocomplete";
 
 // ** Third Party Imports
-import axios from 'axios'
+import axios from "axios";
 
 // ** Icon Imports
-import Icon from '../../@core/components/icon'
-import themeConfig from 'configs/themeConfig'
+import Icon from "../../@core/components/icon";
+import themeConfig from "configs/themeConfig";
 
 // ** Configs Imports
 // import themeConfig from 'src/configs/themeConfig'
 
 const defaultSuggestionsData = [
   {
-    category: 'Popular Searches',
+    category: "Popular Searches",
     suggestions: [
       {
-        icon: 'bx:bar-chart',
-        suggestion: 'Analytics',
-        link: '/dashboards/analytics'
+        icon: "bx:bar-chart",
+        suggestion: "Analytics",
+        link: "/dashboards/analytics",
       },
       {
-        suggestion: 'CRM',
-        link: '/dashboards/crm',
-        icon: 'bx:doughnut-chart'
+        suggestion: "CRM",
+        link: "/dashboards/crm",
+        icon: "bx:doughnut-chart",
       },
       {
-        icon: 'bx:cart',
-        suggestion: 'eCommerce',
-        link: '/dashboards/ecommerce'
+        icon: "bx:cart",
+        suggestion: "eCommerce",
+        link: "/dashboards/ecommerce",
       },
       {
-        icon: 'bx:group',
-        suggestion: 'User List',
-        link: '/apps/user/list'
-      }
-    ]
+        icon: "bx:group",
+        suggestion: "User List",
+        link: "/apps/user/list",
+      },
+    ],
   },
   {
-    category: 'Apps & Pages',
+    category: "Apps & Pages",
     suggestions: [
       {
-        suggestion: 'Calendar',
-        link: '/apps/calendar',
-        icon: 'bx:calendar-alt'
+        suggestion: "Calendar",
+        link: "/apps/calendar",
+        icon: "bx:calendar-alt",
       },
       {
-        icon: 'bx:list-ol',
-        suggestion: 'Invoice List',
-        link: '/apps/invoice/list'
+        icon: "bx:list-ol",
+        suggestion: "Invoice List",
+        link: "/apps/invoice/list",
       },
       {
-        icon: 'bx:dollar',
-        suggestion: 'Pricing',
-        link: '/pages/pricing'
+        icon: "bx:dollar",
+        suggestion: "Pricing",
+        link: "/pages/pricing",
       },
       {
-        icon: 'bx:cog',
-        suggestion: 'Account Settings',
-        link: '/pages/account-settings/account'
-      }
-    ]
+        icon: "bx:cog",
+        suggestion: "Account Settings",
+        link: "/pages/account-settings/account",
+      },
+    ],
   },
   {
-    category: 'User Interface',
+    category: "User Interface",
     suggestions: [
       {
-        icon: 'bx:font',
-        suggestion: 'Typography',
-        link: '/ui/typography'
+        icon: "bx:font",
+        suggestion: "Typography",
+        link: "/ui/typography",
       },
       {
-        suggestion: 'Tabs',
-        icon: 'bx:carousel',
-        link: '/components/tabs'
+        suggestion: "Tabs",
+        icon: "bx:carousel",
+        link: "/components/tabs",
       },
       {
-        suggestion: 'Buttons',
-        icon: 'bx:plus-circle',
-        link: '/components/buttons'
+        suggestion: "Buttons",
+        icon: "bx:plus-circle",
+        link: "/components/buttons",
       },
       {
-        icon: 'bx:collection',
-        suggestion: 'Advanced Cards',
-        link: '/ui/cards/advanced'
-      }
-    ]
+        icon: "bx:collection",
+        suggestion: "Advanced Cards",
+        link: "/ui/cards/advanced",
+      },
+    ],
   },
   {
-    category: 'Forms & Tables',
+    category: "Forms & Tables",
     suggestions: [
       {
-        icon: 'bx:list-ul',
-        suggestion: 'Select',
-        link: '/forms/form-elements/select'
+        icon: "bx:list-ul",
+        suggestion: "Select",
+        link: "/forms/form-elements/select",
       },
       {
-        icon: 'bx:rectangle',
-        suggestion: 'Autocomplete',
-        link: '/forms/form-elements/autocomplete'
+        icon: "bx:rectangle",
+        suggestion: "Autocomplete",
+        link: "/forms/form-elements/autocomplete",
       },
       {
-        icon: 'bx:table',
-        suggestion: 'Table',
-        link: '/tables/mui'
+        icon: "bx:table",
+        suggestion: "Table",
+        link: "/tables/mui",
       },
       {
-        icon: 'bx:calendar',
-        suggestion: 'Date Pickers',
-        link: '/forms/form-elements/pickers'
-      }
-    ]
-  }
-]
+        icon: "bx:calendar",
+        suggestion: "Date Pickers",
+        link: "/forms/form-elements/pickers",
+      },
+    ],
+  },
+];
 
 const categoryTitle = {
-  dashboards: 'Dashboards',
-  appsPages: 'Apps & Pages',
-  userInterface: 'User Interface',
-  formsTables: 'Forms & Tables',
-  chartsMisc: 'Charts & Misc'
-}
+  dashboards: "Dashboards",
+  appsPages: "Apps & Pages",
+  userInterface: "User Interface",
+  formsTables: "Forms & Tables",
+  chartsMisc: "Charts & Misc",
+};
 
 // ** Styled Autocomplete component
 const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
-  '& fieldset': {
-    border: 0
+  "& fieldset": {
+    border: 0,
   },
-  '& + .MuiAutocomplete-popper': {
-    '& .MuiAutocomplete-listbox': {
+  "& + .MuiAutocomplete-popper": {
+    "& .MuiAutocomplete-listbox": {
       paddingTop: 0,
-      height: '100%',
-      maxHeight: 'inherit',
-      '& .MuiListSubheader-root': {
+      height: "100%",
+      maxHeight: "inherit",
+      "& .MuiListSubheader-root": {
         top: 0,
         fontWeight: 400,
-        lineHeight: '15px',
-        fontSize: '0.75rem',
-        letterSpacing: '1px',
-        color: theme.palette.text.disabled
-      }
+        lineHeight: "15px",
+        fontSize: "0.75rem",
+        letterSpacing: "1px",
+        color: theme.palette.text.disabled,
+      },
     },
-    '& .MuiAutocomplete-paper': {
+    "& .MuiAutocomplete-paper": {
       border: 0,
       marginTop: 0,
-      height: '100%',
+      height: "100%",
       borderRadius: 0,
-      boxShadow: 'none'
+      boxShadow: "none",
     },
-    '& .MuiListItem-root.suggestion': {
+    "& .MuiListItem-root.suggestion": {
       padding: 0,
-      '& .MuiListItemSecondaryAction-root': {
-        display: 'flex'
+      "& .MuiListItemSecondaryAction-root": {
+        display: "flex",
       },
-      '&.Mui-focused.Mui-focusVisible, &:hover': {
-        backgroundColor: theme.palette.action.hover
+      "&.Mui-focused.Mui-focusVisible, &:hover": {
+        backgroundColor: theme.palette.action.hover,
       },
-      '& .MuiListItemButton-root: hover': {
-        backgroundColor: 'transparent'
+      "& .MuiListItemButton-root: hover": {
+        backgroundColor: "transparent",
       },
-      '&:not(:hover)': {
-        '& .MuiListItemSecondaryAction-root': {
-          display: 'none'
+      "&:not(:hover)": {
+        "& .MuiListItemSecondaryAction-root": {
+          display: "none",
         },
-        '&.Mui-focused, &.Mui-focused.Mui-focusVisible:not(:hover)': {
-          '& .MuiListItemSecondaryAction-root': {
-            display: 'flex'
-          }
+        "&.Mui-focused, &.Mui-focused.Mui-focusVisible:not(:hover)": {
+          "& .MuiListItemSecondaryAction-root": {
+            display: "flex",
+          },
         },
-        [theme.breakpoints.down('sm')]: {
-          '&.Mui-focused:not(.Mui-focusVisible) .MuiListItemSecondaryAction-root': {
-            display: 'none'
-          }
-        }
-      }
+        [theme.breakpoints.down("sm")]: {
+          "&.Mui-focused:not(.Mui-focusVisible) .MuiListItemSecondaryAction-root":
+            {
+              display: "none",
+            },
+        },
+      },
     },
-    '& .MuiAutocomplete-noOptions': {
-      display: 'grid',
-      minHeight: '100%',
-      alignItems: 'center',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      padding: theme.spacing(10)
-    }
-  }
-}))
+    "& .MuiAutocomplete-noOptions": {
+      display: "grid",
+      minHeight: "100%",
+      alignItems: "center",
+      flexDirection: "column",
+      justifyContent: "center",
+      padding: theme.spacing(10),
+    },
+  },
+}));
 
 // ** Styled Dialog component
 const Dialog = styled(MuiDialog)({
-  '& .MuiBackdrop-root': {
-    backdropFilter: 'blur(4px)'
+  "& .MuiBackdrop-root": {
+    backdropFilter: "blur(4px)",
   },
-  '& .MuiDialog-paper': {
-    overflow: 'hidden',
-    '&:not(.MuiDialog-paperFullScreen)': {
-      height: '100%',
-      maxHeight: 550
-    }
-  }
-})
+  "& .MuiDialog-paper": {
+    overflow: "hidden",
+    "&:not(.MuiDialog-paperFullScreen)": {
+      height: "100%",
+      maxHeight: 550,
+    },
+  },
+});
 
 const NoResult = ({ value, setOpenDialog }) => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}>
-      <Box sx={{ mb: 2.5, color: 'text.primary' }}>
-        <Icon icon='mdi:file-remove-outline' fontSize='5rem' />
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <Box sx={{ mb: 2.5, color: "text.primary" }}>
+        <Icon icon="mdi:file-remove-outline" fontSize="5rem" />
       </Box>
-      <Typography variant='h6' sx={{ mb: 11.5, wordWrap: 'break-word' }}>
-        No results for{' '}
-        <Typography variant='h6' component='span' sx={{ wordWrap: 'break-word' }}>
+      <Typography variant="h6" sx={{ mb: 11.5, wordWrap: "break-word" }}>
+        No results for{" "}
+        <Typography
+          variant="h6"
+          component="span"
+          sx={{ wordWrap: "break-word" }}
+        >
           {`"${value}"`}
         </Typography>
       </Typography>
 
-      <Typography variant='body2' sx={{ mb: 2.5, color: 'text.disabled' }}>
+      <Typography variant="body2" sx={{ mb: 2.5, color: "text.disabled" }}>
         Try searching for
       </Typography>
       <List sx={{ py: 0 }}>
-        <ListItem sx={{ py: 2 }} disablePadding onClick={() => setOpenDialog(false)}>
-          <Link passHref href='/dashboards/ecommerce'>
+        <ListItem
+          sx={{ py: 2 }}
+          disablePadding
+          onClick={() => setOpenDialog(false)}
+        >
+          <Link passHref href="/dashboards/ecommerce">
             <Box
-              component='a'
+              component="a"
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-                '&:hover > *': { color: 'primary.main' }
+                display: "flex",
+                alignItems: "center",
+                textDecoration: "none",
+                "&:hover > *": { color: "primary.main" },
               }}
             >
-              <Box sx={{ mr: 2.5, display: 'flex', color: 'text.primary' }}>
-                <Icon icon='bx:cart' fontSize={20} />
+              <Box sx={{ mr: 2.5, display: "flex", color: "text.primary" }}>
+                <Icon icon="bx:cart" fontSize={20} />
               </Box>
-              <Typography variant='body2' sx={{ color: 'text.primary' }}>
+              <Typography variant="body2" sx={{ color: "text.primary" }}>
                 eCommerce Dashboard
               </Typography>
             </Box>
           </Link>
         </ListItem>
-        <ListItem sx={{ py: 2 }} disablePadding onClick={() => setOpenDialog(false)}>
-          <Link passHref href='/pages/user-profile/profile'>
+        <ListItem
+          sx={{ py: 2 }}
+          disablePadding
+          onClick={() => setOpenDialog(false)}
+        >
+          <Link passHref href="/pages/user-profile/profile">
             <Box
-              component='a'
+              component="a"
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-                '&:hover > *': { color: 'primary.main' }
+                display: "flex",
+                alignItems: "center",
+                textDecoration: "none",
+                "&:hover > *": { color: "primary.main" },
               }}
             >
-              <Box sx={{ mr: 2.5, display: 'flex', color: 'text.primary' }}>
-                <Icon icon='bx:user' fontSize={20} />
+              <Box sx={{ mr: 2.5, display: "flex", color: "text.primary" }}>
+                <Icon icon="bx:user" fontSize={20} />
               </Box>
-              <Typography variant='body2' sx={{ color: 'text.primary' }}>
+              <Typography variant="body2" sx={{ color: "text.primary" }}>
                 User Profile
               </Typography>
             </Box>
           </Link>
         </ListItem>
-        <ListItem sx={{ py: 2 }} disablePadding onClick={() => setOpenDialog(false)}>
-          <Link passHref href='/pages/account-settings/account'>
+        <ListItem
+          sx={{ py: 2 }}
+          disablePadding
+          onClick={() => setOpenDialog(false)}
+        >
+          <Link passHref href="/pages/account-settings/account">
             <Box
-              component='a'
+              component="a"
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-                '&:hover > *': { color: 'primary.main' }
+                display: "flex",
+                alignItems: "center",
+                textDecoration: "none",
+                "&:hover > *": { color: "primary.main" },
               }}
             >
-              <Box sx={{ mr: 2.5, display: 'flex', color: 'text.primary' }}>
-                <Icon icon='mdi:account-cog-outline' fontSize={20} />
+              <Box sx={{ mr: 2.5, display: "flex", color: "text.primary" }}>
+                <Icon icon="mdi:account-cog-outline" fontSize={20} />
               </Box>
-              <Typography variant='body2' sx={{ color: 'text.primary' }}>
+              <Typography variant="body2" sx={{ color: "text.primary" }}>
                 Account Settings
               </Typography>
             </Box>
@@ -298,15 +322,19 @@ const NoResult = ({ value, setOpenDialog }) => {
         </ListItem>
       </List>
     </Box>
-  )
-}
+  );
+};
 
 const DefaultSuggestions = ({ setOpenDialog }) => {
   return (
     <Grid container spacing={6} sx={{ ml: 0 }}>
       {defaultSuggestionsData.map((item, index) => (
         <Grid item xs={12} sm={6} key={index}>
-          <Typography component='p' variant='overline' sx={{ lineHeight: 1.25, color: 'text.disabled' }}>
+          <Typography
+            component="p"
+            variant="overline"
+            sx={{ lineHeight: 1.25, color: "text.disabled" }}
+          >
             {item.category}
           </Typography>
           <List sx={{ py: 2.5 }}>
@@ -314,19 +342,19 @@ const DefaultSuggestions = ({ setOpenDialog }) => {
               <ListItem key={index2} sx={{ py: 2 }} disablePadding>
                 <Link passHref href={suggestionItem.link}>
                   <Box
-                    component='a'
+                    component="a"
                     onClick={() => setOpenDialog(false)}
                     sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      '& svg': { mr: 2.5 },
-                      color: 'text.primary',
-                      textDecoration: 'none',
-                      '&:hover > *': { color: 'primary.main' }
+                      display: "flex",
+                      alignItems: "center",
+                      "& svg": { mr: 2.5 },
+                      color: "text.primary",
+                      textDecoration: "none",
+                      "&:hover > *": { color: "primary.main" },
                     }}
                   >
                     <Icon icon={suggestionItem.icon} fontSize={20} />
-                    <Typography variant='body2' sx={{ color: 'text.primary' }}>
+                    <Typography variant="body2" sx={{ color: "text.primary" }}>
                       {suggestionItem.suggestion}
                     </Typography>
                   </Box>
@@ -337,22 +365,22 @@ const DefaultSuggestions = ({ setOpenDialog }) => {
         </Grid>
       ))}
     </Grid>
-  )
-}
+  );
+};
 
 const AutocompleteComponent = ({ hidden, settings }) => {
   // ** States
-  const [isMounted, setIsMounted] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
-  const [openDialog, setOpenDialog] = useState(false)
-  const [options, setOptions] = useState([])
+  const [isMounted, setIsMounted] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [options, setOptions] = useState([]);
 
   // ** Hooks & Vars
-  const theme = useTheme()
-  const router = useRouter()
-  const { layout } = settings
-  const wrapper = useRef(null)
-  const fullScreenDialog = useMediaQuery(theme.breakpoints.down('sm'))
+  const theme = useTheme();
+  const router = useRouter();
+  const { layout } = settings;
+  const wrapper = useRef(null);
+  const fullScreenDialog = useMediaQuery(theme.breakpoints.down("sm"));
 
   // Get all data using API
   useEffect(() => {
@@ -367,72 +395,104 @@ const AutocompleteComponent = ({ hidden, settings }) => {
     //       setOptions([])
     //     }
     //   })
-  }, [searchValue])
+  }, [searchValue]);
   useEffect(() => {
     if (!openDialog) {
-      setSearchValue('')
+      setSearchValue("");
     }
-  }, [openDialog])
+  }, [openDialog]);
   useEffect(() => {
-    setIsMounted(true)
+    setIsMounted(true);
 
-    return () => setIsMounted(false)
-  }, [])
+    return () => setIsMounted(false);
+  }, []);
 
   // Handle click event on a list item in search result
-  const handleOptionClick = obj => {
-    setSearchValue('')
-    setOpenDialog(false)
+  const handleOptionClick = (obj) => {
+    setSearchValue("");
+    setOpenDialog(false);
     if (obj.url) {
-      router.push(obj.url)
+      router.push(obj.url);
     }
-  }
+  };
 
   // Handle ESC & shortcut keys keydown events
   const handleKeydown = useCallback(
-    event => {
+    (event) => {
       // ** Shortcut keys to open searchbox (Ctrl + /)
       if (!openDialog && event.ctrlKey && event.which === 191) {
-        setOpenDialog(true)
+        setOpenDialog(true);
       }
     },
     [openDialog]
-  )
+  );
 
   // Handle shortcut keys keyup events
   const handleKeyUp = useCallback(
-    event => {
+    (event) => {
       // ** ESC key to close searchbox
       if (openDialog && event.keyCode === 27) {
-        setOpenDialog(false)
+        setOpenDialog(false);
       }
     },
     [openDialog]
-  )
+  );
   useEffect(() => {
-    document.addEventListener('keydown', handleKeydown)
-    document.addEventListener('keyup', handleKeyUp)
+    document.addEventListener("keydown", handleKeydown);
+    document.addEventListener("keyup", handleKeyUp);
 
     return () => {
-      document.removeEventListener('keydown', handleKeydown)
-      document.removeEventListener('keyup', handleKeyUp)
-    }
-  }, [handleKeyUp, handleKeydown])
+      document.removeEventListener("keydown", handleKeydown);
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [handleKeyUp, handleKeydown]);
   if (!isMounted) {
-    return null
+    return null;
   } else {
     return (
       <Box
         ref={wrapper}
         onClick={() => !openDialog && setOpenDialog(true)}
-        sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}
+        sx={{
+          display: "flex",
+          cursor: "pointer",
+          alignItems: "center",
+          width: "100%",
+        }}
       >
-        <IconButton color='inherit' sx={!hidden && layout === 'vertical' ? { mr: 1, ml: -2.75 } : {}}>
+       <IconButton color='inherit' sx={!hidden && layout === 'vertical' ? { mr: 1, ml: -2.75 } : {}}>
           <Icon icon='bx:search' />
-        </IconButton>
-        {!hidden && layout === 'vertical' ? (
-          <Typography sx={{ userSelect: 'none', color: 'text.disabled' }}>Search (Ctrl+/)</Typography>
-        ) : null}
+        </IconButton> 
+        {/* <TextField
+          fullWidth
+          size="small"
+          value={searchValue}
+          onChange={(event) => setSearchValue(event.target.value)}
+          inputRef={(input) => {
+            if (input) {
+              if (openDialog) {
+                input.focus();
+              } else {
+                input.blur();
+              }
+            }
+          }}
+          InputProps={{
+            sx: {
+              p: `${theme.spacing(3.75, 6)} !important`,
+              "&.Mui-focused": { boxShadow: "none !important" },
+              "&.css-1v11p35-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": { border:  "none !important"},
+            },
+            startAdornment: (
+              <InputAdornment position="start" sx={{ color: "text.primary" }}>
+                <Icon icon="bx:search" />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ mr: 1, ml: -2.75 }}
+        /> */}
+        {/* <Typography sx={{ userSelect: 'none', color: 'text.disabled' }}>Search (Ctrl+/)</Typography> */}
+
         {openDialog && (
           <Dialog fullWidth open={openDialog} fullScreen={fullScreenDialog} onClose={() => setOpenDialog(false)}>
             <Box sx={{ top: 0, width: '100%', position: 'sticky' }}>
@@ -556,8 +616,8 @@ const AutocompleteComponent = ({ hidden, settings }) => {
           </Dialog>
         )}
       </Box>
-    )
+    );
   }
-}
+};
 
-export default AutocompleteComponent
+export default AutocompleteComponent;

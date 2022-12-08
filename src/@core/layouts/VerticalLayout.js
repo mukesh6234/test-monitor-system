@@ -80,8 +80,8 @@ const VerticalLayout = (props) => {
   return (
     <>
       <VerticalLayoutWrapper className="layout-wrapper">
-        {navHidden &&
-        !(navHidden && settings.lastLayout === "horizontal") ? null : (
+        {/* {navHidden &&
+        !(navHidden && settings.lastLayout === "horizontal") ? null : ( */}
           <Navigation
             navWidth={navWidth}
             navVisible={navVisible}
@@ -99,7 +99,7 @@ const VerticalLayout = (props) => {
             beforeNavMenuContent={verticalLayoutProps.navMenu.beforeContent}
             {...props}
           />
-        )}
+        {/* )} */}
         <MainContentWrapper
           className="layout-content-wrapper"
           sx={{ ...(contentHeightFixed && { maxHeight: "100vh" }) }}
@@ -152,7 +152,7 @@ const VerticalLayout = (props) => {
         </MainContentWrapper>
       </VerticalLayoutWrapper>
 
-      {disableCustomizer || hidden ? null : <Customizer />}
+      {/* {disableCustomizer || hidden ? null : <Customizer />} */}
     </>
   );
 };

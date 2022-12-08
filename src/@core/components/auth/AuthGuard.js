@@ -5,12 +5,14 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 // ** Hooks Import
-import { useAuth } from '../../../hooks/useAuth'
+import { useAuth } from "../../../hooks/useAuth";
+import authConfig from "configs/auth"
 
 const AuthGuard = props => {
   const { children, fallback } = props
-  const auth = useAuth()
+  const auth = useAuth();
   const router = useRouter()
+  
   useEffect(
     () => {
       if (!router.isReady) {
@@ -32,8 +34,10 @@ const AuthGuard = props => {
     [router.route]
   )
   if (auth.loading || auth.user === null) {
-  
-
+    router.replace("/login");
+    window.localStorage.removeItem("userData");
+    window.localStorage.removeItem(authConfig.storageTokenKeyName);
+console.log("33333333",auth);
     return fallback
   }
 

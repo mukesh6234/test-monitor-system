@@ -33,9 +33,6 @@ const UserLayout = ({ children, contentHeightFixed }) => {
    */
 
   const hidden = useMediaQuery((theme) => theme.breakpoints.down("lg"));
-  if (hidden && settings.layout === "horizontal") {
-    settings.layout = "vertical";
-  }
 
   return (
     <Layout
@@ -56,7 +53,7 @@ const UserLayout = ({ children, contentHeightFixed }) => {
               hidden={hidden}
               settings={settings}
               saveSettings={saveSettings}
-              toggleNavVisibility={props.toggleNavVisibility}
+              // toggleNavVisibility={props.toggleNavVisibility}
             />
           ),
         },

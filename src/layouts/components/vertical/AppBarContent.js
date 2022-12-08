@@ -1,9 +1,11 @@
 // ** MUI Imports
+import React ,{useState,useEffect} from 'react';
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 
 // ** Icon Imports
 import Icon from "../../../@core/components/icon";
+import TextField from "@mui/material/TextField";
 
 // ** Components
 import Autocomplete from "../../../layouts/components/Autocomplete";
@@ -13,11 +15,17 @@ import UserDropdown from "../../../@core/layouts/components/shared-components/Us
 
 
 
+
 const AppBarContent = (props) => {
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props;
-  console.log(props, "111111111111111");
-
+  const [searchValue, setSearchValue] = useState("");
+  useEffect(() => {
+    setSearchValue("");
+  }, [path]);
+  const handleSearchvalue = (e) => {
+    setSearchValue(e.target.value);
+  };
   return (
     <Box
       sx={{
@@ -40,7 +48,17 @@ const AppBarContent = (props) => {
             <Icon icon="bx:menu" />
           </IconButton>
         ) : null}
-        <Autocomplete hidden={hidden} settings={settings} />
+        {/* <Autocomplete hidden={hidden} settings={settings} /> */}
+        <IconButton color='inherit' sx={!hidden ? { mr: 1, ml: -2.75 } : {}}>
+          <Icon icon='bx:search' />
+        </IconButton> 
+        <TextField
+                className="search"
+                placeholder="Search..."
+                value={searchValue}
+                autoComplete="off"
+                onChange={handleSearchvalue}
+              />
       </Box>
       <Box
         className="actions-right"
