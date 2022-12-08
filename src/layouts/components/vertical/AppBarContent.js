@@ -22,7 +22,7 @@ const AppBarContent = (props) => {
   const [searchValue, setSearchValue] = useState("");
   useEffect(() => {
     setSearchValue("");
-  }, [path]);
+  }, []);
   const handleSearchvalue = (e) => {
     setSearchValue(e.target.value);
   };
