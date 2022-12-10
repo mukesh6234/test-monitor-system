@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
@@ -30,11 +30,11 @@
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.0.1",
     "moment": "^2.29.4",
-    "next": "^13.0.5",
+    "next": "^13.0.6",
     "nprogress": "^0.2.0",
     "prismjs": "^1.29.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.39.5",
     "react-hot-toast": "^2.4.0",
     "react-i18next": "^12.0.0",
