@@ -8,33 +8,6 @@ cache:
     - node_modules/
     - build/
 
-.build_script: &build_script
-  image: docker:git
-  stage: build
-  cache:
-    key: test-monitor-ui${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
-    policy: pull
-  before_script:
-    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/kato-zubair/deploy-configs.git deploy-configs
-    - cp ./deploy-configs/sayarti/ui/$SITE/config.json ./src/config.json
-    - rm -rf deploy-configs
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - export LATEST_TAG=${CI_COMMIT_REF_SLUG}_${CI_ENVIRONMENT_NAME}_latest ## image pushed for caching
-    - export DEPLOY_TAG=${CI_COMMIT_REF_SLUG}_${CI_ENVIRONMENT_NAME}_${CI_COMMIT_SHORT_SHA} ## new image tag for deployment
-  script:
-    - unset CI
-    - docker pull $CI_REGISTRY_IMAGE:$LATEST_TAG || true
-    - >
-      docker build
-      --cache-from $CI_REGISTRY_IMAGE:$LATEST_TAG
-      --tag $CI_REGISTRY_IMAGE:$DEPLOY_TAG
-      --tag $CI_REGISTRY_IMAGE:$LATEST_TAG
-      -f "Dockerfile" .
-    - docker push $CI_REGISTRY_IMAGE:$DEPLOY_TAG
-    - docker push $CI_REGISTRY_IMAGE:$LATEST_TAG
-
 .deploy-stage: &deploy-stage
   image: katomaran/node-alphine:fb-tools
   cache:
@@ -59,7 +32,7 @@ stages:
 
 eslint:
   stage: lint
-  image: katomaran/node-alphine:eslint
+  image: katomaran/node-alphine:eslint-16
   script:
     - npm run lint
   cache:
