@@ -6,10 +6,9 @@ services:
 cache:
   paths:
     - node_modules/
-    - build/
 
 .deploy-stage: &deploy-stage
-  image: katomaran/node-alphine:fb-tools
+  image: katomaran/node-alphine:fb-tools-16
   cache:
     key: test-monitor-ui${CI_COMMIT_REF_SLUG}
     paths:
@@ -42,7 +41,6 @@ eslint:
   allow_failure: true
   only:
     - develop
-    - release
 
 install:
   stage: npm-install
