@@ -5,6 +5,8 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import { getInitials } from "@core/utils/get-initials";
 import { IconButton } from "@mui/material";
+import { Tooltip, Zoom } from "@mui/material";
+import { SliceName, titleize } from "components/helper";
 
 const renderCreate = (row) => {
   //   if (row.image .length) {
@@ -21,8 +23,8 @@ const renderCreate = (row) => {
       {getInitials(row.created_by.name ? row.created_by.name : "Katomaran")}
     </CustomAvatar>
   );
-  //   }
 };
+
 const renderUpdate = (row) => {
   //   if (row.image .length) {
   //     return (
@@ -38,8 +40,8 @@ const renderUpdate = (row) => {
       {getInitials(row.updated_by.name ? row.updated_by.name : "Katomaran")}
     </CustomAvatar>
   );
-  //   }
 };
+
 const StyledLink = styled("a")(({ theme }) => ({
   fontWeight: 600,
   fontSize: "1rem",
@@ -50,6 +52,7 @@ const StyledLink = styled("a")(({ theme }) => ({
     color: theme.palette.primary.main,
   },
 }));
+
 export const testCaseColumns = (testcase, router, handleView) => {
   return [
     {
@@ -61,9 +64,23 @@ export const testCaseColumns = (testcase, router, handleView) => {
       field: "title",
       renderCell: ({ row }) => {
         return (
-          <Typography noWrap sx={{ color: "text.secondary" }}>
-            {row.title}
-          </Typography>
+          <Tooltip
+            arrow
+            title={row.title}
+            placement="top"
+            TransitionComponent={Zoom}
+          >
+            <Typography
+              noWrap
+              sx={{
+                fontWeight: 400,
+                color: "text.secondary",
+                textTransform: "capitalize",
+              }}
+            >
+              {SliceName(titleize(row.title))}
+            </Typography>
+          </Tooltip>
         );
       },
     },
@@ -159,16 +176,23 @@ export const testCaseColumns = (testcase, router, handleView) => {
       headerName: "Module",
       renderCell: ({ row }) => {
         return (
-          <Typography
-            noWrap
-            sx={{
-              fontWeight: 400,
-              color: "text.secondary",
-              textTransform: "capitalize",
-            }}
+          <Tooltip
+            arrow
+            title={row.section ? row.section.title : "-"}
+            placement="top"
+            TransitionComponent={Zoom}
           >
-            {row.section ? row.section.title : "-"}
-          </Typography>
+            <Typography
+              noWrap
+              sx={{
+                fontWeight: 400,
+                color: "text.secondary",
+                textTransform: "capitalize",
+              }}
+            >
+              {SliceName(titleize(row.section ? row.section.title : "-"))}
+            </Typography>
+          </Tooltip>
         );
       },
     },

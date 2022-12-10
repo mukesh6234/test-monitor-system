@@ -40,6 +40,7 @@ function AddTestCases() {
   const auth = useAuth();
   const router = useRouter();
   const { addtestcases } = router.query;
+
   const {
     control,
     setError,
@@ -50,6 +51,7 @@ function AddTestCases() {
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
+
   const { fields, append, remove } = useFieldArray({
     name: "testing_steps",
     control,
@@ -63,6 +65,7 @@ function AddTestCases() {
       );
     });
   }, []);
+
   const onSubmit = (data) => {
     let payload = {
       test_case: {
@@ -83,16 +86,11 @@ function AddTestCases() {
       }
     );
   };
-  // const handleTestStep = (event, index) => {
-  //   let testMethod = [...testingInputField];
-  //   testMethod[index]["steps"] = event.target.value;
-  //   setTestingSteps(testMethod);
-  // };
+
   const handleSteps = () => {
     append({ steps: "" });
   };
 
-  console.log(errors, "errors");
   return (
     <>
       <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
@@ -285,4 +283,5 @@ function AddTestCases() {
     </>
   );
 }
+
 export default AddTestCases;

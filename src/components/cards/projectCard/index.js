@@ -1,16 +1,14 @@
-import Image from "next/image";
 import React from "react";
-// import Icon from "@core/components/icon";
-import testPlanIcon from "../../../../public/images/pages/test-plan-icon.png";
-import moduleIcon from "../../../../public/images/pages/Modules-icon.png";
 import moment from "moment";
 import { SliceName, titleize } from "components/helper";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import { useRouter } from "next/router";
 import MuiDivider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
 import Link from "next/link";
+import Tooltip from "@mui/material/Tooltip";
+import { Zoom } from "@mui/material";
+import Icon from "@core/components/icon";
 
 const Divider = styled(MuiDivider)(({ theme }) => ({
   margin: 0,
@@ -20,12 +18,25 @@ const Divider = styled(MuiDivider)(({ theme }) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
 }));
+
+const StyledLink = styled("a")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  cursor: "pointer",
+  textDecoration: "none",
+  color: theme.palette.text.secondary,
+  "&:hover": {
+    color: theme.palette.primary.main,
+  },
+  "&:active": {
+    textDecoration: "none",
+  },
+}));
+
 function ProjectCard(props) {
-  const router = useRouter();
   return (
     <Card style={{ padding: 10, display: "grid", gridAutoRows: "auto" }}>
-      {/* <div className="card-layout"> */}
-      {/* <div onClick={() =>router.push("/")}> */}
       <div
         onClick={() => props.handleEdit(props.id)}
         style={{ cursor: "pointer" }}
@@ -38,8 +49,17 @@ function ProjectCard(props) {
           }}
         >
           <div style={{ flex: 1 }}>
-            <Typography style={{fontSize:"1rem"}}>{SliceName(titleize(props.title))}</Typography>
-
+            <Tooltip
+              arrow
+              title={props.title}
+              placement="top"
+              TransitionComponent={Zoom}
+              followCursor
+            >
+              <Typography style={{ fontSize: "1rem" }}>
+                {SliceName(titleize(props.title))}
+              </Typography>
+            </Tooltip>
             <Typography variant="caption">
               {props.updated_by ? (
                 <>
@@ -88,7 +108,6 @@ function ProjectCard(props) {
           </div>
         </div>
       </div>
-      {/* </div> */}
       <Divider />
       <div style={{ display: "flex" }}>
         <Link
@@ -99,14 +118,15 @@ function ProjectCard(props) {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            padding: 10,
+            padding: 5,
           }}
         >
-          <span style={{ marginRight: 10 }}>
-            {" "}
-            <Image src={moduleIcon} width={20} height={20} alt="test-plans" />
-          </span>
-          Modules
+          <StyledLink>
+            <span style={{ marginRight: 5 }}>
+              <Icon icon="la:cubes" fontSize={24} />
+            </span>
+            Modules
+          </StyledLink>
         </Link>
         <Divider flexItem />
         <Link
@@ -120,14 +140,16 @@ function ProjectCard(props) {
             padding: 10,
           }}
         >
-          <span style={{ marginRight: 10 }}>
-            <Image src={testPlanIcon} width={20} height={20} alt="test-plans" />
-          </span>
-          Test Cases{" "}
+          <StyledLink>
+            <span style={{ marginRight: 5, textAlign: "center" }}>
+              <Icon icon="material-symbols:fact-check-outline" fontSize={24} />
+            </span>
+            Test Cases{" "}
+          </StyledLink>
         </Link>
       </div>
-      {/* </div> */}
     </Card>
   );
 }
+
 export default ProjectCard;

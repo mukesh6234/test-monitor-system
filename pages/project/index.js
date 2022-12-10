@@ -11,6 +11,7 @@ import {
 import { useAuth } from "hooks/useAuth";
 import ProjectCard from "components/cards/projectCard";
 import toast from "react-hot-toast";
+import { useSearch,useSearchUpdate } from "context/searchContext";
 
 export default function Project() {
   const [projects, setProjects] = useState("");
@@ -18,15 +19,26 @@ export default function Project() {
   const [title, setTitle] = useState("");
   const [data, setData] = useState("");
   const auth = useAuth();
+  const searchValue = useSearch();
+  const handleSearch = useSearchUpdate();
   let auth_token = auth.user.auth_token;
+  
+  useEffect(() => {
+    fetchProject();
+    handleSearch("");
+  console.log(searchValue,"searchValuesearchValue");
+
+  }, []);
 
   useEffect(() => {
     fetchProject();
-  }, []);
+  console.log(searchValue,"searchValuesearchValue");
+
+  }, [searchValue]);
 
   const fetchProject = async () => {
     if (auth.user.role_group) {
-      await fetchProjects(auth_token).then(({ data }) => {
+      await fetchProjects(auth_token,searchValue).then(({ data }) => {
         setProjects(data);
       });
     }
@@ -72,6 +84,7 @@ export default function Project() {
         console.error(err);
       });
   };
+
   const handleEdit = async (id) => {
     await showProject(auth_token, id).then(({ data }) => {
       setData(data);
@@ -79,11 +92,13 @@ export default function Project() {
       setFormOpen(!formOpen);
     });
   };
+
   const pageHeaderProps = {
     title: "Project",
     buttonName: "Add Project",
     setFormOpen,
   };
+
   const createFormProps = {
     formTitle: "Project Title",
     formDescription:

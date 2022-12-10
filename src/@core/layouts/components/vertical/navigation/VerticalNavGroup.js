@@ -26,14 +26,12 @@ import themeConfig from "../../../../../configs/themeConfig";
 // ** Custom Components Imports
 import VerticalNavItems from "./VerticalNavItems";
 import Translations from "layouts/components/Translations";
-// import CanViewNavGroup from 'layouts/components/acl/CanViewNavGroup'
 
 // ** Hook Import
 // import useBgColor from 'src/@core/hooks/useBgColor'
 
 // ** Util Imports
 import { hexToRGBA } from "@core/utils/hex-to-rgba";
-// import { hasActiveChild, removeChildren } from "../../../../utils";
 import UserIcon from "layouts/components/UserIcon";
 import CanViewNavGroup from "layouts/components/acl/CanViewNavGroup";
 import UseBgColor from "@core/hooks/useBgColor";
@@ -162,6 +160,7 @@ const VerticalNavGroup = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navHover]);
   const icon = parent && !item.icon ? themeConfig.navSubItemIcon : item.icon;
+  
   const menuGroupCollapsedStyles =
     navCollapsed && !navHover ? { opacity: 0 } : { opacity: 1 };
 

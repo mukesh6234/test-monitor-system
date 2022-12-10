@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import themeConfig from "configs/themeConfig";
 import BlankLayout from "@core/layouts/BlankLayout";
 import { useSettings } from "@core/hooks/useSettings";
-import loginImage from "../../public/images/pages/boy-with-phone.png";
+import forgetPasswordImage from "../../public/images/pages/girl-unlock-password.png";
 import Image from "next/image";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,6 +23,8 @@ import { forgotPassword } from "../api/authentication";
 import { FormControl } from "@mui/material";
 import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
+import katoIcon from "../../public/images/pages/kato-icon.png";
+
 
 // Styled Components
 const ForgotPasswordIllustration = styled("img")({
@@ -55,6 +57,7 @@ const LinkStyled = styled("a")(({ theme }) => ({
   justifyContent: "center",
   color: theme.palette.primary.main,
 }));
+
 const schema = yup.object().shape({
   email: yup.string().email().required(),
 });
@@ -62,14 +65,18 @@ const schema = yup.object().shape({
 const defaultValues = {
   email: "",
 };
+
 const ForgotPassword = () => {
   // ** Hooks
   const theme = useTheme();
   const { settings } = useSettings();
+
   const hidden = useMediaQuery(theme.breakpoints.down("lg"));
+
   const router = useRouter();
-  // ** Var
+
   const { skin } = settings;
+
   const {
     control,
     setError,
@@ -80,6 +87,7 @@ const ForgotPassword = () => {
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
+
   const onSubmit = (data) => {
     const { email } = data;
     let otpEmail = { user_name: email };
@@ -87,8 +95,6 @@ const ForgotPassword = () => {
       .then(({ message, data }) => {
         toast.success(message);
         router.push(`/verifyOTP/${data}`);
-        // setOtpAuth(data);
-        // setVerify(true);
       })
       .catch((err) => {
         setError("email", {
@@ -97,6 +103,7 @@ const ForgotPassword = () => {
         });
       });
   };
+
   return (
     <Box className="content-right">
       {!hidden ? (
@@ -107,22 +114,15 @@ const ForgotPassword = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            // position:"relative",
           }}
         >
-          {/* <ForgotPasswordIllustration
-            width={700}
-            // alt='forgot-password-illustration'
-            src={`../../public/images/pages/girl-unlock-password-${theme.palette.mode}.png`}
-          /> */}
           <Image
-            src={loginImage}
+            src={forgetPasswordImage}
             alt="forgot-password-illustration"
             placeholder="blur"
             width={700}
             style={{ height: "auto", maxWidth: "100%" }}
           />
-          {/* <Image src={BoyWithPhone}   alt="forgot-password-illustration" placeholder='blur' height={"100%"} width={700} style={{position:"absolute"}}/> */}
         </Box>
       ) : null}
       <RightWrapper
@@ -133,6 +133,7 @@ const ForgotPassword = () => {
       >
         <Box sx={{ mx: "auto", maxWidth: 400 }}>
           <Box sx={{ mb: 8, display: "flex", alignItems: "center" }}>
+            <Image src={katoIcon} width={22} height={32} alt="kato-logo" />
             <Typography
               variant="h5"
               sx={{
@@ -144,7 +145,7 @@ const ForgotPassword = () => {
                 fontSize: "1.75rem !important",
               }}
             >
-              {themeConfig.templateName}!
+              {themeConfig.templateName}
             </Typography>
           </Box>
           <Typography variant="h6" sx={{ mb: 1.5 }}>
@@ -192,7 +193,7 @@ const ForgotPassword = () => {
                 justifyContent: "center",
               }}
             >
-              <Link passHref href="/login">
+              <Link passHref href="/login" style={{ textDecoration: "none" }}>
                 <LinkStyled>
                   <Icon icon="bx:chevron-left" />
                   <span>Back to login</span>

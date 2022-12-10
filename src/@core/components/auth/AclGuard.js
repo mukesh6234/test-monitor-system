@@ -21,10 +21,9 @@ const AclGuard = props => {
   // ** Props
   const { aclAbilities, children, guestGuard } = props
   const [ability, setAbility] = useState(undefined)
-  // ** Hooks
   const auth = useAuth()
+  
   const router = useRouter()
-  console.log(props,"propsprops",router.route);
 
   // If guestGuard is true and user is not logged in or its an error page, render the page without checking access
   if (guestGuard || router.route === '/404' || router.route === '/500' || router.route === '/') {

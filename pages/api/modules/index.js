@@ -1,8 +1,8 @@
 import makeRequest from "../index";
 
-export function fetchModules(token, projectId) {
+export function fetchModules(token, search, projectId) {
   return makeRequest({
-    uri: `/api/v1/projects/${projectId}/sections`,
+    uri: `/api/v1/projects/${projectId}/sections?query=${search}`,
     method: "GET",
     authorization: token,
   });
@@ -17,7 +17,7 @@ export function createModule(token, projectId, requestBody) {
   });
 }
 
-export function updateModule(token, projectId, moduleId,requestBody) {
+export function updateModule(token, projectId, moduleId, requestBody) {
   return makeRequest({
     uri: `/api/v1/projects/${projectId}/sections/${moduleId}`,
     method: "PUT",
@@ -26,7 +26,7 @@ export function updateModule(token, projectId, moduleId,requestBody) {
   });
 }
 
-export function showModules(token, projectId,moduleId) {
+export function showModules(token, projectId, moduleId) {
   return makeRequest({
     uri: `/api/v1/projects/${projectId}/sections/${moduleId}`,
     method: "GET",

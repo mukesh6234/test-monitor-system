@@ -12,6 +12,7 @@ import Icon from "../../../../components/icon";
 
 // ** Configs
 import themeConfig from "../../../../../configs/themeConfig";
+import katoIcon from "../../../../../../public/images/pages/kato-icon.png";
 import Image from "next/image";
 
 // ** Styled Components
@@ -28,7 +29,7 @@ const MenuHeaderWrapper = styled(Box)(({ theme }) => ({
 
 const StyledLink = styled("a")({
   display: "flex",
-  justifyContent:"center",
+  justifyContent: "center",
   alignItems: "center",
   textDecoration: "none",
 });
@@ -51,6 +52,7 @@ const VerticalNavHeader = (props) => {
   // ** Hooks & Vars
   const theme = useTheme();
   const { mode, skin, direction, navCollapsed } = settings;
+  
   const menuCollapsedStyles =
     navCollapsed && !navHover ? { opacity: 0 } : { opacity: 1 };
 
@@ -106,9 +108,26 @@ const VerticalNavHeader = (props) => {
       {userNavMenuBranding ? (
         userNavMenuBranding(props)
       ) : (
-        <Link href="/" passHref>
+        <Link href="/" passHref style={{ textDecoration: "none" }}>
           <StyledLink>
-            <Image src={themeConfig.logo} width={180} height={35} alt="kato-logo"/>
+            <Image src={katoIcon} width={22} height={32} alt="kato-logo" />
+            <Typography
+              variant="h5"
+              sx={{
+                lineHeight: 1,
+                fontWeight: 700,
+                ...menuCollapsedStyles,
+                letterSpacing: "-0.45px",
+                fontSize: "1.5rem !important",
+                ...(navCollapsed && !navHover ? {} : { ml: 2 }),
+                transition: "opacity .35s ease-in-out, margin .35s ease-in-out",
+                ...(mode === "semi-dark" && {
+                  color: `rgba(${theme.palette.customColors.dark}, 0.87)`,
+                }),
+              }}
+            >
+              {themeConfig.templateName}
+            </Typography>
           </StyledLink>
         </Link>
       )}

@@ -83,12 +83,11 @@ const VerticalNavLink = ({
       return false
     }
   }
-console.log(item,"item");
+
   return (
     <CanViewNavLink navLink={item}>
       
       <ListItem
-        // disablePadding
         className='nav-link'
         disabled={item.disabled || false}
         sx={{

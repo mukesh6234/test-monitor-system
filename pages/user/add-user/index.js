@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Divider,
-  FormControl,
-  MenuItem,
-  Select,
-  Grid,
-} from "@mui/material";
+import { Divider, FormControl, MenuItem, Select, Grid } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,6 +29,7 @@ function AddUser() {
   const [roleGroup, setRoleGroup] = useState([]);
   const auth = useAuth();
   const router = useRouter();
+
   const {
     control,
     setError,
@@ -55,6 +50,7 @@ function AddUser() {
         console.log(err);
       });
   }, []);
+
   const onSubmit = (data) => {
     let payload = {
       user: {
@@ -166,7 +162,11 @@ function AddUser() {
                     value={value}
                   >
                     {roleGroup.map((role) => {
-                      return <MenuItem value={role.id}>{role.name}</MenuItem>;
+                      return (
+                        <MenuItem key={role.id} value={role.id}>
+                          {role.name}
+                        </MenuItem>
+                      );
                     })}
                   </Select>
                 )}
@@ -212,4 +212,5 @@ function AddUser() {
     </>
   );
 }
+
 export default AddUser;

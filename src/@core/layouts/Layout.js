@@ -7,7 +7,6 @@ import VerticalLayout from './VerticalLayout'
 const Layout = props => {
   // ** Props
   const { hidden, children, settings, saveSettings } = props
-  // ** Ref
   const isCollapsed = useRef(settings.navCollapsed)
   useEffect(() => {
     if (hidden) {

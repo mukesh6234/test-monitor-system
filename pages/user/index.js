@@ -4,10 +4,12 @@ import { userList } from "../api/User";
 import { useAuth } from "hooks/useAuth";
 import UserCard from "components/cards/userCard";
 import Grid from "@mui/material/Grid";
+import { useSearch } from "context/searchContext";
 
 function User() {
   const [userLists, setUserLists] = useState([]);
   const auth = useAuth();
+  const searchValue = useSearch();
 
   const pageHeaderProps = {
     title: "User",
@@ -18,10 +20,14 @@ function User() {
   };
 
   useEffect(() => {
-    userList(auth.user.auth_token).then(({ data }) => {
+    fetchUser();
+  }, [searchValue]);
+
+  const fetchUser = () => {
+    userList(auth.user.auth_token, searchValue).then(({ data }) => {
       setUserLists(data);
     });
-  }, []);
+  };
 
   return (
     <>
@@ -39,4 +45,5 @@ function User() {
     </>
   );
 }
+
 export default User;

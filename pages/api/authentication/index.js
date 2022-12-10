@@ -15,12 +15,12 @@ export const forgotPassword = (requestParams) => {
     body: JSON.stringify(requestParams),
   });
 };
+
 export const validateOTP = (token, requestParams) => {
   return makeRequest({
     uri: "/validate-otp",
     method: "PUT",
     body: JSON.stringify(requestParams),
-    // authorization: false,
     baseAuthorization: token,
   });
 };

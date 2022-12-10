@@ -3,10 +3,10 @@ import Button from "@mui/material/Button";
 import Icon from "@core/components/icon";
 import { Divider } from "@mui/material";
 import { useRouter } from "next/router";
-// import Typography from "@mui/material/Typography";
 
 function PageHeader(props) {
   const router = useRouter();
+
   return (
     <>
       <div
@@ -38,4 +38,5 @@ function PageHeader(props) {
     </>
   );
 }
+
 export default PageHeader;

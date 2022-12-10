@@ -36,8 +36,6 @@ const StyledBoxForShadow = styled(Box)(({ theme }) => ({
 const Navigation = props => {
   // ** Props
   const { hidden, settings, afterNavMenuContent, beforeNavMenuContent, navMenuContent: userNavMenuContent } = props
-console.log(props?.verticalNavItems,"bbbbbbb");
-  // ** States
   const [navHover, setNavHover] = useState(false)
   const [groupActive, setGroupActive] = useState([])
   const [currentActiveGroup, setCurrentActiveGroup] = useState([])
@@ -103,7 +101,7 @@ console.log(props?.verticalNavItems,"bbbbbbb");
     }
   }
   const ScrollWrapper = hidden ? Box : PerfectScrollbar
-console.log(groupActive,"groupActive",currentActiveGroup);
+
   return (
     <Drawer {...props} navHover={navHover} setNavHover={setNavHover}>
       <VerticalNavHeader {...props} navHover={navHover} />

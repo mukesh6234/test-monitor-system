@@ -28,13 +28,10 @@ const Home = () => {
     if (auth.user && auth.user.role_group) {
       console.log("11111111111",auth.user.role_group);
       const homeRoute = getHomeRoute(auth.user.role_group.name);
-
       router.replace(homeRoute);
-      // Redirect user to Home URL
     } else {
       console.log("11111111111");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <Spinner sx={{ height: "100%" }} />;

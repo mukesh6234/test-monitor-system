@@ -27,6 +27,8 @@ import Icon from "../../src/@core/components/icon";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import katoIcon from "../../public/images/pages/kato-icon.png";
+
 
 // ** Hooks
 // import { useAuth } from '../src/hooks/useAuth'
@@ -131,11 +133,7 @@ const LoginPage = () => {
             justifyContent: "center",
           }}
         >
-          {/* <LoginIllustration
-            width={700}
-            alt='login-illustration'
-            src={`../images/pages/girl-with-laptop-${theme.palette.mode}.png`}
-          /> */}
+       
           <Image
             src={loginImage}
             alt="login-illustration"
@@ -152,22 +150,25 @@ const LoginPage = () => {
         }}
       >
         <Box sx={{ mx: "auto", maxWidth: 400 }}>
-          <Box sx={{ mb: 8, display: "flex", alignItems: "center" }}>
+        <Box sx={{ mb: 8, display: 'flex', alignItems: 'center' }}>
+        <Image src={katoIcon} width={22} height={32} alt="kato-logo" />
             <Typography
-              variant="h5"
+              variant='h5'
               sx={{
                 ml: 2,
                 lineHeight: 1,
                 fontWeight: 700,
-                letterSpacing: "-0.45px",
-                textTransform: "lowercase",
-                fontSize: "1.75rem !important",
+                letterSpacing: '-0.45px',
+                textTransform: 'lowercase',
+                fontSize: '1.75rem !important'
               }}
             >
-              {themeConfig.templateName}!
+              {themeConfig.templateName}
             </Typography>
           </Box>
-
+          <Typography variant='h6' sx={{ mb: 1.5 }}>
+            Welcome to {themeConfig.projectName}! 👋🏻
+          </Typography>
           <Typography sx={{ mb: 6, color: "text.secondary" }}>
             Please sign-in to your account and start the adventure
           </Typography>

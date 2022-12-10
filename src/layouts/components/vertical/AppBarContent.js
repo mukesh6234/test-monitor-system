@@ -1,5 +1,5 @@
 // ** MUI Imports
-import React ,{useState,useEffect} from 'react';
+import React from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 
@@ -8,24 +8,16 @@ import Icon from "../../../@core/components/icon";
 import TextField from "@mui/material/TextField";
 
 // ** Components
-import Autocomplete from "../../../layouts/components/Autocomplete";
 import ModeToggler from "../../../@core/layouts/components/shared-components/ModeToggler";
 import UserDropdown from "../../../@core/layouts/components/shared-components/UserDropdown";
-
-
-
-
+import { useSearch, useSearchUpdate } from "context/searchContext";
 
 const AppBarContent = (props) => {
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props;
-  const [searchValue, setSearchValue] = useState("");
-  useEffect(() => {
-    setSearchValue("");
-  }, []);
-  const handleSearchvalue = (e) => {
-    setSearchValue(e.target.value);
-  };
+  const searchValue = useSearch();
+  const handleSearch = useSearchUpdate();
+
   return (
     <Box
       sx={{
@@ -48,23 +40,24 @@ const AppBarContent = (props) => {
             <Icon icon="bx:menu" />
           </IconButton>
         ) : null}
-        {/* <Autocomplete hidden={hidden} settings={settings} /> */}
-        <IconButton color='inherit' sx={!hidden ? { mr: 1, ml: -2.75 } : {}}>
-          <Icon icon='bx:search' />
-        </IconButton> 
+        <IconButton color="inherit" sx={!hidden ? { mr: 1, ml: -2.75 } : {}}>
+          <Icon icon="bx:search" />
+        </IconButton>
         <TextField
-                className="search"
-                placeholder="Search..."
-                value={searchValue}
-                autoComplete="off"
-                onChange={handleSearchvalue}
-              />
+          className="search"
+          placeholder="Search..."
+          value={searchValue}
+          autoComplete="off"
+          onChange={(e) => {
+            handleSearch(e.target.value);
+          }}
+        />
+          
       </Box>
       <Box
         className="actions-right"
         sx={{ display: "flex", alignItems: "center" }}
       >
-
         <ModeToggler settings={settings} saveSettings={saveSettings} />
         <UserDropdown settings={settings} />
       </Box>

@@ -1,8 +1,8 @@
 import makeRequest from "../index";
 
-export const fetchTestCases = (token, id) => {
+export const fetchTestCases = (token, search, id) => {
   return makeRequest({
-    uri: `/api/v1/projects/${id}/test_cases`,
+    uri: `/api/v1/projects/${id}/test_cases?query=${search}`,
     method: "GET",
     authorization: token,
   });
@@ -26,7 +26,7 @@ export function updateTestCase(token, projectId, testId, requestBody) {
   });
 }
 
-export function showTestCase(token, projectId,testId) {
+export function showTestCase(token, projectId, testId) {
   return makeRequest({
     uri: `/api/v1/projects/${projectId}/test_cases/${testId}`,
     method: "GET",

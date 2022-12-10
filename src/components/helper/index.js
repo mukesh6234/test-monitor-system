@@ -16,12 +16,13 @@ export function titleize(str) {
     .join(" ");
 }
 
-export function SliceName(str, size) {
+export function SliceName(str ) {
   if (!str) {
     return "Empty";
   }
   if (str.length > 23) {
-    return str.slice(0, size) + "....";
+    return str.slice(0, 23) + "....";
   }
+  
   return str;
 }

@@ -1,6 +1,5 @@
 import React from "react";
-// import Icon from "@core/components/icon";
-import { titleize } from "components/helper";
+import { SliceName, titleize } from "components/helper";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
@@ -9,6 +8,7 @@ import { styled } from "@mui/material/styles";
 import Link from "next/link";
 import Icon from "@core/components/icon";
 import CustomChip from "@core/components/mui/chip";
+import { Tooltip, Zoom } from "@mui/material";
 
 const Divider = styled(MuiDivider)(({ theme }) => ({
   margin: 0,
@@ -18,6 +18,7 @@ const Divider = styled(MuiDivider)(({ theme }) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
 }));
+
 const StatusColor = (value) => {
   const colors = {
     started: "primary",
@@ -29,12 +30,26 @@ const StatusColor = (value) => {
   return colors[value];
 };
 
+const StyledLink = styled("a")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  cursor: "pointer",
+  textDecoration: "none",
+  color: theme.palette.text.secondary,
+  "&:hover": {
+    color: theme.palette.primary.main,
+  },
+  "&:active": {
+    textDecoration: "none",
+  },
+}));
+
 function ModuleCard(props) {
   const router = useRouter();
+
   return (
     <Card style={{ padding: 10 }}>
-      {/* <div className="card-layout"> */}
-      {/* <div onClick={() =>router.push("/")}> */}
       <div
         style={{
           display: "flex",
@@ -43,7 +58,17 @@ function ModuleCard(props) {
         }}
       >
         <div>
-          <Typography variant="h6">{titleize(props.title)}</Typography>
+          <Tooltip
+            arrow
+            title={props.title}
+            placement="top"
+            TransitionComponent={Zoom}
+            followCursor
+          >
+            <Typography variant="h6">
+              {SliceName(titleize(props.title))}
+            </Typography>
+          </Tooltip>
           <Typography variant="caption">
             {props.updated_by?.name ? (
               <>
@@ -91,7 +116,6 @@ function ModuleCard(props) {
           <Typography sx={{ fontWeight: 500 }}>Test Cases</Typography>
         </div>
       </div>
-      {/* </div> */}
       <Divider />
       <div style={{ display: "flex" }}>
         <Link
@@ -104,11 +128,13 @@ function ModuleCard(props) {
             alignItems: "center",
           }}
         >
-          <span style={{ marginRight: 5, marginTop: 10 }}>
-            {" "}
-            <Icon icon="bx:pencil" fontSize={20} />
-          </span>
-          Edit
+          <StyledLink>
+            <span style={{ marginRight: 5, }}>
+              {" "}
+              <Icon icon="bx:pencil" fontSize={20} />
+            </span>
+            Edit
+          </StyledLink>
         </Link>
         <Divider flexItem />
         <div
@@ -117,20 +143,21 @@ function ModuleCard(props) {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            padding: 10,
-            cursor:"pointer"
+            padding: 5,
+            cursor: "pointer",
           }}
           onClick={() => props.handleView(props.id)}
         >
-          {" "}
-          <span style={{ marginRight: 10 }}>
-            <Icon icon="bx:show" fontSize={20} />
-          </span>
-          View
+          <StyledLink>
+            <span style={{ marginRight: 5 }}>
+              <Icon icon="bx:show" fontSize={20} />
+            </span>
+            View
+          </StyledLink>
         </div>
       </div>
-      {/* </div> */}
     </Card>
   );
 }
+
 export default ModuleCard;

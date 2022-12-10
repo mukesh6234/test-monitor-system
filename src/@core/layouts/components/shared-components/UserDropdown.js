@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import Badge from "@mui/material/Badge";
-import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
@@ -18,6 +17,11 @@ import { useAuth } from "hooks/useAuth";
 // ** Icon Imports
 import Icon from "../../../components/icon";
 import { titleize } from "components/helper";
+import Image from "next/image";
+import testerImage from "../../../../../public/images/pages/tester.png";
+import adminImage from "../../../../../public/images/pages/admin.png";
+import developerImage from "../../../../../public/images/pages/developer.png";
+import CustomAvatar from "@core/components/mui/avatar";
 
 // ** Context
 
@@ -57,6 +61,40 @@ const UserDropdown = (props) => {
     setAnchorEl(null);
   };
 
+  const renderIcon = (props) => {
+    const image = {
+      Tester: testerImage,
+      Developer: developerImage,
+      "Super Admin": adminImage,
+    };
+    
+    return (
+      <>
+        {image[user.role_group.name] ? (
+          <Image
+            src={image[user.role_group.name]}
+            alt="Role Image"
+            height={40}
+            width={40}
+          />
+        ) : (
+          <CustomAvatar
+            skin="light"
+            color={"primary"}
+            sx={{
+              width: 40,
+              height: 40,
+              fontSize: "1.5rem",
+              fontWeight: "semi-bold",
+            }}
+          >
+            {titleize(getInitials(user.name))}
+          </CustomAvatar>
+        )}
+      </>
+    );
+  };
+
   const styles = {
     py: 2,
     px: 4,
@@ -89,12 +127,7 @@ const UserDropdown = (props) => {
           horizontal: "right",
         }}
       >
-        <Avatar
-          alt="John Doe"
-          // src='/images/avatars/1.png'
-          onClick={handleDropdownOpen}
-          sx={{ width: 40, height: 40 }}
-        />
+        {renderIcon(user)}
       </Badge>
       <Menu
         anchorEl={anchorEl}
@@ -120,11 +153,7 @@ const UserDropdown = (props) => {
                 horizontal: "right",
               }}
             >
-              <Avatar
-                alt={titleize(user.name)}
-                src="/images/avatars/1.png"
-                sx={{ width: "2.5rem", height: "2.5rem" }}
-              />
+              {renderIcon(user)}
             </Badge>
             <Box
               sx={{

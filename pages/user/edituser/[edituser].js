@@ -30,6 +30,7 @@ function EditUser() {
   const auth = useAuth();
   const router = useRouter();
   const { edituser } = router.query;
+
   const {
     control,
     setError,
@@ -51,6 +52,7 @@ function EditUser() {
         console.log(err);
       });
   }, []);
+
   useEffect(() => {
     const fetchUser = async () => {
       await showUser(auth.user.auth_token, edituser).then(({ data }) => {
@@ -59,6 +61,7 @@ function EditUser() {
     };
     fetchUser();
   }, [reset]);
+
   const onSubmit = (data) => {
     let payload = {
       user: {
@@ -169,7 +172,7 @@ function EditUser() {
                     value={value}
                   >
                     {roleGroup.map((role) => {
-                      return <MenuItem value={role.id}>{role.name}</MenuItem>;
+                      return <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>;
                     })}
                   </Select>
                 )}
@@ -215,4 +218,5 @@ function EditUser() {
     </>
   );
 }
+
 export default EditUser;

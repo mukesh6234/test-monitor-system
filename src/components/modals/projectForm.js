@@ -7,7 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import TextInput from "@core/components/input/textInput";
 
 function CreateProject(props) {
-  console.log(props.value.id,"4444");
+
   return (
     <Dialog open={props.formOpen} onClose={props.handleClose}>
       <div
@@ -52,4 +52,5 @@ function CreateProject(props) {
     </Dialog>
   );
 }
+
 export default CreateProject;

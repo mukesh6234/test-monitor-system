@@ -33,6 +33,7 @@ function AddModule() {
   const auth = useAuth();
   const router = useRouter();
   const { addmodule } = router.query;
+
   const {
     control,
     setError,
@@ -55,12 +56,11 @@ function AddModule() {
     createModule(auth.user.auth_token, addmodule, payload).then(
       ({ message }) => {
         toast.success(message);
-        // router.push("/user");
         router.push(`/project/modules/${addmodule}`);
       }
     );
   };
-  console.log(router, "router");
+
   return (
     <>
       <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
@@ -69,10 +69,7 @@ function AddModule() {
           <div
             style={{
               display: "flex",
-              // justifyContent: "center",
-              // alignItems: "center",
               gap: 30,
-              // marginTop: 20,
             }}
           >
             <Button
@@ -177,4 +174,5 @@ function AddModule() {
     </>
   );
 }
+
 export default AddModule;

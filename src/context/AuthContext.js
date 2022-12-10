@@ -66,38 +66,10 @@ const AuthProvider = ({ children }) => {
         const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/";
         router.replace(redirectURL);
         setLoading(false);
-        // setCookie("accessToken", data?.auth_token);
-        // setCookie("name", data?.name);
-        // setCookie("role_group", data?.role_group?.name);
-        // setCookie("profile_Image", data?.image_url);
-        // setLoading(false);
       })
       .catch((err) => {
         if (errorCallback) errorCallback(err);
       });
-    //   axios
-    //     .post(authConfig.loginEndpoint, params)
-    //     .then(async res => {
-    //       window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.accessToken)
-    //     })
-    //     .then(() => {
-    //       axios
-    //         .get(authConfig.meEndpoint, {
-    //           headers: {
-    //             Authorization: window.localStorage.getItem(authConfig.storageTokenKeyName)
-    //           }
-    //         })
-    //         .then(async response => {
-    //           const returnUrl = router.query.returnUrl
-    //           setUser({ ...response.data.userData })
-    //           await window.localStorage.setItem('userData', JSON.stringify(response.data.userData))
-    //           const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
-    //           router.replace(redirectURL)
-    //         })
-    //     })
-    //     .catch(err => {
-    //       if (errorCallback) errorCallback(err)
-    //     })
   };
 
   const handleLogout = () => {
@@ -106,7 +78,7 @@ const AuthProvider = ({ children }) => {
     window.localStorage.removeItem(authConfig.storageTokenKeyName);
     router.push("/login");
   };
-  console.log(user, "nnnn");
+
   const values = {
     user,
     loading,
@@ -115,7 +87,7 @@ const AuthProvider = ({ children }) => {
     login: handleLogin,
     logout: handleLogout,
   };
-  console.log(user, "ooooo");
+
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
 

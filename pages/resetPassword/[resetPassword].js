@@ -12,15 +12,17 @@ import toast from "react-hot-toast";
 import themeConfig from "configs/themeConfig";
 import BlankLayout from "@core/layouts/BlankLayout";
 import { useSettings } from "@core/hooks/useSettings";
-import loginImage from "../../public/images/pages/boy-with-phone.png";
+import resetPasswordImage from "../../public/images/pages/boy-with-laptop.png";
 import Image from "next/image";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import FormHelperText from "@mui/material/FormHelperText";
 import { FormControl } from "@mui/material";
 import { newPassword } from "../api/authentication";
 import TextInput from "@core/components/input/textInput";
+import { useRouter } from "next/router";
+import katoIcon from "../../public/images/pages/kato-icon.png";
+
 
 
 const RightWrapper = styled(Box)(({ theme }) => ({
@@ -48,6 +50,7 @@ const LinkStyled = styled("a")(({ theme }) => ({
   justifyContent: "center",
   color: theme.palette.primary.main,
 }));
+
 const schema = yup.object().shape({
   password: yup.string().required(),
 });
@@ -55,15 +58,19 @@ const schema = yup.object().shape({
 const defaultValues = {
   password: "",
 };
+
 const RestPassword = () => {
   // ** Hooks
   const theme = useTheme();
   const { settings } = useSettings();
   const hidden = useMediaQuery(theme.breakpoints.down("lg"));
+
   const router = useRouter();
+
   const { resetPassword } = router.query;
-  // ** Var
+  
   const { skin } = settings;
+
   const {
     control,
     setError,
@@ -74,6 +81,7 @@ const RestPassword = () => {
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
+
   const onSubmit = (data) => {
     newPassword(resetPassword, data)
       .then(({ message }) => {
@@ -87,6 +95,7 @@ const RestPassword = () => {
         });
       });
   };
+
   return (
     <Box className="content-right">
       {!hidden ? (
@@ -101,7 +110,7 @@ const RestPassword = () => {
         >
       
           <Image
-            src={loginImage}
+            src={resetPasswordImage}
             alt="forgot-password-illustration"
             placeholder="blur"
             width={700}
@@ -117,6 +126,7 @@ const RestPassword = () => {
       >
         <Box sx={{ mx: "auto", maxWidth: 400 }}>
           <Box sx={{ mb: 8, display: "flex", alignItems: "center" }}>
+          <Image src={katoIcon} width={22} height={32} alt="kato-logo" />
             <Typography
               variant="h5"
               sx={{
@@ -128,7 +138,7 @@ const RestPassword = () => {
                 fontSize: "1.75rem !important",
               }}
             >
-              {themeConfig.templateName}!
+              {themeConfig.templateName}
             </Typography>
           </Box>
           <Typography variant="h6" sx={{ mb: 1.5 }}>
@@ -176,7 +186,7 @@ const RestPassword = () => {
                 justifyContent: "center",
               }}
             >
-              <Link passHref href="/login">
+              <Link passHref href="/login" style={{textDecoration:"none"}}>
                 <LinkStyled>
                   <Icon icon="bx:chevron-left" />
                   <span>Back to login</span>

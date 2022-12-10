@@ -2,7 +2,6 @@
 import Head from "next/head";
 import { Router } from "next/router";
 
-
 // ** Loader Import
 import NProgress from "nprogress";
 
@@ -33,6 +32,8 @@ import Spinner from "../src/@core/components/spinner";
 
 // ** Contexts
 import { AuthProvider } from "../src/context/AuthContext";
+import { SearchProvider } from "../src/context/searchContext";
+
 import {
   SettingsConsumer,
   SettingsProvider,
@@ -43,8 +44,6 @@ import ReactHotToast from "../src/@core/styles/libs/react-hot-toast";
 
 // ** Utils Imports
 import { createEmotionCache } from "../src/@core/utils/create-emotion-cache";
-
-// ** Prismjs Styles
 import "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
 import "prismjs/components/prism-jsx";
@@ -85,8 +84,6 @@ const Guard = ({ children, authGuard, guestGuard }) => {
 // ** Configure JSS & ClassName
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  // Variables
-  // console.log(Component,"Component");
   const contentHeightFixed = Component.contentHeightFixed ?? false;
 
   const getLayout =
@@ -99,12 +96,14 @@ const App = (props) => {
   const guestGuard = Component.guestGuard ?? false;
   const aclAbilities = Component.acl ?? defaultACLObj;
 
-  console.log("Component", Component);
   return (
     <CacheProvider value={emotionCache}>
-   
- 
-         {/* <Head>
+      <Head>
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="../public/images/pages/kato-icon.png"
+        />
         <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
         <meta
           name="description"
@@ -115,35 +114,47 @@ const App = (props) => {
           content="Material Design, MUI, Admin Template, React Admin Template"
         />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head> */}
 
+        {/* <link rel='preconnect' href='https://fonts.googleapis.com' />
+          <link rel='preconnect' href='https://fonts.gstatic.com' />
+          <link
+            rel='stylesheet'
+            href='https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap'
+          />
+          <link rel='apple-touch-icon' sizes='180x180' href='../public/images/pages/kato-icon.png"' />
+          <link rel='shortcut icon' href='../public/favicon.ico' /> */}
+      </Head>
       <AuthProvider>
-        <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
-          <SettingsConsumer>
-            {({ settings }) => {
-              return (
-                <ThemeComponent settings={settings}>
-                  <WindowWrapper>
-                    <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                      <AclGuard
-                        aclAbilities={aclAbilities}
-                        guestGuard={guestGuard}
-                      >
-                        {getLayout(<Component {...pageProps} />)}
-                      </AclGuard>
-                    </Guard>
-                  </WindowWrapper>
-                  <ReactHotToast>
-                    <Toaster
-                      position={settings.toastPosition}
-                      toastOptions={{ className: "react-hot-toast" }}
-                    />
-                  </ReactHotToast>
-                </ThemeComponent>
-              );
-            }}
-          </SettingsConsumer>
-        </SettingsProvider>
+        <SearchProvider>
+          <SettingsProvider
+            {...(setConfig ? { pageSettings: setConfig() } : {})}
+          >
+            <SettingsConsumer>
+              {({ settings }) => {
+                return (
+                  <ThemeComponent settings={settings}>
+                    <WindowWrapper>
+                      <Guard authGuard={authGuard} guestGuard={guestGuard}>
+                        <AclGuard
+                          aclAbilities={aclAbilities}
+                          guestGuard={guestGuard}
+                        >
+                          {getLayout(<Component {...pageProps} />)}
+                        </AclGuard>
+                      </Guard>
+                    </WindowWrapper>
+                    <ReactHotToast>
+                      <Toaster
+                        position={settings.toastPosition}
+                        toastOptions={{ className: "react-hot-toast" }}
+                      />
+                    </ReactHotToast>
+                  </ThemeComponent>
+                );
+              }}
+            </SettingsConsumer>
+          </SettingsProvider>
+        </SearchProvider>
       </AuthProvider>
     </CacheProvider>
   );

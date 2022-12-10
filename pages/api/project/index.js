@@ -1,8 +1,8 @@
 import makeRequest from "../index";
 
-export function fetchProjects(token) {
+export function fetchProjects(token,search) {
   return makeRequest({
-    uri: `/api/v1/projects`,
+    uri: `/api/v1/projects?query=${search}`,
     method: "GET",
     authorization: token,
   });

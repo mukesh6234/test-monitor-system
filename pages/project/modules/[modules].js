@@ -6,6 +6,7 @@ import PageHeader from "components/pageHeader";
 import { Grid } from "@mui/material";
 import ModuleCard from "components/cards/moduleCard";
 import ModuleDialogue from "components/modals/moduleDialogue";
+import { useSearch } from "context/searchContext";
 
 function Modules() {
   const [moduleList, setModuleList] = useState([]);
@@ -13,31 +14,36 @@ function Modules() {
   const [formOpen, setFormOpen] = useState(false);
   const router = useRouter();
   const auth = useAuth();
+  const searchValue = useSearch();
   const { modules } = router.query;
-  console.log(modules, "modules");
+
   useEffect(() => {
-    fetchModules(auth.user.auth_token, modules)
+    fetchModules(auth.user.auth_token,searchValue, modules)
       .then(({ data }) => {
         setModuleList(data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [searchValue]);
+
   const handleClose = () => {
     setFormOpen(!formOpen);
   };
+
   const handleView = (id) => {
     showModules(auth.user.auth_token, modules, id).then(({ data }) => {
       setModuleData(data);
       setFormOpen(!formOpen);
     });
   };
+
   const pageHeaderProps = {
     title: "Modules",
     buttonName: "Add Module",
     navigate: `/project/modules/addmodule/${modules}`,
   };
+
   const moduleCardProps = {
     projectId: modules,
     handleView,
@@ -45,7 +51,7 @@ function Modules() {
     moduleData,
     formOpen,
   };
-  console.log(formOpen, "moduleList");
+
   return (
     <>
       <PageHeader {...pageHeaderProps} />
@@ -59,8 +65,10 @@ function Modules() {
             );
           })}
       </Grid>
+
       {formOpen && <ModuleDialogue {...moduleCardProps} />}
     </>
   );
 }
+
 export default Modules;

@@ -41,6 +41,7 @@ function EditTestCases() {
   const router = useRouter();
   const { edittestcase } = router.query;
   console.log(router, "edittestcase");
+
   const {
     control,
     setError,
@@ -52,6 +53,7 @@ function EditTestCases() {
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
+
   const { fields, append, remove } = useFieldArray({
     name: "steps",
     control,
@@ -299,4 +301,5 @@ function EditTestCases() {
     </>
   );
 }
+
 export default EditTestCases;

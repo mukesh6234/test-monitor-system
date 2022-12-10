@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/eslint-parser": "^7.19.1",
     "@casl/ability": "^6.3.2",
     "@casl/react": "^3.1.0",
     "@emotion/cache": "^11.10.5",
@@ -21,8 +22,10 @@
     "@mui/styled-engine-sc": "^5.10.14",
     "@mui/x-data-grid": "^5.17.13",
     "axios": "^1.2.0",
+    "cleave.js": "^1.6.0",
     "emotion": "^11.0.0",
     "eslint-config-next": "13.0.5",
+    "eslint-config-prettier": "^8.5.0",
     "i18next": "^22.0.6",
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.0.1",
@@ -42,6 +45,7 @@
   },
   "devDependencies": {
     "eslint": "^8.28.0",
-    "eslint-plugin-react": "^7.31.11"
+    "eslint-plugin-react": "^7.31.11",
+    "prettier": "2.8.1"
   }
 }

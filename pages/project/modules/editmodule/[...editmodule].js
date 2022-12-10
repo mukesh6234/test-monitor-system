@@ -1,9 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Divider,
-  FormControl,
-  Grid,
-} from "@mui/material";
+import { Divider, FormControl, Grid } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,7 +16,6 @@ const schema = yup.object().shape({
   description: yup.string().required("Please fill the description"),
   status: yup.string().required("Please select a status"),
 });
-
 
 const options = [
   {
@@ -44,8 +39,6 @@ function EditModule() {
   const auth = useAuth();
   const router = useRouter();
   const { editmodule } = router.query;
-  // const [moduleData, setModuleData] = useState(null);
-  console.log("editmodule", editmodule[1]);
 
   const {
     control,
@@ -54,7 +47,7 @@ function EditModule() {
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues: {title:"", description:"",status:""},
+    defaultValues: { title: "", description: "", status: "" },
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
@@ -86,23 +79,19 @@ function EditModule() {
       payload
     ).then(({ message }) => {
       toast.success(message);
-      // router.push("/user");
       router.push(`/project/modules/${editmodule[0]}`);
     });
   };
 
   return (
     <>
-       <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <h3 style={{ margin: "5px 0" }}>Edit Module</h3>
           <div
             style={{
               display: "flex",
-              // justifyContent: "center",
-              // alignItems: "center",
               gap: 30,
-              // marginTop: 20,
             }}
           >
             <Button
@@ -119,107 +108,84 @@ function EditModule() {
           </div>
         </div>
         <Divider />
-          <Grid
-            container
-            spacing={6}
-            columnGap={5}
-            marginTop
-            alignContent={"center"}
-            justifyContent={"center"}
-          >
-            <Grid item xs={4}>
-              Title
-              <Controller
-                name="title"
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextInput
-                    fullWidth
-                    autoFocus={true}
-                    size={"small"}
-                    placeholder={"Enter Module Title"}
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    errors={Boolean(errors.title)}
-                    helperText={errors.title && errors.title.message}
-                  />
-                )}
-              />
-              {/* {errors.title && (
-              <FormHelperText sx={{ color: "error.main" }}>
-                {errors.title.message}
-              </FormHelperText>
-            )} */}
-            </Grid>
-            <Grid item xs={4}>
-              Status
-              <FormControl fullWidth sx={{ mb: 6 }}>
-                {/* <InputLabel id="role-select">Select Role</InputLabel> */}
-                <Controller
-                  name="status"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange, onBlur } }) => (
-                    // <Select
-                    //   size="small"
-                    //   fullWidth
-                    //   onBlur={onBlur}
-                    //   onChange={onChange}
-                    //   error={Boolean(errors.status)}
-                    //   placeholder="Select status"
-                    //   value={value}
-                    // >
-                    //   <MenuItem value="started">Started</MenuItem>
-                    //   <MenuItem value="inprogress">Inprogress</MenuItem>
-                    //   <MenuItem value="completed">Completed</MenuItem>
-                    //   <MenuItem value="cancelled">Cancelled</MenuItem>
-                    // </Select>
-                    <SelectInput
-                      size={"small"}
-                      fullWidth
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      value={value}
-                      placeholder={"Select status"}
-                      error={Boolean(errors.status)}
-                      helperText={errors.status ? errors.status.message : ""}
-                      options={options}
-                    />
-                  )}
+        <Grid
+          container
+          spacing={6}
+          columnGap={5}
+          marginTop
+          alignContent={"center"}
+          justifyContent={"center"}
+        >
+          <Grid item xs={4}>
+            Title
+            <Controller
+              name="title"
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  fullWidth
+                  autoFocus={true}
+                  size={"small"}
+                  placeholder={"Enter Module Title"}
+                  value={value}
+                  onBlur={onBlur}
+                  onChange={onChange}
+                  errors={Boolean(errors.title)}
+                  helperText={errors.title && errors.title.message}
                 />
-              </FormControl>
-            </Grid>
-            <Grid item xs={8}>
-              Description
+              )}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            Status
+            <FormControl fullWidth sx={{ mb: 6 }}>
               <Controller
-                name="description"
+                name="status"
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <TextInput
-                    fullWidth
-                    multi
-                    rows={4}
+                  <SelectInput
                     size={"small"}
-                    placeholder={"Enter Module Description"}
-                    value={value}
+                    fullWidth
                     onBlur={onBlur}
                     onChange={onChange}
-                    errors={Boolean(errors.description)}
-                    helperText={
-                      errors.description && errors.description.message
-                    }
+                    value={value}
+                    placeholder={"Select status"}
+                    error={Boolean(errors.status)}
+                    helperText={errors.status ? errors.status.message : ""}
+                    options={options}
                   />
                 )}
               />
-            </Grid>
+            </FormControl>
           </Grid>
-       
-        </form>
-      
+          <Grid item xs={8}>
+            Description
+            <Controller
+              name="description"
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  fullWidth
+                  multi
+                  rows={4}
+                  size={"small"}
+                  placeholder={"Enter Module Description"}
+                  value={value}
+                  onBlur={onBlur}
+                  onChange={onChange}
+                  errors={Boolean(errors.description)}
+                  helperText={errors.description && errors.description.message}
+                />
+              )}
+            />
+          </Grid>
+        </Grid>
+      </form>
     </>
   );
 }
+
 export default EditModule;

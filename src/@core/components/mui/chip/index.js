@@ -10,8 +10,6 @@ import useBgColor from '@core/hooks/useBgColor'
 const Chip = props => {
   // ** Props
   const { sx, skin, color, rounded } = props
-console.log(color,"kkkkk");
-  // ** Hook
   const bgColors = useBgColor()
 
   const colors = {

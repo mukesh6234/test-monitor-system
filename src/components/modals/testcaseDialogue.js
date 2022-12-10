@@ -4,30 +4,15 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import TextInput from "@core/components/input/textInput";
 import { titleize } from "components/helper";
 import Typography from "@mui/material/Typography";
-import CustomChip from "@core/components/mui/chip";
-// import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
-import TimelineDot from "@mui/lab/TimelineDot";
 import MuiTimeline from "@mui/lab/Timeline";
 import { styled } from "@mui/material/styles";
 import CustomTimelineDot from "@core/components/mui/timeline-dot";
-
-const StatusColor = (value) => {
-  const colors = {
-    started: "primary",
-    inprogress: "info",
-    cancelled: "error",
-    completed: "success",
-  };
-
-  return colors[value];
-};
 
 const Timeline = styled(MuiTimeline)({
   paddingLeft: 0,
@@ -41,7 +26,6 @@ const Timeline = styled(MuiTimeline)({
 });
 
 function TestCaseDialogue(props) {
-  console.log(props, "TestCaseDialogue");
   return (
     <Dialog open={props.formOpen} onClose={props.handleClose} scroll={"paper"}>
       <div
@@ -59,6 +43,7 @@ function TestCaseDialogue(props) {
               <span>{titleize(props.data.title)}</span>
               <span>{titleize(props.data.section.title)}</span>
             </div>
+
             <Typography variant="caption">
               {props.data.updated_by?.name ? (
                 <>
@@ -115,13 +100,15 @@ function TestCaseDialogue(props) {
           <Typography sx={{ color: "text.secondary", fontSize: "0.87rem" }}>
             {props.data.description}
           </Typography>
-          <Typography sx={{ fontWeight: 600, fontSize: "1rem", marginTop: "1rem" }}>
+          <Typography
+            sx={{ fontWeight: 600, fontSize: "1rem", marginTop: "1rem" }}
+          >
             Steps
           </Typography>
 
           <Timeline>
             {props.data.steps.map((step, index) => (
-              <TimelineItem>
+              <TimelineItem key={index}>
                 <TimelineSeparator>
                   <CustomTimelineDot skin="light" color="primary">
                     <span style={{ fontSize: 10 }}>{index + 1}</span>
@@ -132,10 +119,18 @@ function TestCaseDialogue(props) {
               </TimelineItem>
             ))}
           </Timeline>
-          <Typography sx={{ fontWeight: 600, fontSize: "1rem", margin: "10px auto" }}>
+          <Typography
+            sx={{ fontWeight: 600, fontSize: "1rem", margin: "10px auto" }}
+          >
             Expected Result
           </Typography>
-          <Typography sx={{ color: "text.secondary", fontSize: "0.87rem",margin: "10px auto" }}>
+          <Typography
+            sx={{
+              color: "text.secondary",
+              fontSize: "0.87rem",
+              margin: "10px auto",
+            }}
+          >
             {props.data.expected_result}
           </Typography>
         </DialogContent>
@@ -159,4 +154,5 @@ function TestCaseDialogue(props) {
     </Dialog>
   );
 }
+
 export default TestCaseDialogue;
