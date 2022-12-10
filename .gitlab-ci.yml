@@ -74,7 +74,7 @@ eslint:
 install:
   stage: npm-install
   script:
-    - npm install
+    - npm install next
   cache:
     key: test-monitor-ui${CI_COMMIT_REF_SLUG}
     paths:
