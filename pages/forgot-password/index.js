@@ -119,7 +119,6 @@ const ForgotPassword = () => {
           <Image
             src={forgetPasswordImage}
             alt="forgot-password-illustration"
-            placeholder="blur"
             width={700}
             style={{ height: "auto", maxWidth: "100%" }}
           />

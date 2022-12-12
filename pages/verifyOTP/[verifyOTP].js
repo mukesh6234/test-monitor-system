@@ -21,7 +21,6 @@ import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
 import katoIcon from "../../public/images/pages/kato-icon.png";
 
-
 const RightWrapper = styled(Box)(({ theme }) => ({
   width: "100%",
   display: "flex",
@@ -110,11 +109,9 @@ const VerifyOTP = () => {
           <Image
             src={verifyOtpImage}
             alt="forgot-password-illustration"
-            placeholder="blur"
             width={700}
             style={{ height: "auto", maxWidth: "100%" }}
           />
-          {/* <Image src={BoyWithPhone}   alt="forgot-password-illustration" placeholder='blur' height={"100%"} width={700} style={{position:"absolute"}}/> */}
         </Box>
       ) : null}
       <RightWrapper
@@ -125,7 +122,7 @@ const VerifyOTP = () => {
       >
         <Box sx={{ mx: "auto", maxWidth: 400 }}>
           <Box sx={{ mb: 8, display: "flex", alignItems: "center" }}>
-          <Image src={katoIcon} width={22} height={32} alt="kato-logo" />
+            <Image src={katoIcon} width={22} height={32} alt="kato-logo" />
             <Typography
               variant="h5"
               sx={{
@@ -185,7 +182,7 @@ const VerifyOTP = () => {
                 justifyContent: "center",
               }}
             >
-              <Link passHref href="/login" style={{textDecoration:"none"}}>
+              <Link passHref href="/login" style={{ textDecoration: "none" }}>
                 <LinkStyled>
                   <Icon icon="bx:chevron-left" />
                   <span>Back to login</span>

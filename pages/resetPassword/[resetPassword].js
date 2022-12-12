@@ -112,7 +112,6 @@ const RestPassword = () => {
           <Image
             src={resetPasswordImage}
             alt="forgot-password-illustration"
-            placeholder="blur"
             width={700}
             style={{ height: "auto", maxWidth: "100%" }}
           />

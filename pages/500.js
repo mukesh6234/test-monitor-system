@@ -9,7 +9,7 @@ import { styled } from "@mui/material/styles";
 
 // ** Layout Import
 import BlankLayout from "../src/@core/layouts/BlankLayout";
-import errorImage from "../public/images/pages/girl-with-laptop.png";
+import errorImage from "../public/images/pages/page-misc-error.png";
 import Image from "next/image";
 
 // ** Styled Components
@@ -19,8 +19,7 @@ const BoxWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-
-const Error401 = () => {
+const Error500 = () => {
   // ** Hooks
 
   return (
@@ -36,13 +35,10 @@ const Error401 = () => {
       >
         <BoxWrapper>
           <Typography variant="h4" sx={{ mb: 2 }}>
-            You are not authorized!
+            Internal server error :(
           </Typography>
           <Typography sx={{ mb: 6, color: "text.secondary" }}>
-            You do not have permission to view this page using the credentials
-            that you have provided while login.
-            <br />
-            Please contact your site administrator.
+            Oops, something went wrong!
           </Typography>
           <Link passHref href="/">
             <Button component="a" variant="contained">
@@ -60,6 +56,6 @@ const Error401 = () => {
     </Box>
   );
 };
-Error401.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
+Error500.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
-export default Error401;
+export default Error500;

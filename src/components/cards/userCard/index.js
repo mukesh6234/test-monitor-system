@@ -38,7 +38,7 @@ const renderIcon = (props) => {
     Developer: developerImage,
     "Super Admin": adminImage,
   };
-  
+
   return (
     <>
       {image[props.role_group.name] ? (
@@ -78,6 +78,7 @@ function UserCard(props) {
           display: "flex",
           justifyContent: "space-between",
           cursor: "pointer",
+          padding: 5,
         }}
         onClick={() => router.push(`user/edituser/${props.id}`)}
       >

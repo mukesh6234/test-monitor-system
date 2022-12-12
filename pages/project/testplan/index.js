@@ -4,12 +4,12 @@ import { fetchModules, showModules } from "../../api/modules";
 import { useAuth } from "hooks/useAuth";
 import PageHeader from "components/pageHeader";
 import { Grid } from "@mui/material";
-import ModuleCard from "components/cards/moduleCard";
 import ModuleDialogue from "components/modals/moduleDialogue";
 import { useSearch } from "context/searchContext";
 import Lottie from "lottie-react";
 import noData from "../../../public/images/lottie/nodata.json";
 import { Skeleton } from "@mui/material";
+import TestPlanCard from "components/cards/testPlanCard";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -26,12 +26,12 @@ for (let i = 0; i < 12; i++) {
   );
 }
 
-function Modules() {
-  const [moduleList, setModuleList] = useState([]);
-  const [moduleData, setModuleData] = useState();
+function TestPlan() {
+  // const [moduleList, setModuleList] = useState([]);
+  // const [moduleData, setModuleData] = useState();
   const [formOpen, setFormOpen] = useState(false);
-  const [totalEntries, setTotalEntries] = useState(0);
-  const [loading, setLoading] = useState(true);
+  // const [totalEntries, setTotalEntries] = useState(0);
+  // const [loading, setLoading] = useState(false);
   const router = useRouter();
   const auth = useAuth();
   const searchValue = useSearch();
@@ -41,7 +41,7 @@ function Modules() {
     fetchModules(auth.user.auth_token, searchValue, modules)
       .then(({ data, total_entries }) => {
         setLoading(false);
-        setTotalEntries(total_entries);
+        // setTotalEntries(total_entries);
         setModuleList(data);
       })
       .catch((err) => {
@@ -61,23 +61,23 @@ function Modules() {
   };
 
   const pageHeaderProps = {
-    title: "Modules",
-    buttonName: "Add Module",
+    title: "Test Plan",
+    buttonName: "New Test Plan",
     navigate: `/project/modules/addmodule/${modules}`,
   };
 
-  const moduleCardProps = {
-    projectId: modules,
-    handleView,
-    handleClose,
-    moduleData,
-    formOpen,
-  };
+  // const moduleCardProps = {
+  //   projectId: modules,
+  //   handleView,
+  //   handleClose,
+  //   moduleData,
+  //   formOpen,
+  // };
 
   return (
     <>
       <PageHeader {...pageHeaderProps} />
-      {!loading && totalEntries === 0  (
+      {/* {!loading && totalEntries === 0  (
         <div
           style={{
             display: "flex",
@@ -93,20 +93,20 @@ function Modules() {
             }}
           />
         </div>
-      )}
+      )} */}
       <Grid container spacing={6} marginTop>
-        {loading ? (
+        {/* {loading ? (
           <>{skeleton}</>
-        ) : (
-          moduleList &&
-          moduleList.map((module, index) => {
-            return (
-              <Grid item xs={12} sm={6} md={3} key={index}>
-                <ModuleCard {...module} {...moduleCardProps} />{" "}
+        ) : 
+        ( */}
+        
+            {/* return ( */}
+              <Grid item xs={12} sm={6} md={3}>
+                <TestPlanCard />{" "}
               </Grid>
-            );
-          })
-        )}
+            {/* ); */}
+       
+        
       </Grid>
 
       {formOpen && <ModuleDialogue {...moduleCardProps} />}
@@ -114,4 +114,4 @@ function Modules() {
   );
 }
 
-export default Modules;
+export default TestPlan;

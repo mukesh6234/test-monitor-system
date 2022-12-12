@@ -5,9 +5,24 @@ import { useAuth } from "hooks/useAuth";
 import UserCard from "components/cards/userCard";
 import Grid from "@mui/material/Grid";
 import { useSearch } from "context/searchContext";
+import noData from "../../public/images/lottie/nodata.json";
+import Lottie from "lottie-react";
+import { Skeleton } from "@mui/material";
+
+const skeleton = [];
+for (let i = 0; i < 12; i++) {
+  skeleton.push(
+    <Grid item xs={12} sm={6} md={3} key={i}>
+      <Skeleton sx={{ height: 80 }} animation="wave" variant="rectangular" />
+      <Skeleton animation="wave" height={15} width="70%" />
+    </Grid>
+  );
+}
 
 function User() {
   const [userLists, setUserLists] = useState([]);
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [loading, setLoading] = useState(true);
   const auth = useAuth();
   const searchValue = useSearch();
 
@@ -24,23 +39,47 @@ function User() {
   }, [searchValue]);
 
   const fetchUser = () => {
-    userList(auth.user.auth_token, searchValue).then(({ data }) => {
-      setUserLists(data);
-    });
+    userList(auth.user.auth_token, searchValue).then(
+      ({ data, total_entries }) => {
+        setLoading(false);
+        setTotalEntries(total_entries);
+        setUserLists(data);
+      }
+    );
   };
-
   return (
     <>
       <PageHeader {...pageHeaderProps} />
+      {!loading && totalEntries === 0 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Lottie
+            animationData={noData}
+            style={{
+              width: "50%",
+            }}
+          />
+        </div>
+      )}
       <Grid container spacing={6} marginTop alignItems={"stretch"}>
-        {userLists &&
+        {loading ? (
+          <>{skeleton}</>
+        ) : (
+          userLists &&
           userLists.map((userList, index) => {
             return (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <UserCard {...userList} />{" "}
               </Grid>
             );
-          })}
+          })
+        )}
       </Grid>
     </>
   );

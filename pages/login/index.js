@@ -137,7 +137,6 @@ const LoginPage = () => {
           <Image
             src={loginImage}
             alt="login-illustration"
-            placeholder="blur"
             height={"100%"}
             width={700}
           />

@@ -11,36 +11,52 @@ import {
 import { useAuth } from "hooks/useAuth";
 import ProjectCard from "components/cards/projectCard";
 import toast from "react-hot-toast";
-import { useSearch,useSearchUpdate } from "context/searchContext";
+import { useSearch } from "context/searchContext";
+import Lottie from "lottie-react";
+import noData from "../../public/images/lottie/nodata.json";
+import { Skeleton } from "@mui/material";
+
+const skeleton = [];
+for (let i = 0; i < 12; i++) {
+  skeleton.push(
+    <Grid item xs={12} sm={6} md={3} key={i}>
+      <Skeleton sx={{ height: 200 }} animation="wave" variant="rectangular" />
+      <Skeleton
+        animation="wave"
+        height={15}
+        style={{ marginBottom: 6, marginTop: 6 }}
+      />
+      <Skeleton animation="wave" height={15} width="70%" />
+    </Grid>
+  );
+}
 
 export default function Project() {
   const [projects, setProjects] = useState("");
   const [formOpen, setFormOpen] = useState(false);
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [data, setData] = useState("");
   const auth = useAuth();
   const searchValue = useSearch();
-  const handleSearch = useSearchUpdate();
   let auth_token = auth.user.auth_token;
-  
-  useEffect(() => {
-    fetchProject();
-    handleSearch("");
-  console.log(searchValue,"searchValuesearchValue");
-
-  }, []);
 
   useEffect(() => {
     fetchProject();
-  console.log(searchValue,"searchValuesearchValue");
-
   }, [searchValue]);
 
   const fetchProject = async () => {
     if (auth.user.role_group) {
-      await fetchProjects(auth_token,searchValue).then(({ data }) => {
-        setProjects(data);
-      });
+      await fetchProjects(auth_token, searchValue)
+        .then(({ data, total_entries }) => {
+          setLoading(false);
+          setTotalEntries(total_entries);
+          setProjects(data);
+        })
+        .catch(({ message }) => {
+          toast.error(message);
+        });
     }
   };
 
@@ -58,12 +74,13 @@ export default function Project() {
 
     createProject(auth_token, requestBody)
       .then(({ message }) => {
+        toast.success(message);
         setFormOpen(!formOpen);
         setTitle("");
         fetchProject();
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(({ message }) => {
+        toast.error(message);
       });
   };
 
@@ -81,7 +98,7 @@ export default function Project() {
         fetchProject();
       })
       .catch((err) => {
-        console.error(err);
+        toast.error(err.data[0]);
       });
   };
 
@@ -115,15 +132,37 @@ export default function Project() {
   return (
     <div>
       <PageHeader {...pageHeaderProps} />
+      {!loading && totalEntries === 0 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Lottie
+            animationData={noData}
+            style={{
+              width: "50%",
+            }}
+          />
+        </div>
+      )}
+
       <Grid container spacing={6} marginTop alignItems={"stretch"}>
-        {projects &&
+        {loading ? (
+          <>{skeleton}</>
+        ) : (
+          projects &&
           projects.map((project, index) => {
             return (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <ProjectCard {...project} handleEdit={handleEdit} />
               </Grid>
             );
-          })}
+          })
+        )}
       </Grid>
       {formOpen && <CreateProject {...createFormProps} />}
     </div>
