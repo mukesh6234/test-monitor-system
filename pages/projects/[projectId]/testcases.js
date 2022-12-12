@@ -25,6 +25,10 @@ export default function TestCases() {
 
   useEffect(() => {
     fetchTestCaseIndex();
+  }, []);
+
+  useEffect(() => {
+    fetchTestCaseIndex();
   }, [searchValue]);
 
   const fetchTestCaseIndex = async () => {
@@ -54,7 +58,7 @@ export default function TestCases() {
   const pageHeaderProps = {
     title: "Test Cases",
     buttonName: "Add Test Case",
-    navigate: `/project/testcases/addtestcases/${projectId}`,
+    navigate: `/projects/${projectId}/addtestcases/`,
   };
 
   const testDialogueProps = {
@@ -72,13 +76,13 @@ export default function TestCases() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "100%",
+            height: "70vh",
           }}
         >
           <Lottie
             animationData={noData}
             style={{
-              width: "50%",
+              width: "40%",
             }}
           />
         </div>

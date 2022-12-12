@@ -122,7 +122,7 @@ const VerifyOTP = () => {
       >
         <Box sx={{ mx: "auto", maxWidth: 400 }}>
           <Box sx={{ mb: 8, display: "flex", alignItems: "center" }}>
-            <Image src={katoIcon} width={22} height={32} alt="kato-logo" />
+            <Image src={katoIcon} height={32} alt="kato-logo" />
             <Typography
               variant="h5"
               sx={{

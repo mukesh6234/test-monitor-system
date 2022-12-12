@@ -19,7 +19,6 @@ const Divider = styled(MuiDivider)(({ theme }) => ({
   },
 }));
 
-
 const StyledLink = styled("a")(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
@@ -49,20 +48,20 @@ function TestPlanCard(props) {
         <div>
           <Tooltip
             arrow
-            title={"Test Plan"}
+            title={props.title}
             placement="top"
             TransitionComponent={Zoom}
-            followCursor
+            TransitionProps={{ timeout: 500 }}
           >
             <Typography variant="h6">
-              {SliceName(titleize("Test Plan"))}
+              {SliceName(titleize(props.title))}
             </Typography>
           </Tooltip>
           <Typography variant="caption">
             {props.updated_by?.name ? (
               <>
                 Updated by:
-                <span style={{ color: "#9155FD" }}>
+                <span style={{ color: "#9155FD", marginLeft: 5 }}>
                   {titleize(props.updated_by?.name)}
                 </span>
               </>
@@ -70,13 +69,21 @@ function TestPlanCard(props) {
               <>
                 Created by:
                 <span style={{ color: "#9155FD" }}>
-                  {titleize("Test Plan")}
+                  {titleize(props.created_by?.name)}
                 </span>
               </>
             )}
           </Typography>
         </div>
-       <div   onClick={() => router.push(`/project/testplan/edittestplan`)} style={{cursor:"pointer"}}>  <StyledLink><Icon icon="bx-edit"  fontSize={20} /></StyledLink></div>
+        <div
+          onClick={() => router.push(`/projects/${props.projectId}/edittestplan/${props.id}`)}
+          style={{ cursor: "pointer" }}
+        >
+          {" "}
+          <StyledLink>
+            <Icon icon="bx-edit" fontSize={20} />
+          </StyledLink>
+        </div>
       </div>
       <div
         style={{
@@ -88,20 +95,18 @@ function TestPlanCard(props) {
       >
         <div>
           <Typography sx={{ fontWeight: 500 }} variant="h6">
-            
             {9}
           </Typography>
 
           <Typography sx={{ fontWeight: 500 }}>No. of module</Typography>
         </div>
         <div>
-            <Typography sx={{ fontWeight: 500 }} variant="h6">
-              
-              {5}
-            </Typography>
+          <Typography sx={{ fontWeight: 500 }} variant="h6">
+            {5}
+          </Typography>
 
-            <Typography sx={{ fontWeight: 500 }}>No. of Passed</Typography>
-          </div>
+          <Typography sx={{ fontWeight: 500 }}>No. of Passed</Typography>
+        </div>
       </div>
       <Divider />
       <div style={{ display: "flex" }}>
@@ -115,8 +120,7 @@ function TestPlanCard(props) {
           }}
         >
           <StyledLink>
-            <span style={{ marginRight: 5, }}>
-              
+            <span style={{ marginRight: 5 }}>
               <Icon icon="bx-test-tube" fontSize={20} />
             </span>
             Execution
@@ -132,7 +136,7 @@ function TestPlanCard(props) {
             padding: 5,
             cursor: "pointer",
           }}
-        //   onClick={() => props.handleView(props.id)}
+          //   onClick={() => props.handleView(props.id)}
         >
           <StyledLink>
             <span style={{ marginRight: 5 }}>

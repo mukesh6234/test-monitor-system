@@ -4,14 +4,16 @@ import { Button } from "@mui/material";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { createTestCase } from "../../../api/testCases";
+import { createTestCase } from "../../api/testCases";
 import { useAuth } from "hooks/useAuth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Icon from "@core/components/icon";
 import SelectInput from "@core/components/input/select";
 import TextInput from "@core/components/input/textInput";
-import { fetchModules } from "../../../api/modules";
+import { fetchModules } from "../../api/modules";
+import { useSearch } from "context/searchContext";
+
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
@@ -39,7 +41,10 @@ function AddTestCases() {
   const [options, setOptions] = useState([]);
   const auth = useAuth();
   const router = useRouter();
-  const { addtestcases } = router.query;
+  const { projectId } = router.query;
+  const searchValue = useSearch();
+
+  console.log(router,"addnewtestcase");
 
   const {
     control,
@@ -57,7 +62,7 @@ function AddTestCases() {
     control,
   });
   useEffect(() => {
-    fetchModules(auth.user.auth_token, addtestcases).then(({ data }) => {
+    fetchModules(auth.user.auth_token, projectId,searchValue).then(({ data }) => {
       setOptions(
         data.map((module) => {
           return { label: module.title, value: module.id };
@@ -79,10 +84,10 @@ function AddTestCases() {
         }),
       },
     };
-    createTestCase(auth.user.auth_token, addtestcases, payload).then(
+    createTestCase(auth.user.auth_token, projectId, payload).then(
       ({ message }) => {
         toast.success(message);
-        router.push(`/project/testcases/${addtestcases}`);
+        router.push(`/projects/${projectId}/testcases`);
       }
     );
   };

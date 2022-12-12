@@ -38,16 +38,24 @@ function Modules() {
   const { projectId } = router.query;
 
   useEffect(() => {
-    fetchModules(auth.user.auth_token, searchValue, projectId)
-      .then(({ data, total_entries }) => {
-        setLoading(false);
-        setTotalEntries(total_entries);
-        setModuleList(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    fetModulesIndex();
+  }, []);
+
+  useEffect(() => {
+    fetModulesIndex();
   }, [searchValue]);
+
+  const fetModulesIndex = async() =>{
+    fetchModules(auth.user.auth_token,  projectId,searchValue)
+    .then(({ data, total_entries }) => {
+      setLoading(false);
+      setTotalEntries(total_entries);
+      setModuleList(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
 
   const handleClose = () => {
     setFormOpen(!formOpen);
@@ -63,7 +71,7 @@ function Modules() {
   const pageHeaderProps = {
     title: "Modules",
     buttonName: "Add Module",
-    navigate: `/project/modules/addmodule/${projectId}`,
+    navigate: `/projects/${projectId}/addmodule/`,
   };
 
   const moduleCardProps = {
@@ -89,7 +97,7 @@ function Modules() {
           <Lottie
             animationData={noData}
             style={{
-              width: "50%",
+              width: "40%",
             }}
           />
         </div>

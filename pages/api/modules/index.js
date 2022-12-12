@@ -1,6 +1,6 @@
 import makeRequest from "../index";
 
-export function fetchModules(token, search, projectId) {
+export function fetchModules(token, projectId, search) {
   return makeRequest({
     uri: `/api/v1/projects/${projectId}/sections?query=${search}`,
     method: "GET",

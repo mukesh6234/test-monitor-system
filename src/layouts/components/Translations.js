@@ -1,11 +1,16 @@
 // ** Third Party Import
-import { useTranslation } from 'react-i18next'
+import { SliceName } from "components/helper";
+import { useTranslation } from "react-i18next";
 
 const Translations = ({ text }) => {
   // ** Hook
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  return <>{`${t(text)}`}</>
-}
+  return (
+    <>      
+      <span>{SliceName(`${t(text)}`)}</span>
+    </>
+  );
+};
 
-export default Translations
+export default Translations;

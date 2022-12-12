@@ -26,6 +26,7 @@ const UserLayout = ({ children, contentHeightFixed }) => {
   // console.log(router.query, 'apoew')
 
   const { projectId } = router.query;
+  console.log(router,"kkkkkkkkkkkkkkkkkkk");
   // const projectId = '123'
   console.log(projectId, 'apoew')
   const [navItems, setNavItems] = useState([]);

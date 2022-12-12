@@ -53,7 +53,7 @@ const StyledLink = styled("a")(({ theme }) => ({
   },
 }));
 
-export const testCaseColumns = (testcase, router, handleView) => {
+export const testCaseColumns = (projectId, router, handleView) => {
   return [
     {
       flex: 0.25,
@@ -69,6 +69,7 @@ export const testCaseColumns = (testcase, router, handleView) => {
             title={row.title}
             placement="top"
             TransitionComponent={Zoom}
+            TransitionProps={{ timeout: 500 }}
           >
             <Typography
               noWrap
@@ -181,6 +182,7 @@ export const testCaseColumns = (testcase, router, handleView) => {
             title={row.section ? row.section.title : "-"}
             placement="top"
             TransitionComponent={Zoom}
+            TransitionProps={{ timeout: 500 }}
           >
             <Typography
               noWrap
@@ -217,7 +219,7 @@ export const testCaseColumns = (testcase, router, handleView) => {
             style={{ padding: "15px" }}
             onClick={() =>
               router.push(
-                `/project/testcases/edittestcase/${testcase}/${row.id}`
+                `/projects/${projectId}/edittestcase/${row.id}`
               )
             }
           >

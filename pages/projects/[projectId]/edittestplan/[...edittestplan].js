@@ -1,71 +1,96 @@
-import React from "react";
-import {
-  Divider,
-  FormControl,
-  MenuItem,
-  Select,
-  Grid,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Divider, FormControl, MenuItem, Select, Grid } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import FormHelperText from "@mui/material/FormHelperText";
-import { createModule } from "../../../api/modules";
+import { fetchModules } from "../../../api/modules";
+import { updateTestPlan, showTestPlan } from "../../../api/testPlan";
 import { useAuth } from "hooks/useAuth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
+import { useSearch } from "context/searchContext";
+import SelectInput from "@core/components/input/select";
 
 const schema = yup.object().shape({
-  title: yup.string().required("Please fill the name"),
-  description: yup.string().required("Please fill the description"),
-  status: yup.string().required("Please select a status"),
+  title: yup.string().required("Please fill the title"),
+  section: yup.array().of(yup.string().required("Please select a module")),
 });
 
 const defaultValues = {
   title: "",
-  description: "",
-  status: "",
+  section: [],
 };
 
-function AddModule() {
+function EditTestPlan() {
+  const [options, setOptions] = useState([]);
   const auth = useAuth();
+  const searchValue = useSearch();
   const router = useRouter();
-  const { addmodule } = router.query;
+  const { edittestplan, projectId } = router.query;
 
   const {
     control,
     setError,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues,
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    const fetchTestPlan = async () => {
+      await showTestPlan(auth.user.auth_token, projectId, edittestplan[0]).then(
+        ({ data }) => {
+          reset(data);
+        }
+      );
+    };
+    fetchTestPlan();
+  }, [reset]);
+
+  useEffect(() => {
+    fetchModules(auth.user.auth_token, projectId, searchValue).then(
+      ({ data }) => {
+        setOptions(
+          data.map((module) => {
+            return { label: module.title, value: module.id };
+          })
+        );
+      }
+    );
+  }, []);
+
   const onSubmit = (data) => {
     let payload = {
       sections: {
         title: data.title,
-        status: data.status,
-        description: data.description,
+        section_ids: data.section.map((value) => {
+          return value;
+        }),
       },
     };
-    createModule(auth.user.auth_token, addmodule, payload).then(
-      ({ message }) => {
-        toast.success(message);
-        router.push(`/project/modules/${addmodule}`);
-      }
-    );
+    updateTestPlan(
+      auth.user.auth_token,
+      projectId,
+      edittestplan[0],
+      payload
+    ).then(({ message }) => {
+      toast.success(message);
+      router.push(`/projects/${projectId}/testplans`);
+    });
   };
 
   return (
     <>
       <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <h3 style={{ margin: "5px 0" }}>Add Module</h3>
+          <h3 style={{ margin: "5px 0" }}>Edit Test Plan</h3>
           <div
             style={{
               display: "flex",
@@ -75,13 +100,13 @@ function AddModule() {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => router.push(`/project/modules/${addmodule}`)}
+              onClick={() => router.push(`/project/${projectId}/testplans`)}
             >
               Cancel
             </Button>
 
             <Button type="submit" variant="contained">
-              Create
+              Update
             </Button>
           </div>
         </div>
@@ -94,7 +119,7 @@ function AddModule() {
           alignContent={"center"}
           justifyContent={"center"}
         >
-          <Grid item xs={4}>
+          <Grid item xs={8}>
             Title
             <Controller
               name="title"
@@ -115,59 +140,29 @@ function AddModule() {
               )}
             />
           </Grid>
-          <Grid item xs={4}>
-            Status
+          <Grid item xs={8}>
+            Add Module
             <FormControl fullWidth sx={{ mb: 6 }}>
-              {/* <InputLabel id="role-select">Select Role</InputLabel> */}
               <Controller
-                name="status"
+                name="section"
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <Select
-                    size="small"
+                  <SelectInput
+                    size={"small"}
                     fullWidth
                     onBlur={onBlur}
                     onChange={onChange}
-                    error={Boolean(errors.status)}
-                    placeholder="Select status"
                     value={value}
-                  >
-                    <MenuItem value="started">Started</MenuItem>
-                    <MenuItem value="inprogress">Inprogress</MenuItem>
-                    <MenuItem value="completed">Completed</MenuItem>
-                    <MenuItem value="cancelled">Cancelled</MenuItem>
-                  </Select>
+                    multiple={true}
+                    placeholder={"Select Module"}
+                    error={Boolean(errors.section)}
+                    helperText={errors.section ? errors.section.message : ""}
+                    options={options}
+                  />
                 )}
               />
-              {errors.status && (
-                <FormHelperText sx={{ color: "error.main" }}>
-                  {errors.status.message}
-                </FormHelperText>
-              )}
             </FormControl>
-          </Grid>
-          <Grid item xs={8}>
-            Description
-            <Controller
-              name="description"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <TextInput
-                  multi={true}
-                  rows={4}
-                  fullWidth
-                  size={"small"}
-                  placeholder={"Enter Module Description"}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  errors={Boolean(errors.description)}
-                  helperText={errors.description && errors.description.message}
-                />
-              )}
-            />
           </Grid>
         </Grid>
       </form>
@@ -175,4 +170,4 @@ function AddModule() {
   );
 }
 
-export default AddModule;
+export default EditTestPlan;

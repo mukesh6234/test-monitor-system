@@ -48,14 +48,14 @@ function TestCaseDialogue(props) {
               {props.data.updated_by?.name ? (
                 <>
                   Updated by:
-                  <span style={{ color: "#9155FD" }}>
+                  <span style={{ color: "#9155FD",marginLeft: 5 }}>
                     {titleize(props.data.updated_by?.name)}
                   </span>
                 </>
               ) : (
                 <>
                   Created by:
-                  <span style={{ color: "#9155FD" }}>
+                  <span style={{ color: "#9155FD",marginLeft: 5 }}>
                     {titleize(props.data.created_by?.name)}
                   </span>
                 </>
@@ -106,7 +106,7 @@ function TestCaseDialogue(props) {
             Steps
           </Typography>
 
-          <Timeline>
+          <Timeline style={{padding:0}}>
             {props.data.steps.map((step, index) => (
               <TimelineItem key={index}>
                 <TimelineSeparator>

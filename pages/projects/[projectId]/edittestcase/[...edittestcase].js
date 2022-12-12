@@ -12,6 +12,7 @@ import Icon from "@core/components/icon";
 import SelectInput from "@core/components/input/select";
 import TextInput from "@core/components/input/textInput";
 import { fetchModules } from "../../../api/modules";
+import { useSearch } from "context/searchContext";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
@@ -39,8 +40,8 @@ function EditTestCases() {
   const [options, setOptions] = useState([]);
   const auth = useAuth();
   const router = useRouter();
-  const { edittestcase } = router.query;
-  console.log(router, "edittestcase");
+  const { edittestcase,projectId } = router.query;
+  const searchValue = useSearch();
 
   const {
     control,
@@ -60,7 +61,7 @@ function EditTestCases() {
   });
 
   useEffect(() => {
-    fetchModules(auth.user.auth_token, edittestcase[0]).then(({ data }) => {
+    fetchModules(auth.user.auth_token, projectId,searchValue).then(({ data }) => {
       setOptions(
         data.map((module) => {
           return { label: module.title, value: module.id };
@@ -73,8 +74,8 @@ function EditTestCases() {
     const fetchTestCase = async () => {
       await showTestCase(
         auth.user.auth_token,
+        projectId,
         edittestcase[0],
-        edittestcase[1]
       ).then(({ data }) => {
         reset(data);
       });
@@ -97,12 +98,12 @@ function EditTestCases() {
     };
     updateTestCase(
       auth.user.auth_token,
+      projectId,
       edittestcase[0],
-      edittestcase[1],
       payload
     ).then(({ message }) => {
       toast.success(message);
-      router.push(`/project/testcases/${edittestcase[0]}`);
+      router.push(`/projects/${projectId}/testcases`);
     });
   };
 

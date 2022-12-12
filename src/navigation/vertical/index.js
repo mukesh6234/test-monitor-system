@@ -1,14 +1,15 @@
+import { getCookie } from 'cookies-next';
 
 export const primary = () => {
   return [
     {
       title: 'Projects',
-      icon: 'bx:envelope',
+      icon: 'bx:food-menu',
       path: '/projects'
     },
     {
       title: 'Users',
-      icon: 'bx:message',
+      icon: 'bx:user',
       path: '/users'
     }
   ];
@@ -19,21 +20,26 @@ export const secondary = (id) => {
   return [
     {
       title: 'Back',
-      icon: 'bx:envelope',
+      icon: 'bx-arrow-back',
       path: '/projects'
     },
     {
-      sectionTitle: 'Project Menues'
+      sectionTitle: getCookie("project-title") ?getCookie("project-title") : "Project Menus"
     },
     {
       title: 'Modules',
-      icon: 'bx:envelope',
+      icon: 'bx-transfer-alt',
       path: `/projects/${id}/modules`
     },
     {
       title: 'Test Cases',
-      icon: 'bx:envelope',
+      icon: 'bx-code-block',
       path: `/projects/${id}/testcases`
+    },
+    {
+      title: 'Test Plan',
+      icon: 'bx-task',
+      path: `/projects/${id}/testplans`
     },
   ]
 }

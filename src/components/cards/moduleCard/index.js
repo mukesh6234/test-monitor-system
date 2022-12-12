@@ -63,7 +63,7 @@ function ModuleCard(props) {
             title={props.title}
             placement="top"
             TransitionComponent={Zoom}
-            followCursor
+            TransitionProps={{ timeout: 500 }}
           >
             <Typography variant="h6">
               {SliceName(titleize(props.title))}
@@ -73,14 +73,14 @@ function ModuleCard(props) {
             {props.updated_by?.name ? (
               <>
                 Updated by:
-                <span style={{ color: "#9155FD" }}>
+                <span style={{ color: "#9155FD" ,marginLeft: 5}}>
                   {titleize(props.updated_by?.name)}
                 </span>
               </>
             ) : (
               <>
                 Created by:
-                <span style={{ color: "#9155FD" }}>
+                <span style={{ color: "#9155FD",marginLeft: 5 }}>
                   {titleize(props.created_by?.name)}
                 </span>
               </>
@@ -119,7 +119,7 @@ function ModuleCard(props) {
       <Divider />
       <div style={{ display: "flex" }}>
         <Link
-          href={`/project/modules/editmodule/${props.projectId}/${props.id}`}
+          href={`/projects/${props.projectId}/editmodule/${props.id}`}
           style={{
             textDecoration: "none",
             display: "flex",

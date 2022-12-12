@@ -32,17 +32,12 @@ const RoleColor = (value) => {
 };
 
 const renderIcon = (props) => {
-  const image = {
-    Tester: testerImage,
-    Developer: developerImage,
-    "Super Admin": adminImage,
-  };
 
   return (
     <>
-      {image[props.role_group.name] ? (
+      {props.image_path ? (
         <Image
-          src={image[props.role_group.name]}
+          src={props.image_path}
           alt="Role Image"
           height={60}
           width={60}

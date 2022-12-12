@@ -1,37 +1,34 @@
-import React from "react";
-import {
-  Divider,
-  FormControl,
-  MenuItem,
-  Select,
-  Grid,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Divider, FormControl, Grid } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import FormHelperText from "@mui/material/FormHelperText";
-import { createModule } from "../../../api/modules";
+import { fetchModules } from "../../api/modules";
+import { createTestPlan } from "../../api/testPlan";
 import { useAuth } from "hooks/useAuth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
+import { useSearch } from "context/searchContext";
+import SelectInput from "@core/components/input/select";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
-  section: yup.string().required("Please select a module"),
+  section: yup.array().of(yup.string().required("Please select a module")),
 });
 
 const defaultValues = {
   title: "",
-  description: "",
-  section: "",
+  section: [],
 };
 
-function EditTestPlan() {
+function AddTestPlan() {
+  const [options, setOptions] = useState([]);
   const auth = useAuth();
+  const searchValue = useSearch();
   const router = useRouter();
-  const { addmodule } = router.query;
+  const { projectId } = router.query;
 
   const {
     control,
@@ -44,17 +41,31 @@ function EditTestPlan() {
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    fetchModules(auth.user.auth_token, projectId, searchValue).then(
+      ({ data }) => {
+        setOptions(
+          data.map((module) => {
+            return { label: module.title, value: module.id };
+          })
+        );
+      }
+    );
+  }, []);
+
   const onSubmit = (data) => {
     let payload = {
       sections: {
         title: data.title,
-        section: data.section,
+        section_ids: data.section.map((value) => {
+          return value;
+        }),
       },
     };
-    createModule(auth.user.auth_token, addmodule, payload).then(
+    createTestPlan(auth.user.auth_token, projectId, payload).then(
       ({ message }) => {
         toast.success(message);
-        router.push(`/project/modules/${addmodule}`);
+        router.push(`/projects/${projectId}/testplans`);
       }
     );
   };
@@ -73,7 +84,7 @@ function EditTestPlan() {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => router.push(`/project/testplan`)}
+              onClick={() => router.push(`/projects/${projectId}/testplans`)}
             >
               Cancel
             </Button>
@@ -114,63 +125,33 @@ function EditTestPlan() {
             />
           </Grid>
           <Grid item xs={8}>
-          Add Module
+            Add Module
             <FormControl fullWidth sx={{ mb: 6 }}>
-              {/* <InputLabel id="role-select">Select Role</InputLabel> */}
               <Controller
                 name="section"
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <Select
-                    size="large"
+                  <SelectInput
+                    size={"small"}
                     fullWidth
                     onBlur={onBlur}
                     onChange={onChange}
-                    error={Boolean(errors.section)}
-                    placeholder="Select Module"
                     value={value}
-                  >
-                    <MenuItem value="started">Started</MenuItem>
-                    <MenuItem value="inprogress">Inprogress</MenuItem>
-                    <MenuItem value="completed">Completed</MenuItem>
-                    <MenuItem value="cancelled">Cancelled</MenuItem>
-                  </Select>
+                    multiple={true}
+                    placeholder={"Select Module"}
+                    error={Boolean(errors.section)}
+                    helperText={errors.section ? errors.section.message : ""}
+                    options={options}
+                  />
                 )}
               />
-              {errors.section && (
-                <FormHelperText sx={{ color: "error.main" }}>
-                  {errors.section.message}
-                </FormHelperText>
-              )}
             </FormControl>
           </Grid>
-          {/* <Grid item xs={8}>
-            Description
-            <Controller
-              name="description"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <TextInput
-                  multi={true}
-                  rows={4}
-                  fullWidth
-                  size={"small"}
-                  placeholder={"Enter Module Description"}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  errors={Boolean(errors.description)}
-                  helperText={errors.description && errors.description.message}
-                />
-              )}
-            />
-          </Grid> */}
         </Grid>
       </form>
     </>
   );
 }
 
-export default EditTestPlan;
+export default AddTestPlan;

@@ -38,14 +38,14 @@ function ModuleDialogue(props) {
               {props.moduleData.updated_by?.name ? (
                 <>
                   Updated by:
-                  <span style={{ color: "#9155FD" }}>
+                  <span style={{ color: "#9155FD", marginLeft: 5 }}>
                     {titleize(props.moduleData.updated_by?.name)}
                   </span>
                 </>
               ) : (
                 <>
                   Created by:
-                  <span style={{ color: "#9155FD" }}>
+                  <span style={{ color: "#9155FD", marginLeft: 5 }}>
                     {titleize(props.moduleData.created_by?.name)}
                   </span>
                 </>
@@ -73,7 +73,9 @@ function ModuleDialogue(props) {
             </Typography>
             <Typography variant="caption">
               No.of test case:
-              <span style={{ fontWeight: 600, fontSize: "1rem" }}>
+              <span
+                style={{ fontWeight: 600, fontSize: "1rem", marginLeft: 5 }}
+              >
                 {props.moduleData.test_cases_count
                   ? props.moduleData.test_cases_count
                   : 0}

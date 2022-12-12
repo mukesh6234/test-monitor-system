@@ -144,7 +144,7 @@ export default function Project() {
           <Lottie
             animationData={noData}
             style={{
-              width: "50%",
+              width: "40%",
             }}
           />
         </div>

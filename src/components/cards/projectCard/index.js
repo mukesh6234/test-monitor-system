@@ -9,6 +9,7 @@ import Link from "next/link";
 import Tooltip from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
 import Icon from "@core/components/icon";
+import { setCookie } from 'cookies-next';
 
 const Divider = styled(MuiDivider)(({ theme }) => ({
   margin: 0,
@@ -35,6 +36,7 @@ const StyledLink = styled("a")(({ theme }) => ({
 }));
 
 function ProjectCard(props) {
+  
   return (
     <Card style={{ padding: 10, display: "grid", gridAutoRows: "auto" }}>
       <div
@@ -54,7 +56,7 @@ function ProjectCard(props) {
               title={props.title}
               placement="top"
               TransitionComponent={Zoom}
-              followCursor
+              TransitionProps={{ timeout: 500 }}
             >
               <Typography style={{ fontSize: "1rem" }}>
                 {SliceName(titleize(props.title))}
@@ -64,14 +66,14 @@ function ProjectCard(props) {
               {props.updated_by ? (
                 <>
                   Updated by:
-                  <span style={{ color: "#9155FD" }}>
+                  <span style={{ color: "#9155FD" ,marginLeft: 5}}>
                     {titleize(props.updated_by?.name)}
                   </span>
                 </>
               ) : (
                 <>
                   Created by:
-                  <span style={{ color: "#9155FD" }}>
+                  <span style={{ color: "#9155FD",marginLeft: 5 }}>
                     {titleize(props.created_by?.name)}
                   </span>
                 </>
@@ -112,6 +114,7 @@ function ProjectCard(props) {
       <div style={{ display: "flex" }}>
         <Link
           href={`/projects/${props.id}/modules`}
+          onClick={() =>{setCookie("project-title",props.title)}}
           style={{
             textDecoration: "none",
             display: "flex",
@@ -129,8 +132,10 @@ function ProjectCard(props) {
           </StyledLink>
         </Link>
         <Divider flexItem />
+        
         <Link
           href={`/projects/${props.id}/testcases`}
+          onClick={() =>{setCookie("project-title",props.title)}}
           style={{
             textDecoration: "none",
             display: "flex",

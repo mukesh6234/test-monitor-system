@@ -18,7 +18,7 @@ const FallbackSpinner = ({ sx }) => {
         ...sx
       }}
     >
-      <Image src={katoIcon} alt="Setting" height={100} width={100} />
+      <Image src={katoIcon} alt="Setting" height={100}  />
       <CircularProgress disableShrink sx={{ mt: 6 }} />
     </Box>
   )
