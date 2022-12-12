@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "default": "katomaran-website"
+  },
+  "targets": {
+    "katomaran-website": {
+      "hosting": {
+        "kato-test-monit": ["kato-test-monit"]
+      }
+    }
+  }
+}
