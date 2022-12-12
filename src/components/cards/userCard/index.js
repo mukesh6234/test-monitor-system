@@ -24,9 +24,8 @@ const StatusColor = (value) => {
 const RoleColor = (value) => {
   const colors = {
     "Super Admin": "primary",
-    Admin: "info",
-    Tester: "secondary",
-    Developer: "error",
+    Tester: "info",
+    Developer: "success",
   };
 
   return colors[value];

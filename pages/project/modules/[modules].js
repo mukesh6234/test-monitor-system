@@ -77,7 +77,7 @@ function Modules() {
   return (
     <>
       <PageHeader {...pageHeaderProps} />
-      {!loading && totalEntries === 0  (
+      {!loading && totalEntries == 0 && (
         <div
           style={{
             display: "flex",

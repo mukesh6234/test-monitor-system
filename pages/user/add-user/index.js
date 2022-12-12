@@ -191,6 +191,7 @@ function AddUser() {
                     fullWidth
                     onBlur={onBlur}
                     onChange={onChange}
+                    defaultValue={"active"}
                     error={Boolean(errors.role)}
                     placeholder="Select status"
                     value={value}

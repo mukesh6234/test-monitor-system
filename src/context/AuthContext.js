@@ -80,6 +80,7 @@ const AuthProvider = ({ children }) => {
     router.push("/login");
   };
 console.log(user,"useruser");
+
   const values = {
     user,
     loading,

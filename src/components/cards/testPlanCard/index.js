@@ -44,7 +44,6 @@ function TestPlanCard(props) {
         style={{
           display: "flex",
           justifyContent: "space-between",
-        //   alignItems: "center",
         }}
       >
         <div>
@@ -77,7 +76,7 @@ function TestPlanCard(props) {
             )}{" "}
           </Typography>
         </div>
-        <Icon icon="bx-edit"  fontSize={20} />
+       <div   onClick={() => router.push(`/project/testplan/edittestplan`)} style={{cursor:"pointer"}}>  <StyledLink><Icon icon="bx-edit"  fontSize={20} /></StyledLink></div>
       </div>
       <div
         style={{
@@ -107,7 +106,6 @@ function TestPlanCard(props) {
       <Divider />
       <div style={{ display: "flex" }}>
         <div
-        //   href={`/project/modules/editmodule/${props.projectId}/${props.id}`}
           style={{
             textDecoration: "none",
             display: "flex",

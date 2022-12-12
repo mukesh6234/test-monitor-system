@@ -27,11 +27,7 @@ for (let i = 0; i < 12; i++) {
 }
 
 function TestPlan() {
-  // const [moduleList, setModuleList] = useState([]);
-  // const [moduleData, setModuleData] = useState();
   const [formOpen, setFormOpen] = useState(false);
-  // const [totalEntries, setTotalEntries] = useState(0);
-  // const [loading, setLoading] = useState(false);
   const router = useRouter();
   const auth = useAuth();
   const searchValue = useSearch();
@@ -63,7 +59,7 @@ function TestPlan() {
   const pageHeaderProps = {
     title: "Test Plan",
     buttonName: "New Test Plan",
-    navigate: `/project/modules/addmodule/${modules}`,
+    navigate: `/project/testplan/newtestplan`,
   };
 
   // const moduleCardProps = {
