@@ -18,9 +18,10 @@ export default function TestCases() {
   const [totalEntries, setTotalEntries] = useState(0);
   const [loading, setLoading] = useState(true);
   const auth = useAuth();
-  const router = useRouter();
   const searchValue = useSearch();
-  const { testcase } = router.query;
+
+  const router = useRouter();
+  const { projectId } = router.query;
 
   useEffect(() => {
     fetchTestCaseIndex();
@@ -28,7 +29,7 @@ export default function TestCases() {
 
   const fetchTestCaseIndex = async () => {
     if (auth.user.role_group) {
-      await fetchTestCases(auth.user.auth_token, searchValue, testcase).then(
+      await fetchTestCases(auth.user.auth_token, searchValue, projectId).then(
         ({ data, total_entries }) => {
           setLoading(false);
           setTotalEntries(total_entries);
@@ -53,7 +54,7 @@ export default function TestCases() {
   const pageHeaderProps = {
     title: "Test Cases",
     buttonName: "Add Test Case",
-    navigate: `/project/testcases/addtestcases/${testcase}`,
+    navigate: `/project/testcases/addtestcases/${projectId}`,
   };
 
   const testDialogueProps = {
@@ -85,7 +86,7 @@ export default function TestCases() {
         <DataGrid
           autoHeight
           rows={testCases}
-          columns={testCaseColumns(testcase, router, handleView)}
+          columns={testCaseColumns(projectId, router, handleView)}
           pagination={false}
           disableColumnMenu
           disableSelectionOnClick

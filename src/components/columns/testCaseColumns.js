@@ -139,7 +139,7 @@ export const testCaseColumns = (testcase, router, handleView) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {updated_by ? (
               <>
-                {" "}
+                
                 {renderUpdate(row)}
                 <Box
                   sx={{

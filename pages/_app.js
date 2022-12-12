@@ -13,9 +13,6 @@ import "../src/configs/i18n";
 import { defaultACLObj } from "configs/acl";
 import themeConfig from "configs/themeConfig";
 
-// ** Fake-DB Import
-// import "src/@fake-db";
-
 // ** Third Party Import
 import { Toaster } from "react-hot-toast";
 

@@ -37,19 +37,19 @@ function ModuleDialogue(props) {
             <Typography variant="caption">
               {props.moduleData.updated_by?.name ? (
                 <>
-                  Updated by:{" "}
+                  Updated by:
                   <span style={{ color: "#9155FD" }}>
                     {titleize(props.moduleData.updated_by?.name)}
-                  </span>{" "}
+                  </span>
                 </>
               ) : (
                 <>
-                  Created by:{" "}
+                  Created by:
                   <span style={{ color: "#9155FD" }}>
                     {titleize(props.moduleData.created_by?.name)}
                   </span>
                 </>
-              )}{" "}
+              )}
             </Typography>
           </div>
           <div
@@ -72,7 +72,7 @@ function ModuleDialogue(props) {
               }
             </Typography>
             <Typography variant="caption">
-              No.of test case:{" "}
+              No.of test case:
               <span style={{ fontWeight: 600, fontSize: "1rem" }}>
                 {props.moduleData.test_cases_count
                   ? props.moduleData.test_cases_count

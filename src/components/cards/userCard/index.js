@@ -108,7 +108,7 @@ function UserCard(props) {
                 skin="light"
                 color={RoleColor(props.role_group.name)}
                 label={props.role_group.name}
-              />{" "}
+              />
             </Typography>
           </Box>
         </Box>

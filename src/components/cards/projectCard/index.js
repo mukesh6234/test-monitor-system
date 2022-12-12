@@ -63,14 +63,14 @@ function ProjectCard(props) {
             <Typography variant="caption">
               {props.updated_by ? (
                 <>
-                  Updated by:{" "}
+                  Updated by:
                   <span style={{ color: "#9155FD" }}>
                     {titleize(props.updated_by?.name)}
-                  </span>{" "}
+                  </span>
                 </>
               ) : (
                 <>
-                  Created by:{" "}
+                  Created by:
                   <span style={{ color: "#9155FD" }}>
                     {titleize(props.created_by?.name)}
                   </span>
@@ -92,7 +92,7 @@ function ProjectCard(props) {
         >
           <div>
             <Typography sx={{ fontWeight: 500 }} variant="h6">
-              {" "}
+              
               {props.test_cases_count}
             </Typography>
 
@@ -100,7 +100,7 @@ function ProjectCard(props) {
           </div>
           <div>
             <Typography sx={{ fontWeight: 500 }} variant="h6">
-              {" "}
+              
               {props.test_plans_count}
             </Typography>
 
@@ -111,7 +111,7 @@ function ProjectCard(props) {
       <Divider />
       <div style={{ display: "flex" }}>
         <Link
-          href={`/project/modules/${props.id}`}
+          href={`/projects/${props.id}/modules`}
           style={{
             textDecoration: "none",
             display: "flex",
@@ -130,7 +130,7 @@ function ProjectCard(props) {
         </Link>
         <Divider flexItem />
         <Link
-          href={`/project/testcases/${props.id}`}
+          href={`/projects/${props.id}/testcases`}
           style={{
             textDecoration: "none",
             display: "flex",
@@ -144,7 +144,7 @@ function ProjectCard(props) {
             <span style={{ marginRight: 5, textAlign: "center" }}>
               <Icon icon="material-symbols:fact-check-outline" fontSize={24} />
             </span>
-            Test Cases{" "}
+            Test Cases
           </StyledLink>
         </Link>
       </div>

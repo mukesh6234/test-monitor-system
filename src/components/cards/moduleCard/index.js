@@ -72,19 +72,19 @@ function ModuleCard(props) {
           <Typography variant="caption">
             {props.updated_by?.name ? (
               <>
-                Updated by:{" "}
+                Updated by:
                 <span style={{ color: "#9155FD" }}>
                   {titleize(props.updated_by?.name)}
-                </span>{" "}
+                </span>
               </>
             ) : (
               <>
-                Created by:{" "}
+                Created by:
                 <span style={{ color: "#9155FD" }}>
                   {titleize(props.created_by?.name)}
                 </span>
               </>
-            )}{" "}
+            )}
           </Typography>
         </div>
         <Typography sx={{ fontWeight: 500 }}>
@@ -109,7 +109,7 @@ function ModuleCard(props) {
       >
         <div>
           <Typography sx={{ fontWeight: 500 }} variant="h6">
-            {" "}
+            
             {props.test_cases_count}
           </Typography>
 
@@ -130,7 +130,7 @@ function ModuleCard(props) {
         >
           <StyledLink>
             <span style={{ marginRight: 5, }}>
-              {" "}
+              
               <Icon icon="bx:pencil" fontSize={20} />
             </span>
             Edit

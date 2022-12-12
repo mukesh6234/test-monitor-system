@@ -98,7 +98,7 @@ function TestPlan() {
         
             {/* return ( */}
               <Grid item xs={12} sm={6} md={3}>
-                <TestPlanCard />{" "}
+                <TestPlanCard />
               </Grid>
             {/* ); */}
        

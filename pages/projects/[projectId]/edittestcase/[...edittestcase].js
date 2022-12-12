@@ -267,8 +267,8 @@ function EditTestCases() {
               }}
               onClick={handleSteps}
             >
-              {" "}
-              <Icon icon="bx:plus" fontSize={20} />{" "}
+              
+              <Icon icon="bx:plus" fontSize={20} />
               <span style={{ paddingLeft: 10 }}>Add Steps</span>
             </Button>
           </Grid>

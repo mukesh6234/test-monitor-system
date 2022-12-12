@@ -1,17 +1,39 @@
 
-const navigation = () => {
+export const primary = () => {
   return [
     {
-      title: "Project",
-      icon: "bx:food-menu",
-      path: "/project",
+      title: 'Projects',
+      icon: 'bx:envelope',
+      path: '/projects'
     },
     {
-      title: "User",
-      path: "/user",
-      icon: "bx:crown",
-    },
+      title: 'Users',
+      icon: 'bx:message',
+      path: '/users'
+    }
   ];
 };
 
-export default navigation;
+
+export const secondary = (id) => {
+  return [
+    {
+      title: 'Back',
+      icon: 'bx:envelope',
+      path: '/projects'
+    },
+    {
+      sectionTitle: 'Project Menues'
+    },
+    {
+      title: 'Modules',
+      icon: 'bx:envelope',
+      path: `/projects/${id}/modules`
+    },
+    {
+      title: 'Test Cases',
+      icon: 'bx:envelope',
+      path: `/projects/${id}/testcases`
+    },
+  ]
+}

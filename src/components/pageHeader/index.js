@@ -28,7 +28,7 @@ function PageHeader(props) {
               : router.replace(props.navigate)
           }
         >
-          <Icon icon="bx:plus" />{" "}
+          <Icon icon="bx:plus" />
           <span style={{ fontWeight: 600, marginLeft: 1,fontSize:"0.9rem" }}>
             {props.buttonName}
           </span>

@@ -76,7 +76,7 @@ function User() {
           userLists.map((userList, index) => {
             return (
               <Grid item xs={12} sm={6} md={3} key={index}>
-                <UserCard {...userList} />{" "}
+                <UserCard {...userList} />
               </Grid>
             );
           })

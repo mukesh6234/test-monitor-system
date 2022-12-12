@@ -35,10 +35,10 @@ function Modules() {
   const router = useRouter();
   const auth = useAuth();
   const searchValue = useSearch();
-  const { modules } = router.query;
+  const { projectId } = router.query;
 
   useEffect(() => {
-    fetchModules(auth.user.auth_token, searchValue, modules)
+    fetchModules(auth.user.auth_token, searchValue, projectId)
       .then(({ data, total_entries }) => {
         setLoading(false);
         setTotalEntries(total_entries);
@@ -54,7 +54,7 @@ function Modules() {
   };
 
   const handleView = (id) => {
-    showModules(auth.user.auth_token, modules, id).then(({ data }) => {
+    showModules(auth.user.auth_token, projectId, id).then(({ data }) => {
       setModuleData(data);
       setFormOpen(!formOpen);
     });
@@ -63,11 +63,11 @@ function Modules() {
   const pageHeaderProps = {
     title: "Modules",
     buttonName: "Add Module",
-    navigate: `/project/modules/addmodule/${modules}`,
+    navigate: `/project/modules/addmodule/${projectId}`,
   };
 
   const moduleCardProps = {
-    projectId: modules,
+    projectId: projectId,
     handleView,
     handleClose,
     moduleData,
@@ -102,7 +102,7 @@ function Modules() {
           moduleList.map((module, index) => {
             return (
               <Grid item xs={12} sm={6} md={3} key={index}>
-                <ModuleCard {...module} {...moduleCardProps} />{" "}
+                <ModuleCard {...module} {...moduleCardProps} />
               </Grid>
             );
           })

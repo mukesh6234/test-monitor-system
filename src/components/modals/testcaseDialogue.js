@@ -47,19 +47,19 @@ function TestCaseDialogue(props) {
             <Typography variant="caption">
               {props.data.updated_by?.name ? (
                 <>
-                  Updated by:{" "}
+                  Updated by:
                   <span style={{ color: "#9155FD" }}>
                     {titleize(props.data.updated_by?.name)}
-                  </span>{" "}
+                  </span>
                 </>
               ) : (
                 <>
-                  Created by:{" "}
+                  Created by:
                   <span style={{ color: "#9155FD" }}>
                     {titleize(props.data.created_by?.name)}
                   </span>
                 </>
-              )}{" "}
+              )}
             </Typography>
           </div>
           {/* <div
@@ -82,7 +82,7 @@ function TestCaseDialogue(props) {
               }
             </Typography>
             <Typography variant="caption">
-              No.of test case:{" "}
+              No.of test case:
               <span style={{ fontWeight: 600, fontSize: "1rem" }}>10</span>
             </Typography>
           </div> */}
