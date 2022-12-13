@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { fetchModules, showModules } from "../../api/modules";
+import { fetchModules, showModules } from "../../../api/modules";
 import { useAuth } from "hooks/useAuth";
 import PageHeader from "components/pageHeader";
 import { Grid } from "@mui/material";
@@ -8,13 +8,13 @@ import ModuleCard from "components/cards/moduleCard";
 import ModuleDialogue from "components/modals/moduleDialogue";
 import { useSearch } from "context/searchContext";
 import Lottie from "lottie-react";
-import noData from "../../../public/images/lottie/nodata.json";
+import noData from "../../../../public/images/lottie/nodata.json";
 import { Skeleton } from "@mui/material";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
   skeleton.push(
-    <Grid item xs={12} sm={6} md={3} key={i}>
+    <Grid item xs={12} sm={6} md={4} xl={3} key={i}>
       <Skeleton sx={{ height: 200 }} animation="wave" variant="rectangular" />
       <Skeleton
         animation="wave"
@@ -71,7 +71,7 @@ function Modules() {
   const pageHeaderProps = {
     title: "Modules",
     buttonName: "Add Module",
-    navigate: `/projects/${projectId}/addmodule/`,
+    navigate: `/projects/${projectId}/modules/addmodule/`,
   };
 
   const moduleCardProps = {
@@ -109,7 +109,7 @@ function Modules() {
           moduleList &&
           moduleList.map((module, index) => {
             return (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
                 <ModuleCard {...module} {...moduleCardProps} />
               </Grid>
             );

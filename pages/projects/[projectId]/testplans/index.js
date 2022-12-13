@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { fetchTestPlans, showTestPlan } from "../../api/testPlan";
+import { fetchTestPlans, showTestPlan } from "../../../api/testPlan";
 import { useAuth } from "hooks/useAuth";
 import PageHeader from "components/pageHeader";
 import { Grid } from "@mui/material";
 import { useSearch } from "context/searchContext";
 import Lottie from "lottie-react";
-import noData from "../../../public/images/lottie/nodata.json";
+import noData from "../../../../public/images/lottie/nodata.json";
 import { Skeleton } from "@mui/material";
 import TestPlanCard from "components/cards/testPlanCard";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
   skeleton.push(
-    <Grid item xs={12} sm={6} md={3} key={i}>
+    <Grid item xs={12} sm={6} md={4} xl={3} key={i}>
       <Skeleton sx={{ height: 200 }} animation="wave" variant="rectangular" />
       <Skeleton
         animation="wave"
@@ -39,7 +39,6 @@ function TestPlans() {
       .then(({ data, total_entries }) => {
         setLoading(false);
         setTotalEntries(total_entries);
-        console.log(data, "testPlan");
         setTestPlanLists(data);
       })
       .catch((err) => {
@@ -50,7 +49,7 @@ function TestPlans() {
   const pageHeaderProps = {
     title: "Test Plan",
     buttonName: "New Test Plan",
-    navigate: `/projects/${projectId}/addtestplan`,
+    navigate: `/projects/${projectId}/testplans/addtestplan`,
   };
 
   return (
@@ -79,7 +78,7 @@ function TestPlans() {
         ) : (
           testPlanLists.map((testPlanList,index) => {
             return (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
                 <TestPlanCard {...{ ...testPlanList, projectId }} />
               </Grid>
             );

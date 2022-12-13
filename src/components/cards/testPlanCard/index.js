@@ -76,7 +76,9 @@ function TestPlanCard(props) {
           </Typography>
         </div>
         <div
-          onClick={() => router.push(`/projects/${props.projectId}/edittestplan/${props.id}`)}
+          onClick={() =>
+            router.push(`/projects/${props.projectId}/testplans/${props.id}/edittestplan`)
+          }
           style={{ cursor: "pointer" }}
         >
           {" "}
@@ -95,14 +97,16 @@ function TestPlanCard(props) {
       >
         <div>
           <Typography sx={{ fontWeight: 500 }} variant="h6">
-            {9}
+            {props.no_of_sections}
           </Typography>
 
           <Typography sx={{ fontWeight: 500 }}>No. of module</Typography>
         </div>
         <div>
           <Typography sx={{ fontWeight: 500 }} variant="h6">
-            {5}
+            <span style={{ padding: "0 5px" }}>{props.passed_test_cases}</span>
+            {"/"}
+            <span style={{ padding: "0 5px" }}>{props.test_cases}</span>
           </Typography>
 
           <Typography sx={{ fontWeight: 500 }}>No. of Passed</Typography>

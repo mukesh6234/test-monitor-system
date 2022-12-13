@@ -219,7 +219,7 @@ export const testCaseColumns = (projectId, router, handleView) => {
             style={{ padding: "15px" }}
             onClick={() =>
               router.push(
-                `/projects/${projectId}/edittestcase/${row.id}`
+                `/projects/${projectId}/testcases/${row.id}/edittestcase`
               )
             }
           >

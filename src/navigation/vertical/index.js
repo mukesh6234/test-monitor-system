@@ -21,7 +21,7 @@ export const secondary = (id) => {
     {
       title: 'Back',
       icon: 'bx-arrow-back',
-      path: '/projects'
+      path: '/'
     },
     {
       sectionTitle: getCookie("project-title") ?getCookie("project-title") : "Project Menus"

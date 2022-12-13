@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Divider, FormControl, Grid } from "@mui/material";
+import { Divider, FormControl, Grid ,OutlinedInput} from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,6 +13,8 @@ import SelectInput from "@core/components/input/select";
 import TextInput from "@core/components/input/textInput";
 import { fetchModules } from "../../../api/modules";
 import { useSearch } from "context/searchContext";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
@@ -40,8 +42,9 @@ function EditTestCases() {
   const [options, setOptions] = useState([]);
   const auth = useAuth();
   const router = useRouter();
-  const { edittestcase,projectId } = router.query;
   const searchValue = useSearch();
+  const { edittestcase,projectId } = router.query;
+  console.log(router, "edittestcase");
 
   const {
     control,
@@ -75,7 +78,7 @@ function EditTestCases() {
       await showTestCase(
         auth.user.auth_token,
         projectId,
-        edittestcase[0],
+        edittestcase[0]
       ).then(({ data }) => {
         reset(data);
       });
@@ -99,16 +102,18 @@ function EditTestCases() {
     updateTestCase(
       auth.user.auth_token,
       projectId,
-      edittestcase[0],
+        edittestcase[0],
       payload
     ).then(({ message }) => {
       toast.success(message);
-      router.push(`/projects/${projectId}/testcases`);
+      router.push(`/projects/${projectId}/testcases`)
     });
   };
 
   const handleSteps = () => {
-    append({ description: "" });
+    if (fields[fields.length - 1].description !== "") {
+      append({ description: "" });
+    }
   };
 
   return (
@@ -125,7 +130,7 @@ function EditTestCases() {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => router.back()}
+              onClick={() => router.push(`/projects/${projectId}/testcases`)}
             >
               Cancel
             </Button>
@@ -242,7 +247,7 @@ function EditTestCases() {
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <TextInput
+                  <OutlinedInput
                     fullWidth
                     size={"small"}
                     placeholder={"Enter testing steps..."}
@@ -251,7 +256,20 @@ function EditTestCases() {
                     onChange={onChange}
                     errors={Boolean(errors.steps)}
                     helperText={
-                      errors.steps && errors.steps[index].description.message
+                       errors.steps &&  errors?.steps?.[index]?.description?.message
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          edge="end"
+                          onClick={() => remove(index)}
+                        >
+                          <Icon
+                            fontSize={20}
+                            icon="bxs-trash"
+                          />
+                        </IconButton>
+                      </InputAdornment>
                     }
                   />
                 )}

@@ -12,7 +12,7 @@ import { Skeleton } from "@mui/material";
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
   skeleton.push(
-    <Grid item xs={12} sm={6} md={3} key={i}>
+    <Grid item xs={12} sm={6} md={4} xl={3} key={i}>
       <Skeleton sx={{ height: 80 }} animation="wave" variant="rectangular" />
       <Skeleton animation="wave" height={15} width="70%" />
     </Grid>
@@ -75,7 +75,7 @@ function User() {
           userLists &&
           userLists.map((userList, index) => {
             return (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
                 <UserCard {...userList} />
               </Grid>
             );

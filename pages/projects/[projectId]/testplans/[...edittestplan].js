@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
 import { useSearch } from "context/searchContext";
 import SelectInput from "@core/components/input/select";
+import MultiSelectInput from "@core/components/input/multiSelect";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
@@ -68,7 +69,7 @@ function EditTestPlan() {
 
   const onSubmit = (data) => {
     let payload = {
-      sections: {
+      test_plan: {
         title: data.title,
         section_ids: data.section.map((value) => {
           return value;
@@ -100,7 +101,7 @@ function EditTestPlan() {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => router.push(`/project/${projectId}/testplans`)}
+              onClick={() => router.push(`/projects/${projectId}/testplans`)}
             >
               Cancel
             </Button>
@@ -148,7 +149,7 @@ function EditTestPlan() {
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <SelectInput
+                  <MultiSelectInput
                     size={"small"}
                     fullWidth
                     onBlur={onBlur}

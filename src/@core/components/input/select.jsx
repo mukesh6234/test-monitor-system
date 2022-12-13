@@ -9,9 +9,7 @@ function SelectInput(props) {
     error,
     helperText,
     value,
-    placeholder,
     label,
-    multiple,
     options,
     onChange,
   } = props;
@@ -20,7 +18,6 @@ function SelectInput(props) {
     <>
       <Select
         size={size}
-        multiple={multiple}
         fullWidth={fullWidth}
         onBlur={onBlur}
         onChange={onChange}

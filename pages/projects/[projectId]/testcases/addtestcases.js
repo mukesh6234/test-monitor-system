@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Divider, FormControl, Grid } from "@mui/material";
+import { Divider, FormControl, Grid,OutlinedInput } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { createTestCase } from "../../api/testCases";
+import { createTestCase } from "../../../api/testCases";
 import { useAuth } from "hooks/useAuth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Icon from "@core/components/icon";
 import SelectInput from "@core/components/input/select";
 import TextInput from "@core/components/input/textInput";
-import { fetchModules } from "../../api/modules";
+import { fetchModules } from "../../../api/modules";
 import { useSearch } from "context/searchContext";
-
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
   description: yup.string().required("Please fill the description"),
   prerequisite: yup.string().required("Please fill the prerequisite"),
-  testing_steps: yup.array().of(
+  steps: yup.array().of(
     yup.object().shape({
-      steps: yup.string().required("Please fill the testing_steps"),
+      description: yup.string().required("Please fill the testing_steps"),
     })
   ),
   expected_result: yup.string().required("Please fill the expected_result"),
@@ -33,7 +34,7 @@ const defaultValues = {
   description: "",
   module: "",
   prerequisite: "",
-  testing_steps: [{ steps: "" }],
+  steps: [{ description: "" }],
   expected_result: "",
 };
 
@@ -41,10 +42,8 @@ function AddTestCases() {
   const [options, setOptions] = useState([]);
   const auth = useAuth();
   const router = useRouter();
-  const { projectId } = router.query;
   const searchValue = useSearch();
-
-  console.log(router,"addnewtestcase");
+  const { projectId } = router.query;
 
   const {
     control,
@@ -58,17 +57,20 @@ function AddTestCases() {
   });
 
   const { fields, append, remove } = useFieldArray({
-    name: "testing_steps",
+    name: "steps",
     control,
   });
+
   useEffect(() => {
-    fetchModules(auth.user.auth_token, projectId,searchValue).then(({ data }) => {
-      setOptions(
-        data.map((module) => {
-          return { label: module.title, value: module.id };
-        })
-      );
-    });
+    fetchModules(auth.user.auth_token, projectId, searchValue).then(
+      ({ data }) => {
+        setOptions(
+          data.map((module) => {
+            return { label: module.title, value: module.id };
+          })
+        );
+      }
+    );
   }, []);
 
   const onSubmit = (data) => {
@@ -79,8 +81,8 @@ function AddTestCases() {
         description: data.description,
         expected_result: data.expected_result,
         section_id: data.module,
-        steps: data.testing_steps.map((testStep) => {
-          return { description: testStep.steps };
+        steps: data.steps.map((testStep) => {
+          return { description: testStep.description };
         }),
       },
     };
@@ -93,7 +95,9 @@ function AddTestCases() {
   };
 
   const handleSteps = () => {
-    append({ steps: "" });
+    if (fields[fields.length - 1].description !== "") {
+      append({ description: "" });
+    }
   };
 
   return (
@@ -110,7 +114,7 @@ function AddTestCases() {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => router.back()}
+              onClick={() => router.push(`/projects/${projectId}/testcases`)}
             >
               Cancel
             </Button>
@@ -220,24 +224,35 @@ function AddTestCases() {
           </Grid>
           {fields.map((testingStep, index) => (
             <Grid item xs={12} key={index}>
-              {console.log(`testing_steps[${index}].steps`, "indexindex")}
               Testing Steps
               <Controller
-                name={`testing_steps.${index}.steps`}
+                name={`steps.${index}.description`}
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <TextInput
+                  <OutlinedInput
                     fullWidth
                     size={"small"}
                     placeholder={"Enter testing steps..."}
                     value={value}
                     onBlur={onBlur}
                     onChange={onChange}
-                    errors={Boolean(errors.testing_steps)}
+                    errors={Boolean(errors.steps)}
                     helperText={
-                      errors.testing_steps &&
-                      errors.testing_steps[index].steps.message
+                       errors.steps &&  errors?.steps?.[index]?.description?.message
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          edge="end"
+                          onClick={() => remove(index)}
+                        >
+                          <Icon
+                            fontSize={20}
+                            icon="bxs-trash"
+                          />
+                        </IconButton>
+                      </InputAdornment>
                     }
                   />
                 )}
@@ -254,7 +269,6 @@ function AddTestCases() {
               }}
               onClick={handleSteps}
             >
-              
               <Icon icon="bx:plus" fontSize={20} />
               <span style={{ paddingLeft: 10 }}>Add Steps</span>
             </Button>

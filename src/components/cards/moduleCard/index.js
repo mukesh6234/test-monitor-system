@@ -119,7 +119,7 @@ function ModuleCard(props) {
       <Divider />
       <div style={{ display: "flex" }}>
         <Link
-          href={`/projects/${props.projectId}/editmodule/${props.id}`}
+          href={`/projects/${props.projectId}/modules/${props.id}/editmodule`}
           style={{
             textDecoration: "none",
             display: "flex",

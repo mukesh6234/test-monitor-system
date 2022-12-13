@@ -1,32 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { Divider, FormControl, Grid } from "@mui/material";
+import React from "react";
+import {
+  Divider,
+  FormControl,
+  MenuItem,
+  Select,
+  Grid,
+} from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { fetchModules } from "../../api/modules";
-import { createTestPlan } from "../../api/testPlan";
+import FormHelperText from "@mui/material/FormHelperText";
+import { createModule } from "../../../api/modules";
 import { useAuth } from "hooks/useAuth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
-import { useSearch } from "context/searchContext";
-import SelectInput from "@core/components/input/select";
 
 const schema = yup.object().shape({
-  title: yup.string().required("Please fill the title"),
-  section: yup.array().of(yup.string().required("Please select a module")),
+  title: yup.string().required("Please fill the name"),
+  description: yup.string().required("Please fill the description"),
+  status: yup.string().required("Please select a status"),
 });
 
 const defaultValues = {
   title: "",
-  section: [],
+  description: "",
+  status: "",
 };
 
-function AddTestPlan() {
-  const [options, setOptions] = useState([]);
+function AddModule() {
   const auth = useAuth();
-  const searchValue = useSearch();
   const router = useRouter();
   const { projectId } = router.query;
 
@@ -41,31 +45,18 @@ function AddTestPlan() {
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    fetchModules(auth.user.auth_token, projectId, searchValue).then(
-      ({ data }) => {
-        setOptions(
-          data.map((module) => {
-            return { label: module.title, value: module.id };
-          })
-        );
-      }
-    );
-  }, []);
-
   const onSubmit = (data) => {
     let payload = {
       sections: {
         title: data.title,
-        section_ids: data.section.map((value) => {
-          return value;
-        }),
+        status: data.status,
+        description: data.description,
       },
     };
-    createTestPlan(auth.user.auth_token, projectId, payload).then(
+    createModule(auth.user.auth_token, projectId, payload).then(
       ({ message }) => {
         toast.success(message);
-        router.push(`/projects/${projectId}/testplans`);
+        router.push(`/projects/${projectId}/modules`);
       }
     );
   };
@@ -74,7 +65,7 @@ function AddTestPlan() {
     <>
       <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <h3 style={{ margin: "5px 0" }}>Add Test Plan</h3>
+          <h3 style={{ margin: "5px 0" }}>Add Module</h3>
           <div
             style={{
               display: "flex",
@@ -84,7 +75,7 @@ function AddTestPlan() {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => router.push(`/projects/${projectId}/testplans`)}
+              onClick={() => router.push(`/projects/${projectId}/modules`)}
             >
               Cancel
             </Button>
@@ -103,7 +94,7 @@ function AddTestPlan() {
           alignContent={"center"}
           justifyContent={"center"}
         >
-          <Grid item xs={8}>
+          <Grid item xs={4}>
             Title
             <Controller
               name="title"
@@ -124,29 +115,59 @@ function AddTestPlan() {
               )}
             />
           </Grid>
-          <Grid item xs={8}>
-            Add Module
+          <Grid item xs={4}>
+            Status
             <FormControl fullWidth sx={{ mb: 6 }}>
+              {/* <InputLabel id="role-select">Select Role</InputLabel> */}
               <Controller
-                name="section"
+                name="status"
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <SelectInput
-                    size={"small"}
+                  <Select
+                    size="small"
                     fullWidth
                     onBlur={onBlur}
                     onChange={onChange}
+                    error={Boolean(errors.status)}
+                    placeholder="Select status"
                     value={value}
-                    multiple={true}
-                    placeholder={"Select Module"}
-                    error={Boolean(errors.section)}
-                    helperText={errors.section ? errors.section.message : ""}
-                    options={options}
-                  />
+                  >
+                    <MenuItem value="started">Started</MenuItem>
+                    <MenuItem value="inprogress">Inprogress</MenuItem>
+                    <MenuItem value="completed">Completed</MenuItem>
+                    <MenuItem value="cancelled">Cancelled</MenuItem>
+                  </Select>
                 )}
               />
+              {errors.status && (
+                <FormHelperText sx={{ color: "error.main" }}>
+                  {errors.status.message}
+                </FormHelperText>
+              )}
             </FormControl>
+          </Grid>
+          <Grid item xs={8}>
+            Description
+            <Controller
+              name="description"
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <TextInput
+                  multi={true}
+                  rows={4}
+                  fullWidth
+                  size={"small"}
+                  placeholder={"Enter Module Description"}
+                  value={value}
+                  onBlur={onBlur}
+                  onChange={onChange}
+                  errors={Boolean(errors.description)}
+                  helperText={errors.description && errors.description.message}
+                />
+              )}
+            />
           </Grid>
         </Grid>
       </form>
@@ -154,4 +175,4 @@ function AddTestPlan() {
   );
 }
 
-export default AddTestPlan;
+export default AddModule;
