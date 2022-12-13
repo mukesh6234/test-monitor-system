@@ -6,6 +6,7 @@ const nextConfig = {
   // },
   images: {
     domains: ['docs-assets.katomaran.tech'],
+    unoptimized: true,
   },
 };
 
