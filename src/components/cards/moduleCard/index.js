@@ -9,6 +9,8 @@ import Link from "next/link";
 import Icon from "@core/components/icon";
 import CustomChip from "@core/components/mui/chip";
 import { Tooltip, Zoom } from "@mui/material";
+import Image from "next/image";
+import testRunIcon from "../../../../public/images/pages/test-run.png";
 
 const Divider = styled(MuiDivider)(({ theme }) => ({
   margin: 0,
@@ -49,7 +51,19 @@ function ModuleCard(props) {
   const router = useRouter();
 
   return (
-    <Card style={{ padding: 10 }}>
+    <Card style={{ padding: 25, paddingBottom: 0 }}>
+      
+      <Tooltip
+        arrow
+        title={props.title}
+        placement="top"
+        TransitionComponent={Zoom}
+        TransitionProps={{ timeout: 500 }}
+      >
+        <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
+          {SliceName(titleize(props.title))}
+        </Typography>
+      </Tooltip>
       <div
         style={{
           display: "flex",
@@ -57,36 +71,24 @@ function ModuleCard(props) {
           alignItems: "center",
         }}
       >
-        <div>
-          <Tooltip
-            arrow
-            title={props.title}
-            placement="top"
-            TransitionComponent={Zoom}
-            TransitionProps={{ timeout: 500 }}
-          >
-            <Typography variant="h6">
-              {SliceName(titleize(props.title))}
-            </Typography>
-          </Tooltip>
-          <Typography variant="caption">
-            {props.updated_by?.name ? (
-              <>
-                Updated by:
-                <span style={{ color: "#9155FD" ,marginLeft: 5}}>
-                  {titleize(props.updated_by?.name)}
-                </span>
-              </>
-            ) : (
-              <>
-                Created by:
-                <span style={{ color: "#9155FD",marginLeft: 5 }}>
-                  {titleize(props.created_by?.name)}
-                </span>
-              </>
-            )}
-          </Typography>
-        </div>
+        <Typography variant="caption">
+          {props.updated_by?.name ? (
+            <>
+              Updated by:
+              <span style={{ color: "#9155FD", marginLeft: 5 }}>
+                {titleize(props.updated_by?.name)}
+              </span>
+            </>
+          ) : (
+            <>
+              Created by:
+              <span style={{ color: "#9155FD", marginLeft: 5 }}>
+                {titleize(props.created_by?.name)}
+              </span>
+            </>
+          )}
+        </Typography>
+
         <Typography sx={{ fontWeight: 500 }}>
           {
             <CustomChip
@@ -107,13 +109,15 @@ function ModuleCard(props) {
           margin: "20px auto",
         }}
       >
-        <div>
-          <Typography sx={{ fontWeight: 500 }} variant="h6">
-            
-            {props.test_cases_count}
-          </Typography>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Image src={testRunIcon} height={30} alt="test-case-logo" />
+          <div style={{ marginLeft: 10 }}>
+          <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h6">
+              {props.test_cases_count}
+            </Typography>
 
-          <Typography sx={{ fontWeight: 500 }}>Test Cases</Typography>
+            <Typography variant="caption" sx={{ fontWeight: 500 }}>Test Cases</Typography>
+          </div>
         </div>
       </div>
       <Divider />
@@ -126,11 +130,11 @@ function ModuleCard(props) {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+            padding: "10px 0",
           }}
         >
           <StyledLink>
-            <span style={{ marginRight: 5, }}>
-              
+            <span style={{ marginRight: 5 }}>
               <Icon icon="bx:pencil" fontSize={20} />
             </span>
             Edit
@@ -145,6 +149,7 @@ function ModuleCard(props) {
             alignItems: "center",
             padding: 5,
             cursor: "pointer",
+            padding: "10px 0",
           }}
           onClick={() => props.handleView(props.id)}
         >

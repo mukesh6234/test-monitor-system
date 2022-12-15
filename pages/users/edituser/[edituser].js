@@ -111,7 +111,7 @@ function EditUser() {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => router.push("/user")}
+              onClick={() => router.push("/users")}
             >
               Cancel
             </Button>

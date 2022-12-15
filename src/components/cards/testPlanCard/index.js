@@ -9,6 +9,9 @@ import Link from "next/link";
 import Icon from "@core/components/icon";
 import CustomChip from "@core/components/mui/chip";
 import { Tooltip, Zoom } from "@mui/material";
+import Image from "next/image";
+import bundleIcon from "../../../../public/images/pages/layer.png";
+import testRunIcon from "../../../../public/images/pages/test-run.png";
 
 const Divider = styled(MuiDivider)(({ theme }) => ({
   margin: 0,
@@ -38,7 +41,7 @@ function TestPlanCard(props) {
   const router = useRouter();
 
   return (
-    <Card style={{ padding: 10 }}>
+    <Card style={{ padding: 25, paddingBottom: 0 }}>
       <div
         style={{
           display: "flex",
@@ -53,7 +56,7 @@ function TestPlanCard(props) {
             TransitionComponent={Zoom}
             TransitionProps={{ timeout: 500 }}
           >
-            <Typography variant="h6">
+            <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
               {SliceName(titleize(props.title))}
             </Typography>
           </Tooltip>
@@ -89,7 +92,7 @@ function TestPlanCard(props) {
           </StyledLink>
         </div>
       </div>
-      <div
+      {/* <div
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -113,6 +116,43 @@ function TestPlanCard(props) {
 
           <Typography sx={{ fontWeight: 500 }}>No. of Passed</Typography>
         </div>
+      </div> */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          margin: "20px auto 10px auto",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Image src={bundleIcon} height={30} alt="test-case-logo" />
+          <div style={{ marginLeft: 10 }}>
+            <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h6">
+              {props.no_of_sections}
+            </Typography>
+
+            <Typography variant="caption" sx={{ fontWeight: 500 }}>
+              Modules
+            </Typography>
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Image src={testRunIcon} height={30} alt="test-case-logo" />
+          <div style={{ marginLeft: 10 }}>
+            <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h6">
+              <span style={{ padding: "0 5px" }}>
+                {props.passed_test_cases}
+              </span>
+              {"/"}
+              <span style={{ padding: "0 5px" }}>{props.test_cases}</span>
+            </Typography>
+
+            <Typography variant="caption" sx={{ fontWeight: 500 }}>
+              Passed Case
+            </Typography>
+          </div>
+        </div>
       </div>
       <Divider />
       <div style={{ display: "flex" }}>
@@ -123,6 +163,7 @@ function TestPlanCard(props) {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+            padding: "10px 0",
           }}
           onClick={() =>
             router.push(
@@ -144,7 +185,7 @@ function TestPlanCard(props) {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            padding: 5,
+            padding: "10px 0",
             cursor: "pointer",
           }}
           //   onClick={() => props.handleView(props.id)}

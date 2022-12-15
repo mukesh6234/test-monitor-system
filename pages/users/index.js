@@ -32,7 +32,7 @@ function User() {
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
     buttonName: "Add User",
-    navigate: "user/add-user",
+    navigate: "users/adduser",
   };
 
   useEffect(() => {

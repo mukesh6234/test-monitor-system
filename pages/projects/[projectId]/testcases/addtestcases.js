@@ -49,6 +49,7 @@ function AddTestCases() {
     control,
     setError,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues,
@@ -62,21 +63,21 @@ function AddTestCases() {
   });
 
   useEffect(() => {
-    fetchModules(auth.user.auth_token, projectId, searchValue).then(
-      ({ data }) => {
+    fetchModules(auth.user.auth_token, projectId, searchValue)
+      .then(({ data }) => {
         setOptions(
           data.map((module) => {
             return { label: module.title, value: module.id };
           })
-        ).catch((err) => {
-          if (err[1]) {
-            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
-          } else {
-            toast.error(err.message);
-          }
-        });
-      }
-    );
+        );
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   }, []);
 
   const onSubmit = (data) => {
@@ -107,7 +108,7 @@ function AddTestCases() {
   };
 
   const handleSteps = () => {
-    if (fields[fields.length - 1].description !== "") {
+    if (getValues("steps")[getValues("steps").length - 1].description !== "") {
       append({ description: "" });
     }
   };
@@ -256,7 +257,12 @@ function AddTestCases() {
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end" onClick={() => remove(index)}>
+                        <IconButton
+                          edge="end"
+                          onClick={() =>
+                            getValues("steps").length > 1 && remove(index)
+                          }
+                        >
                           <Icon fontSize={20} icon="bxs-trash" />
                         </IconButton>
                       </InputAdornment>

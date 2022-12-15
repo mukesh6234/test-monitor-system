@@ -63,23 +63,23 @@ function EditTestPlan() {
   }, [reset]);
 
   useEffect(() => {
-    fetchModules(auth.user.auth_token, projectId, searchValue).then(
-      ({ data }) => {
+    fetchModules(auth.user.auth_token, projectId, searchValue)
+      .then(({ data }) => {
         setOptions(
           data.map((module) => {
             return { label: module.title, value: module.id };
           })
-        ).catch((err) => {
-          if (err[1]) {
-            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
-          } else {
-            toast.error(err.message);
-          }
-        });
-      }
-    );
+        );
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   }, []);
-
+  
   const onSubmit = (data) => {
     let payload = {
       test_plan: {
@@ -102,7 +102,7 @@ function EditTestPlan() {
         }
       });
   };
-
+console.log();
   return (
     <>
       <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>

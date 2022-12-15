@@ -51,6 +51,7 @@ function EditTestCases() {
     setError,
     handleSubmit,
     formState: { errors },
+    getValues,
     reset,
   } = useForm({
     defaultValues,
@@ -126,7 +127,7 @@ function EditTestCases() {
   };
 
   const handleSteps = () => {
-    if (fields[fields.length - 1].description !== "") {
+    if (getValues("steps")[getValues("steps").length - 1].description !== "") {
       append({ description: "" });
     }
   };
@@ -276,7 +277,12 @@ function EditTestCases() {
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end" onClick={() => remove(index)}>
+                        <IconButton
+                          edge="end"
+                          onClick={() =>
+                            getValues("steps").length > 1 && remove(index)
+                          }
+                        >
                           <Icon fontSize={20} icon="bxs-trash" />
                         </IconButton>
                       </InputAdornment>

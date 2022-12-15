@@ -110,8 +110,8 @@ function TestCaseDialogue(props) {
             {props.data.steps.map((step, index) => (
               <TimelineItem key={index}>
                 <TimelineSeparator>
-                  <CustomTimelineDot skin="light" color="primary">
-                    <span style={{ fontSize: 10 }}>{index + 1}</span>
+                  <CustomTimelineDot skin="light" color="primary" >
+                    <span style={{ fontSize: 10,padding:"2px 6px" }}>{index + 1}</span>
                   </CustomTimelineDot>
                   <TimelineConnector />
                 </TimelineSeparator>
