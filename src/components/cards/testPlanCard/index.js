@@ -77,7 +77,9 @@ function TestPlanCard(props) {
         </div>
         <div
           onClick={() =>
-            router.push(`/projects/${props.projectId}/testplans/${props.id}/edittestplan`)
+            router.push(
+              `/projects/${props.projectId}/testplans/${props.id}/edittestplan`
+            )
           }
           style={{ cursor: "pointer" }}
         >
@@ -122,6 +124,11 @@ function TestPlanCard(props) {
             justifyContent: "center",
             alignItems: "center",
           }}
+          onClick={() =>
+            router.push(
+              `/projects/${props.projectId}/testplans/execution/${props.id}`
+            )
+          }
         >
           <StyledLink>
             <span style={{ marginRight: 5 }}>

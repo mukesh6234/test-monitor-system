@@ -33,3 +33,11 @@ export function showTestPlan(token, projectId, testPlanId) {
     authorization: token,
   });
 }
+
+export function testPlanExecution(token, projectId, testPlanId) {
+  return makeRequest({
+    uri: `/api/v1/projects/${projectId}/test_plans/${testPlanId}/displays`,
+    method: "GET",
+    authorization: token,
+  });
+}

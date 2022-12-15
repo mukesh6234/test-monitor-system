@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Divider, FormControl, Grid,OutlinedInput } from "@mui/material";
+import { Divider, FormControl, Grid, OutlinedInput } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -68,7 +68,13 @@ function AddTestCases() {
           data.map((module) => {
             return { label: module.title, value: module.id };
           })
-        );
+        ).catch((err) => {
+          if (err[1]) {
+            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          } else {
+            toast.error(err.message);
+          }
+        });
       }
     );
   }, []);
@@ -86,12 +92,18 @@ function AddTestCases() {
         }),
       },
     };
-    createTestCase(auth.user.auth_token, projectId, payload).then(
-      ({ message }) => {
+    createTestCase(auth.user.auth_token, projectId, payload)
+      .then(({ message }) => {
         toast.success(message);
         router.push(`/projects/${projectId}/testcases`);
-      }
-    );
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   };
 
   const handleSteps = () => {
@@ -239,18 +251,13 @@ function AddTestCases() {
                     onChange={onChange}
                     errors={Boolean(errors.steps)}
                     helperText={
-                       errors.steps &&  errors?.steps?.[index]?.description?.message
+                      errors.steps &&
+                      errors?.steps?.[index]?.description?.message
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          onClick={() => remove(index)}
-                        >
-                          <Icon
-                            fontSize={20}
-                            icon="bxs-trash"
-                          />
+                        <IconButton edge="end" onClick={() => remove(index)}>
+                          <Icon fontSize={20} icon="bxs-trash" />
                         </IconButton>
                       </InputAdornment>
                     }

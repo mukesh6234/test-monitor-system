@@ -23,8 +23,6 @@ import TextInput from "@core/components/input/textInput";
 import { useRouter } from "next/router";
 import katoIcon from "../../public/images/pages/kato-icon.png";
 
-
-
 const RightWrapper = styled(Box)(({ theme }) => ({
   width: "100%",
   display: "flex",
@@ -68,7 +66,7 @@ const RestPassword = () => {
   const router = useRouter();
 
   const { resetPassword } = router.query;
-  
+
   const { skin } = settings;
 
   const {
@@ -93,9 +91,14 @@ const RestPassword = () => {
           type: "manual",
           message: err[1] ? err[1]?.data : err.message,
         });
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
       });
   };
-
+  u;
   return (
     <Box className="content-right">
       {!hidden ? (
@@ -108,7 +111,6 @@ const RestPassword = () => {
             justifyContent: "center",
           }}
         >
-      
           <Image
             src={resetPasswordImage}
             alt="forgot-password-illustration"
@@ -125,7 +127,7 @@ const RestPassword = () => {
       >
         <Box sx={{ mx: "auto", maxWidth: 400 }}>
           <Box sx={{ mb: 8, display: "flex", alignItems: "center" }}>
-          <Image src={katoIcon} height={32} alt="kato-logo" />
+            <Image src={katoIcon} height={32} alt="kato-logo" />
             <Typography
               variant="h5"
               sx={{
@@ -185,7 +187,7 @@ const RestPassword = () => {
                 justifyContent: "center",
               }}
             >
-              <Link passHref href="/login" style={{textDecoration:"none"}}>
+              <Link passHref href="/login" style={{ textDecoration: "none" }}>
                 <LinkStyled>
                   <Icon icon="bx:chevron-left" />
                   <span>Back to login</span>

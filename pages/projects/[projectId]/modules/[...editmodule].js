@@ -38,8 +38,7 @@ const options = [
 function EditModule() {
   const auth = useAuth();
   const router = useRouter();
-  const { editmodule,projectId } = router.query;
-  
+  const { editmodule, projectId } = router.query;
 
   const {
     control,
@@ -54,13 +53,17 @@ function EditModule() {
   });
   useEffect(() => {
     const fetchModules = async () => {
-      await showModules(
-        auth.user.auth_token,
-        projectId,
-        editmodule[0]
-      ).then(({ data }) => {
-        reset(data);
-      });
+      await showModules(auth.user.auth_token, projectId, editmodule[0])
+        .then(({ data }) => {
+          reset(data);
+        })
+        .catch((err) => {
+          if (err[1]) {
+            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          } else {
+            toast.error(err.message);
+          }
+        });
     };
     fetchModules();
   }, [reset]);
@@ -73,15 +76,18 @@ function EditModule() {
         description: data.description,
       },
     };
-    updateModule(
-      auth.user.auth_token,
-      projectId,
-      editmodule[0],
-      payload
-    ).then(({ message }) => {
-      toast.success(message);
-      router.push(`/projects/${projectId}/modules`);
-    });
+    updateModule(auth.user.auth_token, projectId, editmodule[0], payload)
+      .then(({ message }) => {
+        toast.success(message);
+        router.push(`/projects/${projectId}/modules`);
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   };
 
   return (

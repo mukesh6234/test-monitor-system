@@ -9,6 +9,7 @@ import TestCaseDialogue from "components/modals/testcaseDialogue";
 import { useSearch } from "context/searchContext";
 import Lottie from "lottie-react";
 import noData from "../../../../public/images/lottie/nodata.json";
+import { toast } from "react-hot-toast";
 
 let showData = {};
 
@@ -33,13 +34,19 @@ export default function TestCases() {
 
   const fetchTestCaseIndex = async () => {
     if (auth.user.role_group) {
-      await fetchTestCases(auth.user.auth_token, searchValue, projectId).then(
-        ({ data, total_entries }) => {
+      await fetchTestCases(auth.user.auth_token, searchValue, projectId)
+        .then(({ data, total_entries }) => {
           setLoading(false);
           setTotalEntries(total_entries);
           setTestCases(data);
-        }
-      );
+        })
+        .catch((err) => {
+          if (err[1]) {
+            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          } else {
+            toast.error(err.message);
+          }
+        });
     }
   };
 

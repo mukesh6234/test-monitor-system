@@ -47,7 +47,11 @@ function AddUser() {
         setRoleGroup(data);
       })
       .catch((err) => {
-        console.log(err);
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
       });
   }, []);
 
@@ -61,10 +65,18 @@ function AddUser() {
         send_welcome: "true",
       },
     };
-    createUser(auth.user.auth_token, payload).then(({ message }) => {
-      toast.success(message);
-      router.push("/user");
-    });
+    createUser(auth.user.auth_token, payload)
+      .then(({ message }) => {
+        toast.success(message);
+        router.push("/user");
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   };
 
   return (

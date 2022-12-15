@@ -9,6 +9,7 @@ import Lottie from "lottie-react";
 import noData from "../../../../public/images/lottie/nodata.json";
 import { Skeleton } from "@mui/material";
 import TestPlanCard from "components/cards/testPlanCard";
+import { toast } from "react-hot-toast";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -42,7 +43,11 @@ function TestPlans() {
         setTestPlanLists(data);
       })
       .catch((err) => {
-        console.log(err);
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
       });
   }, [searchValue]);
 
@@ -76,7 +81,7 @@ function TestPlans() {
         {loading ? (
           <>{skeleton}</>
         ) : (
-          testPlanLists.map((testPlanList,index) => {
+          testPlanLists.map((testPlanList, index) => {
             return (
               <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
                 <TestPlanCard {...{ ...testPlanList, projectId }} />

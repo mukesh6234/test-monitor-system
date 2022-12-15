@@ -11,7 +11,6 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
 import { useSearch } from "context/searchContext";
-import SelectInput from "@core/components/input/select";
 import MultiSelectInput from "@core/components/input/multiSelect";
 
 const schema = yup.object().shape({
@@ -43,32 +42,44 @@ function AddTestPlan() {
   });
 
   useEffect(() => {
-    fetchModules(auth.user.auth_token, projectId, searchValue).then(
-      ({ data }) => {
+    fetchModules(auth.user.auth_token, projectId, searchValue)
+      .then(({ data }) => {
         setOptions(
           data.map((module) => {
             return { label: module.title, value: module.id };
           })
         );
-      }
-    );
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   }, []);
 
   const onSubmit = (data) => {
     let payload = {
-        test_plan: {
+      test_plan: {
         title: data.title,
         section_ids: data.section_ids.map((value) => {
           return value;
         }),
       },
     };
-    createTestPlan(auth.user.auth_token, projectId, payload).then(
-      ({ message }) => {
+    createTestPlan(auth.user.auth_token, projectId, payload)
+      .then(({ message }) => {
         toast.success(message);
         router.push(`/projects/${projectId}/testplans`);
-      }
-    );
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   };
 
   return (
@@ -142,7 +153,9 @@ function AddTestPlan() {
                     multiple={true}
                     placeholder={"Select Module"}
                     error={Boolean(errors.section_ids)}
-                    helperText={errors.section_ids ? errors.section_ids.message : ""}
+                    helperText={
+                      errors.section_ids ? errors.section_ids.message : ""
+                    }
                     options={options}
                   />
                 )}

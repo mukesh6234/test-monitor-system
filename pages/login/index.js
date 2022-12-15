@@ -29,7 +29,6 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import katoIcon from "../../public/images/pages/kato-icon.png";
 
-
 // ** Hooks
 // import { useAuth } from '../src/hooks/useAuth'
 // import useBgColor from 'src/@core/hooks/useBgColor'
@@ -118,6 +117,11 @@ const LoginPage = () => {
         type: "manual",
         message: "Email or Password is invalid",
       });
+      if (err[1]) {
+        toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+      } else {
+        toast.error(err.message);
+      }
     });
   };
 
@@ -133,7 +137,6 @@ const LoginPage = () => {
             justifyContent: "center",
           }}
         >
-       
           <Image
             src={loginImage}
             alt="login-illustration"
@@ -149,23 +152,23 @@ const LoginPage = () => {
         }}
       >
         <Box sx={{ mx: "auto", maxWidth: 400 }}>
-        <Box sx={{ mb: 8, display: 'flex', alignItems: 'center' }}>
-        <Image src={katoIcon} height={32} alt="kato-logo" />
+          <Box sx={{ mb: 8, display: "flex", alignItems: "center" }}>
+            <Image src={katoIcon} height={32} alt="kato-logo" />
             <Typography
-              variant='h5'
+              variant="h5"
               sx={{
                 ml: 2,
                 lineHeight: 1,
                 fontWeight: 700,
-                letterSpacing: '-0.45px',
-                textTransform: 'lowercase',
-                fontSize: '1.75rem !important'
+                letterSpacing: "-0.45px",
+                textTransform: "lowercase",
+                fontSize: "1.75rem !important",
               }}
             >
               {themeConfig.templateName}
             </Typography>
           </Box>
-          <Typography variant='h6' sx={{ mb: 1.5 }}>
+          <Typography variant="h6" sx={{ mb: 1.5 }}>
             Welcome to {themeConfig.projectName}! 👋🏻
           </Typography>
           <Typography sx={{ mb: 6, color: "text.secondary" }}>
@@ -255,7 +258,11 @@ const LoginPage = () => {
                   },
                 }}
               />
-              <Link passHref href="/forgot-password" style={{textDecoration:"none"}}>
+              <Link
+                passHref
+                href="/forgot-password"
+                style={{ textDecoration: "none" }}
+              >
                 <LinkStyled>Forgot Password?</LinkStyled>
               </Link>
             </Box>

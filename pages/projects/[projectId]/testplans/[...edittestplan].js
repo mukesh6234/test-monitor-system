@@ -5,7 +5,6 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import FormHelperText from "@mui/material/FormHelperText";
-import { fetchModules } from "../../../api/modules";
 import { updateTestPlan, showTestPlan } from "../../../api/testPlan";
 import { useAuth } from "hooks/useAuth";
 import toast from "react-hot-toast";
@@ -14,15 +13,16 @@ import TextInput from "@core/components/input/textInput";
 import { useSearch } from "context/searchContext";
 import SelectInput from "@core/components/input/select";
 import MultiSelectInput from "@core/components/input/multiSelect";
+import { fetchModules } from "../../../api/modules";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
-  section: yup.array().of(yup.string().required("Please select a module")),
+  section_ids: yup.array().of(yup.string().required("Please select a module")),
 });
 
 const defaultValues = {
   title: "",
-  section: [],
+  section_ids: [],
 };
 
 function EditTestPlan() {
@@ -31,6 +31,7 @@ function EditTestPlan() {
   const searchValue = useSearch();
   const router = useRouter();
   const { edittestplan, projectId } = router.query;
+  console.log(router.query, "bbbbbbbbbbb");
 
   const {
     control,
@@ -46,11 +47,17 @@ function EditTestPlan() {
 
   useEffect(() => {
     const fetchTestPlan = async () => {
-      await showTestPlan(auth.user.auth_token, projectId, edittestplan[0]).then(
-        ({ data }) => {
+      await showTestPlan(auth.user.auth_token, projectId, edittestplan[0])
+        .then(({ data }) => {
           reset(data);
-        }
-      );
+        })
+        .catch((err) => {
+          if (err[1]) {
+            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          } else {
+            toast.error(err.message);
+          }
+        });
     };
     fetchTestPlan();
   }, [reset]);
@@ -62,7 +69,13 @@ function EditTestPlan() {
           data.map((module) => {
             return { label: module.title, value: module.id };
           })
-        );
+        ).catch((err) => {
+          if (err[1]) {
+            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          } else {
+            toast.error(err.message);
+          }
+        });
       }
     );
   }, []);
@@ -71,20 +84,23 @@ function EditTestPlan() {
     let payload = {
       test_plan: {
         title: data.title,
-        section_ids: data.section.map((value) => {
+        section_ids: data.section_ids.map((value) => {
           return value;
         }),
       },
     };
-    updateTestPlan(
-      auth.user.auth_token,
-      projectId,
-      edittestplan[0],
-      payload
-    ).then(({ message }) => {
-      toast.success(message);
-      router.push(`/projects/${projectId}/testplans`);
-    });
+    updateTestPlan(auth.user.auth_token, projectId, edittestplan[0], payload)
+      .then(({ message }) => {
+        toast.success(message);
+        router.push(`/projects/${projectId}/testplans`);
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   };
 
   return (
@@ -145,7 +161,7 @@ function EditTestPlan() {
             Add Module
             <FormControl fullWidth sx={{ mb: 6 }}>
               <Controller
-                name="section"
+                name="section_ids"
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
@@ -157,8 +173,10 @@ function EditTestPlan() {
                     value={value}
                     multiple={true}
                     placeholder={"Select Module"}
-                    error={Boolean(errors.section)}
-                    helperText={errors.section ? errors.section.message : ""}
+                    error={Boolean(errors.section_ids)}
+                    helperText={
+                      errors.section_ids ? errors.section_ids.message : ""
+                    }
                     options={options}
                   />
                 )}

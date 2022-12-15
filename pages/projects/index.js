@@ -54,8 +54,12 @@ export default function Project() {
           setTotalEntries(total_entries);
           setProjects(data);
         })
-        .catch(({ message }) => {
-          toast.error(message);
+        .catch((err) => {
+          if (err[1]) {
+            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          } else {
+            toast.error(err.message);
+          }
         });
     }
   };
@@ -79,8 +83,12 @@ export default function Project() {
         setTitle("");
         fetchProject();
       })
-      .catch(({ message }) => {
-        toast.error(message);
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
       });
   };
 
@@ -98,7 +106,11 @@ export default function Project() {
         fetchProject();
       })
       .catch((err) => {
-        toast.error(err.data[0]);
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
       });
   };
 

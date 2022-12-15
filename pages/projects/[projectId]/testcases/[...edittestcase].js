@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Divider, FormControl, Grid ,OutlinedInput} from "@mui/material";
+import { Divider, FormControl, Grid, OutlinedInput } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -43,7 +43,7 @@ function EditTestCases() {
   const auth = useAuth();
   const router = useRouter();
   const searchValue = useSearch();
-  const { edittestcase,projectId } = router.query;
+  const { edittestcase, projectId } = router.query;
   console.log(router, "edittestcase");
 
   const {
@@ -64,24 +64,36 @@ function EditTestCases() {
   });
 
   useEffect(() => {
-    fetchModules(auth.user.auth_token, projectId,searchValue).then(({ data }) => {
-      setOptions(
-        data.map((module) => {
-          return { label: module.title, value: module.id };
-        })
-      );
-    });
+    fetchModules(auth.user.auth_token, projectId, searchValue)
+      .then(({ data }) => {
+        setOptions(
+          data.map((module) => {
+            return { label: module.title, value: module.id };
+          })
+        );
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   }, []);
 
   useEffect(() => {
     const fetchTestCase = async () => {
-      await showTestCase(
-        auth.user.auth_token,
-        projectId,
-        edittestcase[0]
-      ).then(({ data }) => {
-        reset(data);
-      });
+      await showTestCase(auth.user.auth_token, projectId, edittestcase[0])
+        .then(({ data }) => {
+          reset(data);
+        })
+        .catch((err) => {
+          if (err[1]) {
+            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          } else {
+            toast.error(err.message);
+          }
+        });
     };
     fetchTestCase();
   }, [reset]);
@@ -99,15 +111,18 @@ function EditTestCases() {
         }),
       },
     };
-    updateTestCase(
-      auth.user.auth_token,
-      projectId,
-        edittestcase[0],
-      payload
-    ).then(({ message }) => {
-      toast.success(message);
-      router.push(`/projects/${projectId}/testcases`)
-    });
+    updateTestCase(auth.user.auth_token, projectId, edittestcase[0], payload)
+      .then(({ message }) => {
+        toast.success(message);
+        router.push(`/projects/${projectId}/testcases`);
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   };
 
   const handleSteps = () => {
@@ -256,18 +271,13 @@ function EditTestCases() {
                     onChange={onChange}
                     errors={Boolean(errors.steps)}
                     helperText={
-                       errors.steps &&  errors?.steps?.[index]?.description?.message
+                      errors.steps &&
+                      errors?.steps?.[index]?.description?.message
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          onClick={() => remove(index)}
-                        >
-                          <Icon
-                            fontSize={20}
-                            icon="bxs-trash"
-                          />
+                        <IconButton edge="end" onClick={() => remove(index)}>
+                          <Icon fontSize={20} icon="bxs-trash" />
                         </IconButton>
                       </InputAdornment>
                     }
@@ -286,7 +296,6 @@ function EditTestCases() {
               }}
               onClick={handleSteps}
             >
-              
               <Icon icon="bx:plus" fontSize={20} />
               <span style={{ paddingLeft: 10 }}>Add Steps</span>
             </Button>

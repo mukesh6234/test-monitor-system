@@ -49,15 +49,27 @@ function EditUser() {
         setRoleGroup(data);
       })
       .catch((err) => {
-        console.log(err);
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
       });
   }, []);
 
   useEffect(() => {
     const fetchUser = async () => {
-      await showUser(auth.user.auth_token, edituser).then(({ data }) => {
-        reset(data);
-      });
+      await showUser(auth.user.auth_token, edituser)
+        .then(({ data }) => {
+          reset(data);
+        })
+        .catch((err) => {
+          if (err[1]) {
+            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          } else {
+            toast.error(err.message);
+          }
+        });
     };
     fetchUser();
   }, [reset]);
@@ -71,10 +83,18 @@ function EditUser() {
         status: data.status,
       },
     };
-    updateUser(auth.user.auth_token,edituser, payload).then(({ message }) => {
-      toast.success(message);
-      router.push("/user");
-    });
+    updateUser(auth.user.auth_token, edituser, payload)
+      .then(({ message }) => {
+        toast.success(message);
+        router.push("/user");
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   };
 
   return (
@@ -172,7 +192,11 @@ function EditUser() {
                     value={value}
                   >
                     {roleGroup.map((role) => {
-                      return <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>;
+                      return (
+                        <MenuItem key={role.id} value={role.id}>
+                          {role.name}
+                        </MenuItem>
+                      );
                     })}
                   </Select>
                 )}

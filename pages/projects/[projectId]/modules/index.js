@@ -10,6 +10,7 @@ import { useSearch } from "context/searchContext";
 import Lottie from "lottie-react";
 import noData from "../../../../public/images/lottie/nodata.json";
 import { Skeleton } from "@mui/material";
+import { toast } from "react-hot-toast";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -45,17 +46,21 @@ function Modules() {
     fetModulesIndex();
   }, [searchValue]);
 
-  const fetModulesIndex = async() =>{
-    fetchModules(auth.user.auth_token,  projectId,searchValue)
-    .then(({ data, total_entries }) => {
-      setLoading(false);
-      setTotalEntries(total_entries);
-      setModuleList(data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+  const fetModulesIndex = async () => {
+    fetchModules(auth.user.auth_token, projectId, searchValue)
+      .then(({ data, total_entries }) => {
+        setLoading(false);
+        setTotalEntries(total_entries);
+        setModuleList(data);
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
+  };
 
   const handleClose = () => {
     setFormOpen(!formOpen);

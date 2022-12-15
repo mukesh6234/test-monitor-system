@@ -25,7 +25,6 @@ import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
 import katoIcon from "../../public/images/pages/kato-icon.png";
 
-
 // Styled Components
 const ForgotPasswordIllustration = styled("img")({
   height: "auto",
@@ -101,6 +100,11 @@ const ForgotPassword = () => {
           type: "manual",
           message: err[1] ? err[1]?.data : err.message,
         });
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
       });
   };
 

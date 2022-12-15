@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Divider,
-  FormControl,
-  MenuItem,
-  Select,
-  Grid,
-} from "@mui/material";
+import { Divider, FormControl, MenuItem, Select, Grid } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -53,12 +47,18 @@ function AddModule() {
         description: data.description,
       },
     };
-    createModule(auth.user.auth_token, projectId, payload).then(
-      ({ message }) => {
+    createModule(auth.user.auth_token, projectId, payload)
+      .then(({ message }) => {
         toast.success(message);
         router.push(`/projects/${projectId}/modules`);
-      }
-    );
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
   };
 
   return (
