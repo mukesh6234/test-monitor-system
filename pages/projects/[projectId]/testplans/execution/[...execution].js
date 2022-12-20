@@ -42,8 +42,8 @@ function Execution() {
       <Divider />
       {moduleList.sections?.map((value, index) => {
         return (
-          <div style={{ margin: "20px auto" }}>
-            <ExecutionCard {...value} {...cardProps} key={index} />
+          <div style={{ margin: "20px auto" }} key={index}>
+            <ExecutionCard {...value} {...cardProps} />
           </div>
         );
       })}
