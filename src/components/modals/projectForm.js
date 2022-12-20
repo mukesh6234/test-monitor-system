@@ -19,7 +19,7 @@ function CreateProject(props) {
       >
         <DialogTitle style={{ display: "flex", flexDirection: "column" }}>
           {props.formTitle}
-          <span style={{ fontSize: "16px" }}>{props.formDescription}</span>
+          {/* <span style={{ fontSize: "16px" }}>{props.formDescription}</span> */}
         </DialogTitle>
 
         <DialogContent>

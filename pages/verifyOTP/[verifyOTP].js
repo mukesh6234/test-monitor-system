@@ -86,16 +86,13 @@ const VerifyOTP = () => {
         toast.success(message);
         router.push(`/resetPassword/${data.auth_token}`);
       })
-      .catch((err) => {
+
+      .catch((error) => {
         setError("otp", {
           type: "manual",
-          message: err[1] ? err[1]?.data : err.message,
+          message: "Email or Password is invalid",
         });
-        if (err[1]) {
-          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+        toast.error(error[1].message);
       });
   };
 

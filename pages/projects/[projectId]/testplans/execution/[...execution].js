@@ -16,6 +16,7 @@ function Execution() {
   useEffect(() => {
     fetchExecutionList();
   }, []);
+
   const fetchExecutionList = async () => {
     await testPlanExecution(auth.user.auth_token, projectId, execution[0])
       .then(({ data }) => {
@@ -29,17 +30,23 @@ function Execution() {
         }
       });
   };
-
+  const cardProps = {
+    projectId,
+    execution,
+  };
   return (
     <>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h3 style={{ margin: "5px 0" }}>{moduleList.title}</h3>
       </div>
+      <Divider />
       {moduleList.sections?.map((value, index) => {
-        <Divider key={index} props={value} />;
+        return (
+          <div style={{ margin: "20px auto" }}>
+            <ExecutionCard {...value} {...cardProps} key={index} />
+          </div>
+        );
       })}
-
-      <ExecutionCard />
     </>
   );
 }

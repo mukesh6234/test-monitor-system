@@ -115,7 +115,9 @@ function EditTestCases() {
     updateTestCase(auth.user.auth_token, projectId, edittestcase[0], payload)
       .then(({ message }) => {
         toast.success(message);
-        router.push(`/projects/${projectId}/testcases`);
+        setTimeout(() => {
+          router.push(`/projects/${projectId}/testcases`);
+        }, 1000);
       })
       .catch((err) => {
         if (err[1]) {
@@ -256,7 +258,12 @@ function EditTestCases() {
           </Grid>
           {fields.map((testingStep, index) => (
             <Grid item xs={12} key={index}>
-              {console.log(`testing_steps[${index}].steps`, "indexindex")}
+              {console.log(
+                `testing_steps[${index}].steps`,
+                errors,
+                Boolean(errors.steps),
+                "indexindex"
+              )}
               Testing Steps
               <Controller
                 name={`steps.${index}.description`}
@@ -270,7 +277,7 @@ function EditTestCases() {
                     value={value}
                     onBlur={onBlur}
                     onChange={onChange}
-                    errors={Boolean(errors.steps)}
+                    error={Boolean(errors.steps)}
                     helperText={
                       errors.steps &&
                       errors?.steps?.[index]?.description?.message

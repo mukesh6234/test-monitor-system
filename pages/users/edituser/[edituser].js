@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Divider, FormControl, MenuItem, Select, Grid } from "@mui/material";
+import { Divider, FormControl, Grid } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import FormHelperText from "@mui/material/FormHelperText";
 import { showUser, userRoles, updateUser } from "../../api/User";
 import { useAuth } from "hooks/useAuth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
+import SelectInput from "@core/components/input/select";
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -24,6 +24,17 @@ const defaultValues = {
   role_group: "",
   status: "",
 };
+
+const statusOption = [
+  {
+    label: "Active",
+    value: "active",
+  },
+  {
+    label: "Inactive",
+    value: "inactive",
+  },
+];
 
 function EditUser() {
   const [roleGroup, setRoleGroup] = useState([]);
@@ -46,7 +57,11 @@ function EditUser() {
   useEffect(() => {
     userRoles(auth.user.auth_token)
       .then(({ data }) => {
-        setRoleGroup(data);
+        setRoleGroup(
+          data.map((role) => {
+            return { label: role.name, value: role.id };
+          })
+        );
       })
       .catch((err) => {
         if (err[1]) {
@@ -86,7 +101,7 @@ function EditUser() {
     updateUser(auth.user.auth_token, edituser, payload)
       .then(({ message }) => {
         toast.success(message);
-        router.push("/user");
+        router.push("/users");
       })
       .catch((err) => {
         if (err[1]) {
@@ -182,30 +197,21 @@ function EditUser() {
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <Select
-                    size="small"
+                  <SelectInput
+                    size={"small"}
                     fullWidth
                     onBlur={onBlur}
                     onChange={onChange}
-                    error={Boolean(errors.role_group)}
-                    placeholder="Select user role"
                     value={value}
-                  >
-                    {roleGroup.map((role) => {
-                      return (
-                        <MenuItem key={role.id} value={role.id}>
-                          {role.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
+                    placeholder={"Select user role"}
+                    error={Boolean(errors.role_group)}
+                    helperText={
+                      errors.role_group ? errors.role_group.message : ""
+                    }
+                    options={roleGroup}
+                  />
                 )}
               />
-              {errors.role_group && (
-                <FormHelperText sx={{ color: "error.main" }}>
-                  {errors.role_group.message}
-                </FormHelperText>
-              )}
             </FormControl>
           </Grid>
           <Grid item xs={4}>
@@ -216,25 +222,20 @@ function EditUser() {
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <Select
-                    size="small"
+                  <SelectInput
+                    size={"small"}
                     fullWidth
                     onBlur={onBlur}
                     onChange={onChange}
-                    error={Boolean(errors.status)}
-                    placeholder="Select status"
+                    defaultValue={"active"}
                     value={value}
-                  >
-                    <MenuItem value="active">Active</MenuItem>
-                    <MenuItem value="inactive">Inactive</MenuItem>
-                  </Select>
+                    placeholder={"Select status"}
+                    error={Boolean(errors.status)}
+                    helperText={errors.status ? errors.status.message : ""}
+                    options={statusOption}
+                  />
                 )}
               />
-              {errors.status && (
-                <FormHelperText sx={{ color: "error.main" }}>
-                  {errors.status.message}
-                </FormHelperText>
-              )}
             </FormControl>
           </Grid>
         </Grid>

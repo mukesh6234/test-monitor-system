@@ -9,37 +9,45 @@ import { Tooltip, Zoom } from "@mui/material";
 import { SliceName, titleize } from "components/helper";
 
 const renderCreate = (row) => {
-  //   if (row.image .length) {
-  //     return (
-  //       <CustomAvatar src={row.avatar} sx={{ mr: 3, width: 32, height: 32 }} />
-  //     );
-  //   } else {
-  return (
-    <CustomAvatar
-      skin="light"
-      color={row.avatarColor || "primary"}
-      sx={{ mr: 2, width: 32, height: 32, fontSize: "1rem" }}
-    >
-      {getInitials(row.created_by.name ? row.created_by.name : "Katomaran")}
-    </CustomAvatar>
-  );
+  if (row.created_by.image_path) {
+    return (
+      <CustomAvatar
+        src={row.created_by.image_path}
+        sx={{ mr: 3, width: 32, height: 32 }}
+      />
+    );
+  } else {
+    return (
+      <CustomAvatar
+        skin="light"
+        color={row.avatarColor || "primary"}
+        sx={{ mr: 2, width: 32, height: 32, fontSize: "1rem" }}
+      >
+        {getInitials(row.created_by.name ? row.created_by.name : "Katomaran")}
+      </CustomAvatar>
+    );
+  }
 };
 
 const renderUpdate = (row) => {
-  //   if (row.image .length) {
-  //     return (
-  //       <CustomAvatar src={row.avatar} sx={{ mr: 3, width: 32, height: 32 }} />
-  //     );
-  //   } else {
-  return (
-    <CustomAvatar
-      skin="light"
-      color={row.avatarColor || "primary"}
-      sx={{ mr: 2, width: 32, height: 32, fontSize: "1rem" }}
-    >
-      {getInitials(row.updated_by.name ? row.updated_by.name : "Katomaran")}
-    </CustomAvatar>
-  );
+  if (row.updated_by.image_path) {
+    return (
+      <CustomAvatar
+        src={row.updated_by.image_path}
+        sx={{ mr: 3, width: 32, height: 32 }}
+      />
+    );
+  } else {
+    return (
+      <CustomAvatar
+        skin="light"
+        color={row.avatarColor || "primary"}
+        sx={{ mr: 2, width: 32, height: 32, fontSize: "1rem" }}
+      >
+        {getInitials(row.updated_by.name ? row.updated_by.name : "Katomaran")}
+      </CustomAvatar>
+    );
+  }
 };
 
 const StyledLink = styled("a")(({ theme }) => ({
@@ -140,7 +148,6 @@ export const testCaseColumns = (projectId, router, handleView) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {updated_by ? (
               <>
-                
                 {renderUpdate(row)}
                 <Box
                   sx={{

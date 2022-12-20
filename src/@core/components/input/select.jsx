@@ -1,5 +1,5 @@
 import React from "react";
-import { FormHelperText, Select, MenuItem } from "@mui/material";
+import { FormHelperText, Select, MenuItem, FormControl } from "@mui/material";
 
 function SelectInput(props) {
   let {
@@ -12,10 +12,11 @@ function SelectInput(props) {
     label,
     options,
     onChange,
+    defaultValue
   } = props;
-
+  console.log(Boolean(error), "Boolean(error)");
   return (
-    <>
+    <FormControl error>
       <Select
         size={size}
         fullWidth={fullWidth}
@@ -23,6 +24,7 @@ function SelectInput(props) {
         onChange={onChange}
         error={Boolean(error)}
         value={value}
+        defaultValue={defaultValue}
         label={label}
       >
         {options.map((option) => (
@@ -32,7 +34,7 @@ function SelectInput(props) {
         ))}
       </Select>
       <FormHelperText>{helperText}</FormHelperText>
-    </>
+    </FormControl>
   );
 }
 

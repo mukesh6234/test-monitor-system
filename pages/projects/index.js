@@ -67,6 +67,7 @@ export default function Project() {
   const handleClose = () => {
     setFormOpen(!formOpen);
     setTitle("");
+    setData("");
   };
 
   const handleSave = () => {
@@ -130,8 +131,6 @@ export default function Project() {
 
   const createFormProps = {
     formTitle: "Project Title",
-    formDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
     formOpen,
     handleClose,
     handleSave,

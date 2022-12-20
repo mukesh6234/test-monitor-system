@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Divider, FormControl, MenuItem, Select, Grid } from "@mui/material";
+import { Divider, FormControl, Grid } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import FormHelperText from "@mui/material/FormHelperText";
 import { createUser, userRoles } from "../../api/User";
 import { useAuth } from "hooks/useAuth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
+import SelectInput from "@core/components/input/select";
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -24,7 +24,16 @@ const defaultValues = {
   role: "",
   status: "",
 };
-
+const statusOption = [
+  {
+    label: "Active",
+    value: "active",
+  },
+  {
+    label: "Inactive",
+    value: "inactive",
+  },
+];
 function AddUser() {
   const [roleGroup, setRoleGroup] = useState([]);
   const auth = useAuth();
@@ -44,7 +53,11 @@ function AddUser() {
   useEffect(() => {
     userRoles(auth.user.auth_token)
       .then(({ data }) => {
-        setRoleGroup(data);
+        setRoleGroup(
+          data.map((role) => {
+            return { label: role.name, value: role.id };
+          })
+        );
       })
       .catch((err) => {
         if (err[1]) {
@@ -68,7 +81,7 @@ function AddUser() {
     createUser(auth.user.auth_token, payload)
       .then(({ message }) => {
         toast.success(message);
-        router.push("/user");
+        router.push("/users");
       })
       .catch((err) => {
         if (err[1]) {
@@ -127,9 +140,7 @@ function AddUser() {
                   onBlur={onBlur}
                   onChange={onChange}
                   errors={Boolean(errors.name)}
-                  helperText={
-                    errors.name && errors.name[index].description.message
-                  }
+                  helperText={errors.name && errors.name.message}
                 />
               )}
             />
@@ -149,9 +160,7 @@ function AddUser() {
                   onBlur={onBlur}
                   onChange={onChange}
                   errors={Boolean(errors.email)}
-                  helperText={
-                    errors.email && errors.email[index].description.message
-                  }
+                  helperText={errors.email && errors.email.message}
                 />
               )}
             />
@@ -164,30 +173,19 @@ function AddUser() {
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <Select
-                    size="small"
+                  <SelectInput
+                    size={"small"}
                     fullWidth
                     onBlur={onBlur}
                     onChange={onChange}
-                    error={Boolean(errors.role)}
-                    placeholder="Select user role"
                     value={value}
-                  >
-                    {roleGroup.map((role) => {
-                      return (
-                        <MenuItem key={role.id} value={role.id}>
-                          {role.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
+                    placeholder={"Select user role"}
+                    error={Boolean(errors.role)}
+                    helperText={errors.role ? errors.role.message : ""}
+                    options={roleGroup}
+                  />
                 )}
               />
-              {errors.role && (
-                <FormHelperText sx={{ color: "error.main" }}>
-                  {errors.role.message}
-                </FormHelperText>
-              )}
             </FormControl>
           </Grid>
           <Grid item xs={4}>
@@ -198,26 +196,20 @@ function AddUser() {
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <Select
-                    size="small"
+                  <SelectInput
+                    size={"small"}
                     fullWidth
                     onBlur={onBlur}
                     onChange={onChange}
                     defaultValue={"active"}
-                    error={Boolean(errors.role)}
-                    placeholder="Select status"
                     value={value}
-                  >
-                    <MenuItem value="active">Active</MenuItem>
-                    <MenuItem value="inactive">Inactive</MenuItem>
-                  </Select>
+                    placeholder={"Select status"}
+                    error={Boolean(errors.status)}
+                    helperText={errors.status ? errors.status.message : ""}
+                    options={statusOption}
+                  />
                 )}
               />
-              {errors.status && (
-                <FormHelperText sx={{ color: "error.main" }}>
-                  {errors.status.message}
-                </FormHelperText>
-              )}
             </FormControl>
           </Grid>
         </Grid>

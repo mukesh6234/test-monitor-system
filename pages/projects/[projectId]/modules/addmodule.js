@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, FormControl, MenuItem, Select, Grid } from "@mui/material";
+import { Divider, FormControl, Grid } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,6 +10,7 @@ import { useAuth } from "hooks/useAuth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
+import SelectInput from "@core/components/input/select";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the name"),
@@ -22,6 +23,24 @@ const defaultValues = {
   description: "",
   status: "",
 };
+const moduleStatus = [
+  {
+    label: "Started",
+    value: "started",
+  },
+  {
+    label: "Inprogress",
+    value: "inprogress",
+  },
+  {
+    label: "Completed",
+    value: "completed",
+  },
+  {
+    label: "Cancelled",
+    value: "cancelled",
+  },
+];
 
 function AddModule() {
   const auth = useAuth();
@@ -124,27 +143,19 @@ function AddModule() {
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <Select
-                    size="small"
+                  <SelectInput
+                    size={"small"}
                     fullWidth
                     onBlur={onBlur}
                     onChange={onChange}
-                    error={Boolean(errors.status)}
-                    placeholder="Select status"
                     value={value}
-                  >
-                    <MenuItem value="started">Started</MenuItem>
-                    <MenuItem value="inprogress">Inprogress</MenuItem>
-                    <MenuItem value="completed">Completed</MenuItem>
-                    <MenuItem value="cancelled">Cancelled</MenuItem>
-                  </Select>
+                    placeholder={"Select status"}
+                    error={Boolean(errors.status)}
+                    helperText={errors.status ? errors.status.message : ""}
+                    options={moduleStatus}
+                  />
                 )}
               />
-              {errors.status && (
-                <FormHelperText sx={{ color: "error.main" }}>
-                  {errors.status.message}
-                </FormHelperText>
-              )}
             </FormControl>
           </Grid>
           <Grid item xs={8}>

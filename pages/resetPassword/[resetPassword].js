@@ -98,7 +98,6 @@ const RestPassword = () => {
         }
       });
   };
-  u;
   return (
     <Box className="content-right">
       {!hidden ? (

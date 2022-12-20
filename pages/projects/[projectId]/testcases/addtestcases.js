@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Divider, FormControl, Grid, OutlinedInput } from "@mui/material";
+import {
+  Divider,
+  FormControl,
+  FormHelperText,
+  Grid,
+  OutlinedInput,
+} from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -22,7 +28,7 @@ const schema = yup.object().shape({
   prerequisite: yup.string().required("Please fill the prerequisite"),
   steps: yup.array().of(
     yup.object().shape({
-      description: yup.string().required("Please fill the testing_steps"),
+      description: yup.string().required("Please fill the testing steps"),
     })
   ),
   expected_result: yup.string().required("Please fill the expected_result"),
@@ -96,7 +102,9 @@ function AddTestCases() {
     createTestCase(auth.user.auth_token, projectId, payload)
       .then(({ message }) => {
         toast.success(message);
-        router.push(`/projects/${projectId}/testcases`);
+        setTimeout(() => {
+          router.push(`/projects/${projectId}/testcases`);
+        }, 1000);
       })
       .catch((err) => {
         if (err[1]) {
@@ -243,31 +251,39 @@ function AddTestCases() {
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <OutlinedInput
-                    fullWidth
-                    size={"small"}
-                    placeholder={"Enter testing steps..."}
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    errors={Boolean(errors.steps)}
-                    helperText={
-                      errors.steps &&
-                      errors?.steps?.[index]?.description?.message
-                    }
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          onClick={() =>
-                            getValues("steps").length > 1 && remove(index)
-                          }
-                        >
-                          <Icon fontSize={20} icon="bxs-trash" />
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
+                  <FormControl fullWidth error>
+                    <OutlinedInput
+                      fullWidth
+                      size={"small"}
+                      placeholder={"Enter testing steps..."}
+                      value={value}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      error={Boolean(errors?.steps?.[index])}
+                      helperText={
+                        errors.steps &&
+                        errors?.steps?.[index]?.description?.message
+                      }
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            edge="end"
+                            onClick={() =>
+                              // getValues("steps").length > 1 &&
+                              // console.log(index, "xxxxx")
+                              remove(index)
+                            }
+                          >
+                            <Icon fontSize={20} icon="bxs-trash" />
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                    <FormHelperText>
+                      {errors.steps &&
+                        errors?.steps?.[index]?.description?.message}
+                    </FormHelperText>
+                  </FormControl>
                 )}
               />
             </Grid>
