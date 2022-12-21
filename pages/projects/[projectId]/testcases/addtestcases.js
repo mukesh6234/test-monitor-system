@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  alertClasses,
   Divider,
   FormControl,
   FormHelperText,
@@ -117,7 +118,7 @@ function AddTestCases() {
 
   const handleSteps = () => {
     if (getValues("steps")[getValues("steps").length - 1].description !== "") {
-      append({ description: "" });
+      append({ description: "", id: fields.length + 1 });
     }
   };
 
@@ -244,7 +245,7 @@ function AddTestCases() {
             />
           </Grid>
           {fields.map((testingStep, index) => (
-            <Grid item xs={12} key={index}>
+            <Grid item xs={12} key={testingStep.id}>
               Testing Steps
               <Controller
                 name={`steps.${index}.description`}
@@ -269,9 +270,7 @@ function AddTestCases() {
                           <IconButton
                             edge="end"
                             onClick={() =>
-                              // getValues("steps").length > 1 &&
-                              // console.log(index, "xxxxx")
-                              remove(index)
+                              fields.length > 1 && remove(index)
                             }
                           >
                             <Icon fontSize={20} icon="bxs-trash" />

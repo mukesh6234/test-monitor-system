@@ -130,7 +130,7 @@ function EditTestCases() {
 
   const handleSteps = () => {
     if (getValues("steps")[getValues("steps").length - 1].description !== "") {
-      append({ description: "" });
+      append({ description: "", id: fields.length + 1 });
     }
   };
 
@@ -257,13 +257,7 @@ function EditTestCases() {
             />
           </Grid>
           {fields.map((testingStep, index) => (
-            <Grid item xs={12} key={index}>
-              {console.log(
-                `testing_steps[${index}].steps`,
-                errors,
-                Boolean(errors.steps),
-                "indexindex"
-              )}
+            <Grid item xs={12} key={testingStep.id}>
               Testing Steps
               <Controller
                 name={`steps.${index}.description`}

@@ -46,6 +46,7 @@ import BlankLayout from "@core/layouts/BlankLayout";
 import loginImage from "../../public/images/pages/girl.png";
 import Image from "next/image";
 import TextInput from "@core/components/input/textInput";
+import { toast } from "react-hot-toast";
 
 // ** Styled Components
 // const LoginIllustration = styled('img')({
@@ -117,11 +118,7 @@ const LoginPage = () => {
         type: "manual",
         message: "Email or Password is invalid",
       });
-      if (err[1]) {
-        toast.error(err[1] ? err[1]?.data[0] : "Something not right");
-      } else {
-        toast.error(err.message);
-      }
+      toast.error("Email or Password is invalid");
     });
   };
 

@@ -7,7 +7,6 @@ import DialogActions from "@mui/material/DialogActions";
 import TextInput from "@core/components/input/textInput";
 
 function CreateProject(props) {
-
   return (
     <Dialog open={props.formOpen} onClose={props.handleClose}>
       <div
@@ -19,7 +18,7 @@ function CreateProject(props) {
       >
         <DialogTitle style={{ display: "flex", flexDirection: "column" }}>
           {props.formTitle}
-          {/* <span style={{ fontSize: "16px" }}>{props.formDescription}</span> */}
+          <span style={{ fontSize: "16px" }}>{props.formDescription}</span>
         </DialogTitle>
 
         <DialogContent>
@@ -43,7 +42,11 @@ function CreateProject(props) {
           </Button>
           <Button
             variant="contained"
-            onClick={() => props.data.id ? props.handleUpdate(props.data.id) : props.handleSave}
+            onClick={() =>
+              props.data.id
+                ? props.handleUpdate(props.data.id)
+                : props.handleSave()
+            }
           >
             {props.data.id ? "Update" : "Create"}
           </Button>
