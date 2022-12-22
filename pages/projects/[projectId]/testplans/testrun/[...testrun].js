@@ -17,7 +17,6 @@ import Spinner from "@core/components/spinner";
 import { titleize } from "components/helper";
 import { toast } from "react-hot-toast";
 import FileUploader from "components/fileUploader/imageUpload";
-import ImageUpload from "components/fileUploader/imageUpload";
 
 const ContentLayout = styled(Box)(({ theme }) => ({
   transition: "none",
@@ -79,7 +78,7 @@ function TestRun() {
   const handleSubmit = (status) => {
     setDisable(true);
     const form = new FormData();
-    form.append("results[file]", image[0]);
+    image[0] && form.append("results[file]", image[0]);
     form.append("results[status]", status);
     form.append("results[comment]", comments);
     form.append("results[section_id]", testrun[1]);
@@ -88,12 +87,12 @@ function TestRun() {
     updateTestRun(auth.user.auth_token, projectId, testrun[0], form)
       .then(({ message }) => {
         toast.success(message);
-        testIndex !== testCases.length - 1 && setTestIndex(testIndex + 1);
         setComments("");
       })
       .catch((err) => {
+        console.log(err, "oooo");
         if (err[1]) {
-          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          toast.error(err[1]?.data ? err[1]?.data[0] : "Internal Server Error");
         } else {
           toast.error(err.message);
         }
@@ -109,8 +108,7 @@ function TestRun() {
   const handleUpload = (value) => {
     setImage(value);
   };
-  
-  console.log(disable, "disable", image);
+
   return (
     <>
       {testCases.length < 1 ? (
@@ -121,10 +119,8 @@ function TestRun() {
           sx={{
             backgroundColor: (theme) =>
               hexToRGBA(theme.palette.background.paper, 1),
-            // border: (theme) => `1px solid ${theme.palette.divider}`,
             boxShadow: 6,
             height: "80vh",
-            // position: "relative",
           }}
         >
           <div>

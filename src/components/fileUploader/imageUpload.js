@@ -127,7 +127,7 @@ const FileUploader = ({ onChange }) => {
           <Link href="/" onClick={handleLinkClick}>
             browse
           </Link>{" "}
-          thorough your machine
+          through your machine
         </Typography>
         {/* </Box> */}
       </Box>
