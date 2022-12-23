@@ -117,6 +117,7 @@ function TestRun() {
     if (isEmpty && emptyIndex !== -1) {
       toast.error("Please update the testcase status");
       setTestIndex(emptyIndex);
+      setDisable(false);
     } else {
       const form = new FormData();
       testStatus.map((val) =>
@@ -396,9 +397,12 @@ function TestRun() {
                     }}
                   >
                     <Button
-                      disabled={disable}
                       fullWidth
-                      style={{ padding: "10px ", fontSize: "0.9rem" }}
+                      style={{
+                        padding: "10px ",
+                        fontSize: "0.9rem",
+                        pointerEvents: disable ? "none" : "",
+                      }}
                       size="small"
                       variant="contained"
                       color="success"
@@ -408,9 +412,12 @@ function TestRun() {
                       Pass
                     </Button>
                     <Button
-                      disabled={disable}
                       fullWidth
-                      style={{ padding: "10px ", fontSize: "0.9rem" }}
+                      style={{
+                        padding: "10px ",
+                        fontSize: "0.9rem",
+                        pointerEvents: disable ? "none" : "",
+                      }}
                       size="small"
                       variant="contained"
                       color="info"
@@ -420,9 +427,12 @@ function TestRun() {
                       Skip
                     </Button>
                     <Button
-                      disabled={disable}
                       fullWidth
-                      style={{ padding: "10px ", fontSize: "0.9rem" }}
+                      style={{
+                        padding: "10px ",
+                        fontSize: "0.9rem",
+                        pointerEvents: disable ? "none" : "",
+                      }}
                       size="small"
                       variant="contained"
                       color="error"
