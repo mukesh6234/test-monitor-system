@@ -41,3 +41,11 @@ export function testPlanExecution(token, projectId, testPlanId) {
     authorization: token,
   });
 }
+
+export const testPlanReport = (token, project_id,test_plan_id) => {
+  return makeRequest({
+    uri: `/api/v1/projects/${project_id}/test_plans/${test_plan_id}/report`,
+    method: "GET",
+    authorization: token,
+  });
+};

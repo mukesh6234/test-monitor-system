@@ -14,6 +14,7 @@ import bundleIcon from "../../../../public/images/pages/layer.png";
 import testRunIcon from "../../../../public/images/pages/test-run.png";
 import Image from "next/image";
 
+
 const Divider = styled(MuiDivider)(({ theme }) => ({
   margin: 0,
   borderRight: `1px solid ${theme.palette.divider}`,
@@ -74,7 +75,6 @@ function ProjectCard(props) {
           </Typography>
         </Tooltip>
         {/* </div> */}
-      
 
         <div
           style={{
@@ -85,9 +85,10 @@ function ProjectCard(props) {
           }}
         >
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Image src={bundleIcon} height={30} alt="test-case-logo" />
+            {/* <Image src={bundleIcon} height={30} alt="test-case-logo" /> */}
             <div style={{ marginLeft: 10 }}>
-              <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h6">
+              <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h5">
+                <Icon icon="bxs-data" fontSize={20} /> {/* </div>{" "} */}
                 {props.sections_count}
               </Typography>
 
@@ -97,15 +98,25 @@ function ProjectCard(props) {
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Image src={testRunIcon} height={30} alt="test-case-logo" />
+            {/* <Image src={testRunIcon} height={30} alt="test-case-logo" /> */}
+
             <div style={{ marginLeft: 10 }}>
-              <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h6">
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  lineHeight: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-evenly",
+                }}
+                variant="h5"
+              >
+                {/* <div style={{marginTop:15}}> */}
+                <Icon icon="bx-archive" fontSize={20} /> {/* </div>{" "} */}
                 {props.test_cases_count}
               </Typography>
 
-              <Typography variant="caption" sx={{ fontWeight: 500 }}>
-                Test Cases
-              </Typography>
+              <Typography variant="caption">Test Cases</Typography>
             </div>
           </div>
         </div>
@@ -127,7 +138,7 @@ function ProjectCard(props) {
           }}
         >
           <StyledLink>
-            <span style={{ marginRight: 5 }}>
+            <span style={{ marginRight: 5, marginTop: 5 }}>
               <Icon icon="la:cubes" fontSize={24} />
             </span>
             Modules
@@ -150,7 +161,7 @@ function ProjectCard(props) {
           }}
         >
           <StyledLink>
-            <span style={{ marginRight: 5, textAlign: "center" }}>
+            <span style={{ marginRight: 5, marginTop: 5 }}>
               <Icon icon="material-symbols:fact-check-outline" fontSize={24} />
             </span>
             Test Cases

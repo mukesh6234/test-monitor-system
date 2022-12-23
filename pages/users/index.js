@@ -9,6 +9,7 @@ import noData from "../../public/images/lottie/nodata.json";
 import Lottie from "lottie-react";
 import { Skeleton } from "@mui/material";
 import { toast } from "react-hot-toast";
+import UserForm from "components/modals/userForm";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -22,18 +23,12 @@ for (let i = 0; i < 12; i++) {
 
 function User() {
   const [userLists, setUserLists] = useState([]);
+  const [formOpen, setFormOpen] = useState(false);
+  const [userId, setUserId] = useState("");
   const [totalEntries, setTotalEntries] = useState(0);
   const [loading, setLoading] = useState(true);
   const auth = useAuth();
   const searchValue = useSearch();
-
-  const pageHeaderProps = {
-    title: "User",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
-    buttonName: "Add User",
-    navigate: "users/adduser",
-  };
 
   useEffect(() => {
     fetchUser();
@@ -53,6 +48,35 @@ function User() {
           toast.error(err.message);
         }
       });
+  };
+
+  const handleClose = () => {
+    setFormOpen(!formOpen);
+    setUserId("");
+  };
+
+  const handleSave = () => {
+    setFormOpen(!formOpen);
+    fetchUser();
+    setUserId("");
+  };
+
+  const handleEdit = (id) => {
+    setUserId(id);
+    setFormOpen(!formOpen);
+  };
+  const userFormProps = {
+    formTitle: userId ? "Update User" : "Add User",
+    formOpen,
+    handleClose,
+    handleSave,
+    id: userId,
+  };
+
+  const pageHeaderProps = {
+    title: "User",
+    buttonName: "Add User",
+    setFormOpen,
   };
 
   return (
@@ -83,12 +107,13 @@ function User() {
           userLists.map((userList, index) => {
             return (
               <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
-                <UserCard {...userList} />
+                <UserCard {...userList} handleEdit={handleEdit} />
               </Grid>
             );
           })
         )}
       </Grid>
+      {formOpen && <UserForm {...userFormProps} />}
     </>
   );
 }

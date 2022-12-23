@@ -15,6 +15,7 @@ import { useSearch } from "context/searchContext";
 import Lottie from "lottie-react";
 import noData from "../../public/images/lottie/nodata.json";
 import { Skeleton } from "@mui/material";
+import { Pagination } from "@mui/material";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -38,6 +39,8 @@ export default function Project() {
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [data, setData] = useState("");
+  const [page, setPage] = useState(1);
+  const perPage = 50;
   const auth = useAuth();
   const searchValue = useSearch();
   let auth_token = auth.user.auth_token;
@@ -47,8 +50,12 @@ export default function Project() {
   }, [searchValue]);
 
   const fetchProject = async () => {
+    const params = {
+      page,
+      perPage,
+    };
     if (auth.user.role_group) {
-      await fetchProjects(auth_token, searchValue)
+      await fetchProjects(auth_token, params, searchValue)
         .then(({ data, total_entries }) => {
           setLoading(false);
           setTotalEntries(total_entries);
@@ -123,6 +130,10 @@ export default function Project() {
     });
   };
 
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
   const pageHeaderProps = {
     title: "Project",
     buttonName: "Add Project",
@@ -176,6 +187,15 @@ export default function Project() {
         )}
       </Grid>
       {formOpen && <CreateProject {...createFormProps} />}
+      <Pagination
+        // count={10}
+        style={{display: "flex", justifyContent:"flex-end",margin:"20px auto"}}
+        page={page}
+        shape="rounded"
+        color="primary"
+        setPage={handlePageChange}
+        total={perPage}
+      />
     </div>
   );
 }

@@ -21,16 +21,21 @@ import { useDropzone } from "react-dropzone";
 
 // Styled component for the heading inside the dropzone area
 
-const FileUploader = ({ onChange }) => {
+const FileUploader = ({
+  //   handleUpload,
+  setTestStatus,
+  testIndex,
+  testStatus,
+}) => {
   // ** State
-  const [files, setFiles] = useState([]);
+  //   const [files, setFiles] = useState([]);
 
   // ** Hook
   const theme = useTheme();
 
-  useEffect(() => {
-    onChange(files);
-  }, [files]);
+  //   useEffect(() => {
+  //     handleUpload(files);
+  //   }, [files]);
 
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
@@ -38,7 +43,13 @@ const FileUploader = ({ onChange }) => {
       "image/*": [".png", ".jpg", ".jpeg", ".gif"],
     },
     onDrop: (acceptedFiles) => {
-      setFiles(acceptedFiles.map((file) => Object.assign(file)));
+      //   setFiles(acceptedFiles.map((file) => Object.assign(file)));
+      const newValue = [...testStatus];
+      newValue[testIndex] = {
+        ...testStatus[testIndex],
+        file: acceptedFiles.map((file) => Object.assign(file)),
+      };
+      setTestStatus(newValue);
     },
   });
 
@@ -47,13 +58,14 @@ const FileUploader = ({ onChange }) => {
   };
 
   const renderFilePreview = (file) => {
-    if (file.type.startsWith("image")) {
+    console.log(file, "66666");
+    if (file[0].type.startsWith("image")) {
       return (
         <img
           width={38}
           height={38}
-          alt={file.name}
-          src={URL.createObjectURL(file)}
+          alt={file[0].name}
+          src={URL.createObjectURL(file[0])}
         />
       );
     } else {
@@ -62,13 +74,19 @@ const FileUploader = ({ onChange }) => {
   };
 
   const handleRemoveFile = (file) => {
-    const uploadedFiles = files;
-    const filtered = uploadedFiles.filter((i) => i.name !== file.name);
-    setFiles([...filtered]);
+    const filtered = testStatus.findIndex((val) => val.file[0] !== file.name);
+    // setFiles([...filtered]);
+    const newValue = [...testStatus];
+    newValue[filtered] = {
+      ...testStatus[filtered],
+      file: [],
+    };
+    setTestStatus(newValue);
   };
-  
-  const fileList = files.map((file) => (
-    <ListItem key={file.name}>
+
+  const fileList = testStatus.map((value, index) => (
+    <ListItem key={index}>
+      {console.log(value, "vvv", testStatus[testIndex].file.length, "9999")}
       <div
         className="file-details"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -77,41 +95,42 @@ const FileUploader = ({ onChange }) => {
           className="file-preview"
           style={{ display: "flex", alignItems: "center" }}
         >
-          {renderFilePreview(file)}{" "}
+          {value.file.length > 0 && renderFilePreview(value.file)}{" "}
           <Typography sx={{ ml: 5 }} className="file-name">
-            {file.name}
+            {value.file.length > 0 && value.file[0].name}
           </Typography>
         </div>
       </div>
-      <IconButton onClick={() => handleRemoveFile(file)}>
+      <IconButton onClick={() => handleRemoveFile(value.file)}>
         <Icon icon="bxs-trash-alt" fontSize={20} />
       </IconButton>
     </ListItem>
   ));
-
+  // {testStatus[testIndex].file.length?alert("true"):alert("false")}
   return (
-    <Box
-      {...getRootProps({ className: "dropzone" })}
-      //   sx={acceptedFiles.length ? { height: 450 } : {}}
-    >
-      <input {...getInputProps()} />
+    <Fragment>
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-
-          padding: " 1rem",
-          borderRadius: "6px",
-          border: "2px dashed rgba(93, 89, 98, 0.22)",
-        }}
+        {...getRootProps({ className: "dropzone" })}
+        //   sx={acceptedFiles.length ? { height: 450 } : {}}
       >
-        <Image
-          alt="Upload img"
-          src={theme.palette.mode == "light" ? uploadLight : uploadDark}
-          height={100}
-        />
-        {/* <Box
+        <input {...getInputProps()} />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+
+            padding: " 1rem",
+            borderRadius: "6px",
+            border: "2px dashed rgba(93, 89, 98, 0.22)",
+          }}
+        >
+          <Image
+            alt="Upload img"
+            src={theme.palette.mode == "light" ? uploadLight : uploadDark}
+            height={100}
+          />
+          {/* <Box
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -119,25 +138,51 @@ const FileUploader = ({ onChange }) => {
             // textAlign: ["center", "center", "inherit"],
           }}
         > */}
-        {/* <HeadingTypography variant="h5">
+          {/* <HeadingTypography variant="h5">
             Drop files here or click to upload.
           </HeadingTypography> */}
-        <Typography color="textSecondary">
-          Drop files here or click{" "}
-          <Link href="/" onClick={handleLinkClick}>
-            browse
-          </Link>{" "}
-          through your machine
-        </Typography>
-        {/* </Box> */}
+          <Typography color="textSecondary">
+            Drop files here or click{" "}
+            <Link href="/" onClick={handleLinkClick}>
+              browse
+            </Link>{" "}
+            through your machine
+          </Typography>
+          {/* </Box> */}
+        </Box>
+        {/* {files.length ? img : null} */}
       </Box>
-      {/* {files.length ? img : null} */}
-      {files.length ? (
+      {testStatus[testIndex].file.length ? (
         <Fragment>
-          <List>{fileList}</List>
+          <List>
+            {" "}
+            <ListItem>
+              <div
+                className="file-details"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <div
+                  className="file-preview"
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  {testStatus[testIndex].file.length > 0 &&
+                    renderFilePreview(testStatus[testIndex].file)}{" "}
+                  <Typography sx={{ ml: 5 }} className="file-name">
+                    {testStatus[testIndex].file.length > 0 &&
+                      testStatus[testIndex].file[0].name}
+                  </Typography>
+                </div>
+              </div>
+              <IconButton
+                onClick={() => handleRemoveFile(testStatus[testIndex].file)}
+              >
+                <Icon icon="bxs-trash-alt" fontSize={20} />
+              </IconButton>
+            </ListItem>
+          </List>
         </Fragment>
       ) : null}
-    </Box>
+    </Fragment>
   );
 };
 

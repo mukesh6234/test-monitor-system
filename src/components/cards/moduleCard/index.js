@@ -52,7 +52,6 @@ function ModuleCard(props) {
 
   return (
     <Card style={{ padding: 25, paddingBottom: 0 }}>
-      
       <Tooltip
         arrow
         title={props.title}
@@ -110,13 +109,25 @@ function ModuleCard(props) {
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Image src={testRunIcon} height={30} alt="test-case-logo" />
+          {/* <Image src={testRunIcon} height={30} alt="test-case-logo" /> */}
+
           <div style={{ marginLeft: 10 }}>
-          <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h6">
+            <Typography
+              sx={{
+                fontWeight: 600,
+                lineHeight: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+              }}
+              variant="h5"
+            >
+              {/* <div style={{marginTop:15}}> */}
+              <Icon icon="bx-archive" fontSize={20} /> {/* </div>{" "} */}
               {props.test_cases_count}
             </Typography>
 
-            <Typography variant="caption" sx={{ fontWeight: 500 }}>Test Cases</Typography>
+            <Typography variant="caption">Test Cases</Typography>
           </div>
         </div>
       </div>
@@ -154,8 +165,8 @@ function ModuleCard(props) {
           onClick={() => props.handleView(props.id)}
         >
           <StyledLink>
-            <span style={{ marginRight: 5 }}>
-              <Icon icon="bx:show" fontSize={20} />
+            <span style={{ marginRight: 5, marginTop: 5 }}>
+              <Icon icon="bx-show" fontSize={20} />
             </span>
             View
           </StyledLink>

@@ -126,9 +126,10 @@ function TestPlanCard(props) {
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Image src={bundleIcon} height={30} alt="test-case-logo" />
+          {/* <Image src={bundleIcon} height={30} alt="test-case-logo" /> */}
           <div style={{ marginLeft: 10 }}>
-            <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h6">
+            <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h5">
+              <Icon icon="bxs-data" fontSize={20} /> {/* </div>{" "} */}
               {props.no_of_sections}
             </Typography>
 
@@ -137,21 +138,37 @@ function TestPlanCard(props) {
             </Typography>
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Image src={testRunIcon} height={30} alt="test-case-logo" />
-          <div style={{ marginLeft: 10 }}>
-            <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h6">
-              <span style={{ padding: "0 5px" }}>
-                {props.passed_test_cases}
-              </span>
-              {"/"}
-              <span style={{ padding: "0 5px" }}>{props.test_cases}</span>
-            </Typography>
 
-            <Typography variant="caption" sx={{ fontWeight: 500 }}>
-              Passed Case
-            </Typography>
-          </div>
+        {/* <Image src={testRunIcon} height={30} alt="test-case-logo" /> */}
+
+        <div style={{ marginLeft: 10 }}>
+          <Typography
+            sx={{
+              fontWeight: 600,
+              lineHeight: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-evenly",
+            }}
+            variant="h5"
+          >
+            <Icon icon="bx-check-shield" fontSize={20} />
+            <span style={{ padding: "0 5px" }}>{props.passed_test_cases}</span>
+            {"/"}
+            <span style={{ padding: "0 5px" }}>{props.test_cases}</span>
+          </Typography>
+          {/* <div> */}
+          <Typography
+            variant="caption"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Passed Cases
+          </Typography>
+          {/* </div> */}
         </div>
       </div>
       <Divider />
@@ -189,6 +206,11 @@ function TestPlanCard(props) {
             cursor: "pointer",
           }}
           //   onClick={() => props.handleView(props.id)}
+          onClick={() =>
+            router.push(
+              `/projects/${props.projectId}/testplans/report/${props.id}`
+            )
+          }
         >
           <StyledLink>
             <span style={{ marginRight: 5 }}>

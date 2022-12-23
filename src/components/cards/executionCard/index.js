@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 function ExecutionCard({ projectId, execution, ...props }) {
   const router = useRouter();
 
-  console.log(projectId, execution, "oooo");
   return (
     <Card
       style={{
@@ -60,7 +59,14 @@ function ExecutionCard({ projectId, execution, ...props }) {
           <Typography >{props?.created_at}</Typography>
         </div> */}
         <div style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
-          <Typography>{props.sections_data.pass} Pass</Typography>
+          <span style={{ marginRight: 5, color: "#6AB14B", fontWeight: 600 }}>
+            {" "}
+            {props.test_cases_count
+              ? props.sections_data.pass / props.test_cases_count
+              : props.test_cases_count * 100}
+            %
+          </span>
+          <Typography>Pass</Typography>
         </div>
       </div>
       <div
@@ -104,8 +110,31 @@ function ExecutionCard({ projectId, execution, ...props }) {
               height: 15,
               width: "100%",
               background: "#EEEEEE",
+              position: "relative",
             }}
-          ></div>
+          >
+            <div
+              style={{
+                position: "absolute",
+                height: "100%",
+                width: "100px",
+              }}
+            >
+              {" "}
+              <span
+                style={{
+                  borderRadius: 10,
+                  position: "absolute",
+                  background: "green",
+                  height: "100%",
+                  width: "100px",
+                  display: "inline-block",
+                }}
+              ></span>
+              <span />
+              <span />
+            </div>
+          </div>
         </div>
       </div>
     </Card>

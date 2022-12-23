@@ -10,8 +10,21 @@ import { useSearch } from "context/searchContext";
 import Lottie from "lottie-react";
 import noData from "../../../../public/images/lottie/nodata.json";
 import { toast } from "react-hot-toast";
+import { hexToRGBA } from "@core/utils/hex-to-rgba";
+import { styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
 let showData = {};
+
+const ContentLayout = styled(Box)(({ theme }) => ({
+  transition: "none",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: 8,
+  // backgroundColor: "transparent",
+  color: theme.palette.text.primary,
+  // padding: "20px 0",
+}));
 
 export default function TestCases() {
   const [testCases, setTestCases] = useState("");
@@ -94,16 +107,26 @@ export default function TestCases() {
           />
         </div>
       ) : (
-        <DataGrid
-          autoHeight
-          rows={testCases}
-          columns={testCaseColumns(projectId, router, handleView)}
-          pagination={false}
-          disableColumnMenu
-          disableSelectionOnClick
-          rowsPerPageOptions={[10, 25, 50]}
-          loading={loading}
-        />
+        <ContentLayout
+          className="navbar-content-container"
+          sx={{
+            backgroundColor: (theme) =>
+              hexToRGBA(theme.palette.background.paper, 1),
+            boxShadow: 6,
+            //   height: "80vh",
+          }}
+        >
+          <DataGrid
+            autoHeight
+            rows={testCases}
+            columns={testCaseColumns(projectId, router, handleView)}
+            pagination={false}
+            disableColumnMenu
+            disableSelectionOnClick
+            rowsPerPageOptions={[10, 25, 50]}
+            loading={loading}
+          />
+        </ContentLayout>
       )}
       {formOpen && <TestCaseDialogue {...testDialogueProps} />}
     </div>

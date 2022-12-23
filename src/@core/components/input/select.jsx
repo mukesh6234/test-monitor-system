@@ -12,7 +12,7 @@ function SelectInput(props) {
     label,
     options,
     onChange,
-    defaultValue
+    defaultValue,
   } = props;
   console.log(Boolean(error), "Boolean(error)");
   return (

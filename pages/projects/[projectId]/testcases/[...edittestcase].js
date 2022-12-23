@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Divider, FormControl, Grid, OutlinedInput } from "@mui/material";
+import { Divider, FormControl, Grid, OutlinedInput ,Box} from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,6 +15,8 @@ import { fetchModules } from "../../../api/modules";
 import { useSearch } from "context/searchContext";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import { hexToRGBA } from "@core/utils/hex-to-rgba";
+import { styled } from "@mui/material/styles";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
@@ -37,6 +39,16 @@ const defaultValues = {
   steps: [{ description: "" }],
   expected_result: "",
 };
+
+const ContentLayout = styled(Box)(({ theme }) => ({
+  transition: "none",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: 8,
+  // backgroundColor: "transparent",
+  color: theme.palette.text.primary,
+  paddingBottom: "20px",
+}));
 
 function EditTestCases() {
   const [options, setOptions] = useState([]);
@@ -159,179 +171,191 @@ function EditTestCases() {
           </div>
         </div>
         <Divider />
-        <Grid
-          container
-          spacing={5}
-          columnSpacing={30}
-          padding={"0 20px"}
-          marginTop
+        <ContentLayout
+          className="navbar-content-container"
+          sx={{
+            backgroundColor: (theme) =>
+              hexToRGBA(theme.palette.background.paper, 1),
+            boxShadow: 6,
+            //   height: "80vh",
+          }}
         >
-          <Grid item xs={6}>
-            Title
-            <Controller
-              name="title"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <TextInput
-                  fullWidth
-                  autoFocus={true}
-                  size={"small"}
-                  placeholder={"Enter Test Case Title"}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  errors={Boolean(errors.title)}
-                  helperText={errors.title && errors.title.message}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            Modules
-            <FormControl fullWidth sx={{ mb: 6 }}>
+          <Grid
+            container
+            spacing={5}
+            columnSpacing={30}
+            padding={"0 20px"}
+            marginTop
+          >
+            <Grid item xs={6}>
+              Title
               <Controller
-                name="section"
+                name="title"
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <SelectInput
-                    size={"small"}
+                  <TextInput
                     fullWidth
+                    autoFocus={true}
+                    size={"small"}
+                    placeholder={"Enter Test Case Title"}
+                    value={value}
                     onBlur={onBlur}
                     onChange={onChange}
-                    value={value}
-                    placeholder={"Select Module"}
-                    error={Boolean(errors.section)}
-                    helperText={errors.section ? errors.section.message : ""}
-                    options={options}
+                    errors={Boolean(errors.title)}
+                    helperText={errors.title && errors.title.message}
                   />
                 )}
               />
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            Description
-            <Controller
-              name="description"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <TextInput
-                  fullWidth
-                  multi
-                  rows={5}
-                  size={"small"}
-                  placeholder={"Enter Test Case Description"}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  errors={Boolean(errors.description)}
-                  helperText={errors.description && errors.description.message}
+            </Grid>
+            <Grid item xs={6}>
+              Modules
+              <FormControl fullWidth sx={{ mb: 6 }}>
+                <Controller
+                  name="section"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <SelectInput
+                      size={"small"}
+                      fullWidth
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      placeholder={"Select Module"}
+                      error={Boolean(errors.section)}
+                      helperText={errors.section ? errors.section.message : ""}
+                      options={options}
+                    />
+                  )}
                 />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            Prerequisite
-            <Controller
-              name="prerequisite"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <TextInput
-                  fullWidth
-                  multi
-                  rows={3}
-                  size={"small"}
-                  placeholder={"Enter your prerequisite"}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  errors={Boolean(errors.prerequisite)}
-                  helperText={
-                    errors.prerequisite && errors.prerequisite.message
-                  }
-                />
-              )}
-            />
-          </Grid>
-          {fields.map((testingStep, index) => (
-            <Grid item xs={12} key={testingStep.id}>
-              Testing Steps
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              Description
               <Controller
-                name={`steps.${index}.description`}
+                name="description"
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange, onBlur } }) => (
-                  <OutlinedInput
+                  <TextInput
                     fullWidth
+                    multi
+                    rows={5}
                     size={"small"}
-                    placeholder={"Enter testing steps..."}
+                    placeholder={"Enter Test Case Description"}
                     value={value}
                     onBlur={onBlur}
                     onChange={onChange}
-                    error={Boolean(errors.steps)}
+                    errors={Boolean(errors.description)}
                     helperText={
-                      errors.steps &&
-                      errors?.steps?.[index]?.description?.message
-                    }
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          onClick={() =>
-                            getValues("steps").length > 1 && remove(index)
-                          }
-                        >
-                          <Icon fontSize={20} icon="bxs-trash" />
-                        </IconButton>
-                      </InputAdornment>
+                      errors.description && errors.description.message
                     }
                   />
                 )}
               />
             </Grid>
-          ))}
-          <Grid item xs={12}>
-            <Button
-              style={{
-                border: "1px dashed #9155FD",
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-              }}
-              onClick={handleSteps}
-            >
-              <Icon icon="bx:plus" fontSize={20} />
-              <span style={{ paddingLeft: 10 }}>Add Steps</span>
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            Expected Result
-            <Controller
-              name="expected_result"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <TextInput
-                  fullWidth
-                  multi
-                  rows={3}
-                  size={"small"}
-                  placeholder={"Enter expected result"}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  errors={Boolean(errors.expected_result)}
-                  helperText={
-                    errors.expected_result && errors.expected_result.message
-                  }
+            <Grid item xs={12}>
+              Prerequisite
+              <Controller
+                name="prerequisite"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextInput
+                    fullWidth
+                    multi
+                    rows={3}
+                    size={"small"}
+                    placeholder={"Enter your prerequisite"}
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    errors={Boolean(errors.prerequisite)}
+                    helperText={
+                      errors.prerequisite && errors.prerequisite.message
+                    }
+                  />
+                )}
+              />
+            </Grid>
+            {fields.map((testingStep, index) => (
+              <Grid item xs={12} key={testingStep.id}>
+                Testing Steps
+                <Controller
+                  name={`steps.${index}.description`}
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <OutlinedInput
+                      fullWidth
+                      size={"small"}
+                      placeholder={"Enter testing steps..."}
+                      value={value}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      error={Boolean(errors.steps)}
+                      helperText={
+                        errors.steps &&
+                        errors?.steps?.[index]?.description?.message
+                      }
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            edge="end"
+                            onClick={() =>
+                              getValues("steps").length > 1 && remove(index)
+                            }
+                          >
+                            <Icon fontSize={20} icon="bxs-trash" />
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  )}
                 />
-              )}
-            />
+              </Grid>
+            ))}
+            <Grid item xs={12}>
+              <Button
+                style={{
+                  border: "1px dashed #9155FD",
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onClick={handleSteps}
+              >
+                <Icon icon="bx:plus" fontSize={20} />
+                <span style={{ paddingLeft: 10 }}>Add Steps</span>
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              Expected Result
+              <Controller
+                name="expected_result"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextInput
+                    fullWidth
+                    multi
+                    rows={3}
+                    size={"small"}
+                    placeholder={"Enter expected result"}
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    errors={Boolean(errors.expected_result)}
+                    helperText={
+                      errors.expected_result && errors.expected_result.message
+                    }
+                  />
+                )}
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        </ContentLayout>
       </form>
     </>
   );

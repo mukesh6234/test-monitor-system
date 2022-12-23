@@ -1,8 +1,8 @@
 import makeRequest from "../index";
 
-export function fetchProjects(token,search) {
+export function fetchProjects(token, params, search) {
   return makeRequest({
-    uri: `/api/v1/projects?query=${search}`,
+    uri: `/api/v1/projects?page=${params.page}&per_page=${params.perPage}&query=${search}`,
     method: "GET",
     authorization: token,
   });
@@ -25,7 +25,7 @@ export function showProject(token, project_id) {
   });
 }
 
-export function updateProject(token,project_id, requestBody) {
+export function updateProject(token, project_id, requestBody) {
   return makeRequest({
     uri: `/api/v1/projects/${project_id}`,
     method: "PUT",

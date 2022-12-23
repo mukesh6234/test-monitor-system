@@ -74,7 +74,8 @@ function UserCard(props) {
           cursor: "pointer",
           padding: 5,
         }}
-        onClick={() => router.push(`users/edituser/${props.id}`)}
+        onClick={() => props.handleEdit(props.id)}
+        
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {renderIcon(props)}
