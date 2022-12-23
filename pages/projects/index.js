@@ -40,14 +40,14 @@ export default function Project() {
   const [title, setTitle] = useState("");
   const [data, setData] = useState("");
   const [page, setPage] = useState(1);
-  const perPage = 50;
+  const perPage = 10;
   const auth = useAuth();
   const searchValue = useSearch();
   let auth_token = auth.user.auth_token;
 
   useEffect(() => {
     fetchProject();
-  }, [searchValue]);
+  }, [searchValue, page]);
 
   const fetchProject = async () => {
     const params = {
@@ -130,12 +130,8 @@ export default function Project() {
     });
   };
 
-  const handlePageChange = (page) => {
-    setPage(page);
-  };
-
   const pageHeaderProps = {
-    title: "Project",
+    title: "Projects",
     buttonName: "Add Project",
     setFormOpen,
   };
@@ -160,7 +156,6 @@ export default function Project() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "100%",
           }}
         >
           <Lottie
@@ -172,7 +167,13 @@ export default function Project() {
         </div>
       )}
 
-      <Grid container spacing={6} marginTop alignItems={"stretch"}>
+      <Grid
+        container
+        spacing={6}
+        marginTop
+        alignItems={"stretch"}
+        style={{ minHeight: "65vh" }}
+      >
         {loading ? (
           <>{skeleton}</>
         ) : (
@@ -187,15 +188,22 @@ export default function Project() {
         )}
       </Grid>
       {formOpen && <CreateProject {...createFormProps} />}
-      <Pagination
-        // count={10}
-        style={{display: "flex", justifyContent:"flex-end",margin:"20px auto"}}
-        page={page}
-        shape="rounded"
-        color="primary"
-        setPage={handlePageChange}
-        total={perPage}
-      />
+
+      {totalEntries !== 0 && (
+        <Pagination
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+          }}
+          count={Math.ceil(totalEntries / perPage)}
+          page={page}
+          shape="rounded"
+          color="primary"
+          onChange={(event, value) => setPage(value)}
+          pageSize={Number(perPage)}
+        />
+      )}
     </div>
   );
 }

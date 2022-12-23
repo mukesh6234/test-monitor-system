@@ -25,7 +25,7 @@ const RoleColor = (value) => {
   const colors = {
     "Super Admin": "primary",
     Tester: "info",
-    Developer: "success",
+    Developer: "warning",
   };
 
   return colors[value];
@@ -92,8 +92,8 @@ function UserCard(props) {
             </Typography>
             <Typography
               noWrap
-              variant="caption"
-              sx={{ color: "text.disabled" }}
+             
+              sx={{ color: "text.disabled",fontSize:"0.80rem" }}
             >
               {props.email}
             </Typography>

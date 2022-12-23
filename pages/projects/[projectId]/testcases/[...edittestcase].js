@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Divider, FormControl, Grid, OutlinedInput ,Box} from "@mui/material";
+import { Divider, FormControl, Grid, OutlinedInput, Box } from "@mui/material";
 import { Button } from "@mui/material";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -141,9 +141,9 @@ function EditTestCases() {
   };
 
   const handleSteps = () => {
-    if (getValues("steps")[getValues("steps").length - 1].description !== "") {
+    // if (getValues("steps")[getValues("steps").length - 1].description !== "") {
       append({ description: "", id: fields.length + 1 });
-    }
+    // }
   };
 
   return (
@@ -170,7 +170,9 @@ function EditTestCases() {
             </Button>
           </div>
         </div>
-        <Divider />
+        <div style={{ padding: "0.5rem 0" }}>
+          <Divider />
+        </div>
         <ContentLayout
           className="navbar-content-container"
           sx={{
@@ -196,7 +198,6 @@ function EditTestCases() {
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
                     fullWidth
-                    autoFocus={true}
                     size={"small"}
                     placeholder={"Enter Test Case Title"}
                     value={value}
@@ -279,11 +280,12 @@ function EditTestCases() {
                 )}
               />
             </Grid>
-            {fields.map((testingStep, index) => (
-              <Grid item xs={12} key={testingStep.id}>
-                Testing Steps
+            <Grid item xs={12}>
+              Testing Steps
+              {fields.map((testingStep, index) => (
                 <Controller
                   name={`steps.${index}.description`}
+                  key={testingStep.id}
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange, onBlur } }) => (
@@ -311,11 +313,12 @@ function EditTestCases() {
                           </IconButton>
                         </InputAdornment>
                       }
+                      style={{ margin: "10px 0" }}
                     />
                   )}
                 />
-              </Grid>
-            ))}
+              ))}
+            </Grid>
             <Grid item xs={12}>
               <Button
                 style={{

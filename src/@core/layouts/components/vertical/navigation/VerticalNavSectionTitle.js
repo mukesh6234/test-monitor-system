@@ -5,7 +5,6 @@ import { styled, useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import MuiListSubheader from "@mui/material/ListSubheader";
 
-
 // ** Custom Components Imports
 // import Translations from 'src/layouts/components/Translations'
 // import CanViewNavSectionTitle from 'src/layouts/components/acl/CanViewNavSectionTitle'
@@ -23,6 +22,7 @@ const ListSubheader = styled((props) => (
   backgroundColor: "transparent",
   padding: theme.spacing(2.5, 8, 2.5, 0),
   transition: "padding .25s ease-in-out",
+  padding: 0,
 }));
 
 const TypographyHeaderText = styled(Typography)({
@@ -84,8 +84,7 @@ const VerticalNavSectionTitle = (props) => {
                     : "text.disabled",
               }}
             >
-           
-                <Translations text={item.sectionTitle} />
+              <Translations text={item.sectionTitle} />
             </TypographyHeaderText>
           </Box>
         )}

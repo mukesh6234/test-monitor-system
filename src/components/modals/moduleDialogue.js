@@ -21,7 +21,7 @@ const StatusColor = (value) => {
 
 function ModuleDialogue(props) {
   return (
-    <Dialog open={props.formOpen} onClose={props.handleClose}>
+    <Dialog open={props.modalOpen} onClose={props.handleClose}>
       <div
         style={{
           boxShadow: " 3px 3px 18px rgba(145, 85, 253, 0.11)",

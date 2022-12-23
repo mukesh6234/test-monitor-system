@@ -158,7 +158,6 @@ const RestPassword = () => {
                   <TextInput
                     label={"New Password"}
                     fullWidth
-                    autoFocus={true}
                     placeholder={"Enter your New Password"}
                     value={value}
                     onBlur={onBlur}

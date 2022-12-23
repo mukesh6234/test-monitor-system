@@ -10,6 +10,7 @@ import noData from "../../../../public/images/lottie/nodata.json";
 import { Skeleton } from "@mui/material";
 import TestPlanCard from "components/cards/testPlanCard";
 import { toast } from "react-hot-toast";
+import TestPlanForm from "components/modals/testPlanForm";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -30,12 +31,18 @@ function TestPlans() {
   const [testPlanLists, setTestPlanLists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalEntries, setTotalEntries] = useState();
+  const [testPlanId, setTestPlanId] = useState("");
+  const [formOpen, setFormOpen] = useState(false);
   const router = useRouter();
   const auth = useAuth();
   const searchValue = useSearch();
   const { projectId } = router.query;
 
   useEffect(() => {
+    testPlanIndex();
+  }, [searchValue]);
+
+  const testPlanIndex = () => {
     fetchTestPlans(auth.user.auth_token, projectId, searchValue)
       .then(({ data, total_entries }) => {
         setLoading(false);
@@ -49,12 +56,40 @@ function TestPlans() {
           toast.error(err.message);
         }
       });
-  }, [searchValue]);
+  };
 
+  const handleClose = () => {
+    setFormOpen(!formOpen);
+    setTestPlanId("");
+  };
+
+  const handleSave = () => {
+    setFormOpen(!formOpen);
+    testPlanIndex();
+    setTestPlanId("");
+  };
+
+  const handleEdit = (id) => {
+    setTestPlanId(id);
+    setFormOpen(!formOpen);
+  };
+
+  const testPlanCardProps = {
+    projectId,
+    handleEdit,
+  };
   const pageHeaderProps = {
     title: "Test Plan",
     buttonName: "New Test Plan",
-    navigate: `/projects/${projectId}/testplans/addtestplan`,
+    setFormOpen,
+  };
+
+  const testPlanFormProps = {
+    formTitle: testPlanId ? "Update Module" : "Add Module",
+    handleClose,
+    formOpen,
+    id: testPlanId,
+    handleSave,
   };
 
   return (
@@ -84,12 +119,13 @@ function TestPlans() {
           testPlanLists.map((testPlanList, index) => {
             return (
               <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
-                <TestPlanCard {...{ ...testPlanList, projectId }} />
+                <TestPlanCard {...testPlanList} {...testPlanCardProps} />
               </Grid>
             );
           })
         )}
       </Grid>
+      {formOpen && <TestPlanForm {...testPlanFormProps} />}
     </>
   );
 }

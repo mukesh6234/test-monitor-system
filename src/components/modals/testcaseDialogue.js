@@ -97,6 +97,11 @@ function TestCaseDialogue(props) {
             value={props.value.title ? props.value.title : props.value}
             onChange={(e) => props.setValue(e.target.value)}
           /> */}
+             <Typography
+            sx={{ fontWeight: 600, fontSize: "1rem", margin: "10px auto" }}
+          >
+            Test Case Description
+          </Typography>
           <Typography sx={{ color: "text.secondary", fontSize: "0.87rem" }}>
             {props.data.description}
           </Typography>

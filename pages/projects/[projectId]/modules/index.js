@@ -11,6 +11,7 @@ import Lottie from "lottie-react";
 import noData from "../../../../public/images/lottie/nodata.json";
 import { Skeleton } from "@mui/material";
 import { toast } from "react-hot-toast";
+import ModuleForm from "components/modals/moduleForm";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -30,7 +31,9 @@ for (let i = 0; i < 12; i++) {
 function Modules() {
   const [moduleList, setModuleList] = useState([]);
   const [moduleData, setModuleData] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
+  const [moduleId, setModuleId] = useState("");
   const [totalEntries, setTotalEntries] = useState(0);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -63,30 +66,54 @@ function Modules() {
   };
 
   const handleClose = () => {
-    setFormOpen(!formOpen);
+    setModalOpen(!modalOpen);
   };
 
   const handleView = (id) => {
     showModules(auth.user.auth_token, projectId, id).then(({ data }) => {
       setModuleData(data);
-      setFormOpen(!formOpen);
+      setModalOpen(!modalOpen);
     });
+  };
+
+  const handleFormClose = () => {
+    setFormOpen(!formOpen);
+    setModuleId("");
+  };
+
+  const handleEdit = (id) => {
+    setModuleId(id);
+    setFormOpen(!formOpen);
+  };
+
+  const handleSave = () => {
+    setFormOpen(!formOpen);
+    fetModulesIndex();
+    setModuleId("");
   };
 
   const pageHeaderProps = {
     title: "Modules",
     buttonName: "Add Module",
-    navigate: `/projects/${projectId}/modules/addmodule/`,
+    setFormOpen,
   };
 
   const moduleCardProps = {
-    projectId: projectId,
+    projectId,
     handleView,
     handleClose,
     moduleData,
-    formOpen,
+    modalOpen,
+    handleEdit,
   };
-
+  const moduleFormProps = {
+    formTitle: moduleId ? "Update Module" : "Add Module",
+    handleFormClose,
+    formOpen,
+    id: moduleId,
+    handleSave,
+    projectId,
+  };
   return (
     <>
       <PageHeader {...pageHeaderProps} />
@@ -121,8 +148,8 @@ function Modules() {
           })
         )}
       </Grid>
-
-      {formOpen && <ModuleDialogue {...moduleCardProps} />}
+      {formOpen && <ModuleForm {...moduleFormProps} />}
+      {modalOpen && <ModuleDialogue {...moduleCardProps} />}
     </>
   );
 }

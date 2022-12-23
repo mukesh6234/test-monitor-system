@@ -168,7 +168,6 @@ const ForgotPassword = () => {
                   <TextInput
                     label={"Email"}
                     fullWidth
-                    autoFocus={true}
                     placeholder={"Enter your email address"}
                     value={value}
                     onBlur={onBlur}

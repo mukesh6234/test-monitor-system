@@ -23,9 +23,8 @@ const Divider = styled(MuiDivider)(({ theme }) => ({
 
 const StatusColor = (value) => {
   const colors = {
-    started: "primary",
-    inprogress: "info",
-    cancelled: "error",
+    draft: "info",
+    rejected: "error",
     completed: "success",
   };
 
@@ -35,7 +34,8 @@ const StatusColor = (value) => {
 const StyledLink = styled("a")(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
-  alignItems: "center",
+  flexDirection: "column",
+  // alignItems: "center",
   cursor: "pointer",
   textDecoration: "none",
   color: theme.palette.text.secondary,
@@ -51,18 +51,27 @@ function ModuleCard(props) {
   const router = useRouter();
 
   return (
-    <Card style={{ padding: 25, paddingBottom: 0 }}>
-      <Tooltip
-        arrow
-        title={props.title}
-        placement="top"
-        TransitionComponent={Zoom}
-        TransitionProps={{ timeout: 500 }}
-      >
+    <Card
+      style={{ padding: 25, paddingBottom: 0, position: "relative" }}
+      className="project-card"
+    >
+      {props.title.length > 23 ? (
+        <Tooltip
+          arrow
+          title={props.title}
+          placement="top"
+          TransitionComponent={Zoom}
+          TransitionProps={{ timeout: 500 }}
+        >
+          <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
+            {SliceName(titleize(props.title))}
+          </Typography>
+        </Tooltip>
+      ) : (
         <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
           {SliceName(titleize(props.title))}
         </Typography>
-      </Tooltip>
+      )}
       <div
         style={{
           display: "flex",
@@ -87,7 +96,6 @@ function ModuleCard(props) {
             </>
           )}
         </Typography>
-
         <Typography sx={{ fontWeight: 500 }}>
           {
             <CustomChip
@@ -100,6 +108,7 @@ function ModuleCard(props) {
           }
         </Typography>
       </div>
+
       <div
         style={{
           display: "flex",
@@ -112,29 +121,38 @@ function ModuleCard(props) {
           {/* <Image src={testRunIcon} height={30} alt="test-case-logo" /> */}
 
           <div style={{ marginLeft: 10 }}>
-            <Typography
-              sx={{
-                fontWeight: 600,
-                lineHeight: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-evenly",
-              }}
-              variant="h5"
-            >
-              {/* <div style={{marginTop:15}}> */}
-              <Icon icon="bx-archive" fontSize={20} /> {/* </div>{" "} */}
-              {props.test_cases_count}
-            </Typography>
+            <StyledLink>
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  lineHeight: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-evenly",
+                }}
+                variant="h5"
+              >
+                {/* <div style={{marginTop:15}}> */}
+                <Icon icon="bx-archive" fontSize={20} /> {/* </div>{" "} */}
+                {props.test_cases_count}
+              </Typography>
 
-            <Typography variant="caption">Test Cases</Typography>
+              <Typography variant="caption">Test Cases</Typography>
+            </StyledLink>
           </div>
         </div>
+        <div className="edit-btn" onClick={() => props.handleEdit(props.id)}>
+          {" "}
+          <StyledLink>
+            {" "}
+            <Icon icon="bx-edit" fontSize={20} />
+          </StyledLink>
+        </div>
       </div>
-      <Divider />
-      <div style={{ display: "flex" }}>
-        <Link
-          href={`/projects/${props.projectId}/modules/${props.id}/editmodule`}
+      {/* <Divider /> */}
+      {/* <div style={{ display: "flex" }}>
+        <div
+          onClick={() => props.handleEdit(props.id)}
           style={{
             textDecoration: "none",
             display: "flex",
@@ -150,7 +168,7 @@ function ModuleCard(props) {
             </span>
             Edit
           </StyledLink>
-        </Link>
+        </div>
         <Divider flexItem />
         <div
           style={{
@@ -158,7 +176,6 @@ function ModuleCard(props) {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            padding: 5,
             cursor: "pointer",
             padding: "10px 0",
           }}
@@ -171,7 +188,7 @@ function ModuleCard(props) {
             View
           </StyledLink>
         </div>
-      </div>
+      </div> */}
     </Card>
   );
 }

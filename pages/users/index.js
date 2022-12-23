@@ -74,7 +74,7 @@ function User() {
   };
 
   const pageHeaderProps = {
-    title: "User",
+    title: "Users",
     buttonName: "Add User",
     setFormOpen,
   };
@@ -114,6 +114,7 @@ function User() {
         )}
       </Grid>
       {formOpen && <UserForm {...userFormProps} />}
+      
     </>
   );
 }

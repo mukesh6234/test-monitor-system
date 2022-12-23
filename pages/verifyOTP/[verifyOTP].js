@@ -156,7 +156,6 @@ const VerifyOTP = () => {
                   <TextInput
                     label={"OTP"}
                     fullWidth
-                    autoFocus={true}
                     placeholder={"Enter your 4 digit security code"}
                     value={value}
                     onBlur={onBlur}

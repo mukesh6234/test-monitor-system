@@ -130,9 +130,9 @@ function AddTestCases() {
   };
 
   const handleSteps = () => {
-    if (getValues("steps")[getValues("steps").length - 1].description !== "") {
+    // if (getValues("steps")[getValues("steps").length - 1].description !== "") {
       append({ description: "", id: fields.length + 1 });
-    }
+    // }
   };
 
   return (
@@ -159,7 +159,9 @@ function AddTestCases() {
             </Button>
           </div>
         </div>
-        <Divider />
+        <div style={{ padding: "0.5rem 0" }}>
+          <Divider />
+        </div>
         <ContentLayout
           className="navbar-content-container"
           sx={{
@@ -185,7 +187,6 @@ function AddTestCases() {
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
                     fullWidth
-                    autoFocus={true}
                     size={"small"}
                     placeholder={"Enter Test Case Title"}
                     value={value}
@@ -268,10 +269,11 @@ function AddTestCases() {
                 )}
               />
             </Grid>
-            {fields.map((testingStep, index) => (
-              <Grid item xs={12} key={testingStep.id}>
-                Testing Steps
+            <Grid item xs={12}>
+              Testing Steps
+              {fields.map((testingStep, index) => (
                 <Controller
+                  key={testingStep.id}
                   name={`steps.${index}.description`}
                   control={control}
                   rules={{ required: true }}
@@ -299,6 +301,7 @@ function AddTestCases() {
                             </IconButton>
                           </InputAdornment>
                         }
+                        style={{ margin: "10px 0" }}
                       />
                       <FormHelperText>
                         {errors.steps &&
@@ -307,8 +310,8 @@ function AddTestCases() {
                     </FormControl>
                   )}
                 />
-              </Grid>
-            ))}
+              ))}
+            </Grid>
             <Grid item xs={12}>
               <Button
                 style={{

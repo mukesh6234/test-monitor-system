@@ -49,17 +49,23 @@ function TestPlanCard(props) {
         }}
       >
         <div>
-          <Tooltip
-            arrow
-            title={props.title}
-            placement="top"
-            TransitionComponent={Zoom}
-            TransitionProps={{ timeout: 500 }}
-          >
+          {props.title.length > 23 ? (
+            <Tooltip
+              arrow
+              title={props.title}
+              placement="top"
+              TransitionComponent={Zoom}
+              TransitionProps={{ timeout: 500 }}
+            >
+              <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
+                {SliceName(titleize(props.title))}
+              </Typography>
+            </Tooltip>
+          ) : (
             <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
               {SliceName(titleize(props.title))}
             </Typography>
-          </Tooltip>
+          )}
           <Typography variant="caption">
             {props.updated_by?.name ? (
               <>
@@ -79,14 +85,9 @@ function TestPlanCard(props) {
           </Typography>
         </div>
         <div
-          onClick={() =>
-            router.push(
-              `/projects/${props.projectId}/testplans/${props.id}/edittestplan`
-            )
-          }
+          onClick={() => props.handleEdit(props.id)}
           style={{ cursor: "pointer" }}
         >
-          {" "}
           <StyledLink>
             <Icon icon="bx-edit" fontSize={20} />
           </StyledLink>

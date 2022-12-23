@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 import { SliceName, titleize } from "components/helper";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
@@ -10,10 +9,6 @@ import Tooltip from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
 import Icon from "@core/components/icon";
 import { setCookie } from "cookies-next";
-import bundleIcon from "../../../../public/images/pages/layer.png";
-import testRunIcon from "../../../../public/images/pages/test-run.png";
-import Image from "next/image";
-
 
 const Divider = styled(MuiDivider)(({ theme }) => ({
   margin: 0,
@@ -27,9 +22,10 @@ const Divider = styled(MuiDivider)(({ theme }) => ({
 const StyledLink = styled("a")(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
-  alignItems: "center",
   cursor: "pointer",
+  flexDirection: "column",
   textDecoration: "none",
+  fontSize: "0.80rem",
   color: theme.palette.text.secondary,
   "&:hover": {
     color: theme.palette.primary.main,
@@ -43,38 +39,35 @@ function ProjectCard(props) {
   return (
     <Card
       style={{
+        overflow: "hidden",
         padding: 25,
         paddingBottom: 0,
         display: "grid",
         gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
         gridAutoRows: "auto",
         gridTemplateRows: "auto",
+        position: "relative",
       }}
+      className="project-card"
     >
-      <div
-        onClick={() => props.handleEdit(props.id)}
-        style={{ cursor: "pointer" }}
-      >
-        {/* <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        > */}
-
-        <Tooltip
-          arrow
-          title={props.title}
-          placement="top"
-          TransitionComponent={Zoom}
-          TransitionProps={{ timeout: 500 }}
-        >
+      <div style={{ cursor: "pointer" }}>
+        {props.title.length > 23 ? (
+          <Tooltip
+            arrow
+            title={props.title}
+            placement="top"
+            TransitionComponent={Zoom}
+            TransitionProps={{ timeout: 500 }}
+          >
+            <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
+              {SliceName(titleize(props.title))}
+            </Typography>
+          </Tooltip>
+        ) : (
           <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
             {SliceName(titleize(props.title))}
           </Typography>
-        </Tooltip>
-        {/* </div> */}
+        )}
 
         <div
           style={{
@@ -87,42 +80,71 @@ function ProjectCard(props) {
           <div style={{ display: "flex", alignItems: "center" }}>
             {/* <Image src={bundleIcon} height={30} alt="test-case-logo" /> */}
             <div style={{ marginLeft: 10 }}>
-              <Typography sx={{ fontWeight: 600, lineHeight: 1 }} variant="h5">
-                <Icon icon="bxs-data" fontSize={20} /> {/* </div>{" "} */}
-                {props.sections_count}
-              </Typography>
-
-              <Typography variant="caption" sx={{ fontWeight: 500 }}>
-                Modules
-              </Typography>
+              <Link
+                href={`/projects/${props.id}/modules`}
+                onClick={() => {
+                  setCookie("project-title", props.title);
+                }}
+                style={{
+                  textDecoration: "none",
+                }}
+              >
+                <StyledLink>
+                  <Typography
+                    sx={{ fontWeight: 500, lineHeight: 1 }}
+                    variant="h5"
+                  >
+                    <Icon icon="bxs-data" fontSize={20} /> {/* </div>{" "} */}
+                    {props.sections_count}
+                  </Typography>
+                  Modules
+                </StyledLink>
+              </Link>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
             {/* <Image src={testRunIcon} height={30} alt="test-case-logo" /> */}
 
             <div style={{ marginLeft: 10 }}>
-              <Typography
-                sx={{
-                  fontWeight: 600,
-                  lineHeight: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-evenly",
+              <Link
+                href={`/projects/${props.id}/testcases`}
+                onClick={() => {
+                  setCookie("project-title", props.title);
                 }}
-                variant="h5"
+                style={{
+                  textDecoration: "none",
+                }}
               >
-                {/* <div style={{marginTop:15}}> */}
-                <Icon icon="bx-archive" fontSize={20} /> {/* </div>{" "} */}
-                {props.test_cases_count}
-              </Typography>
-
-              <Typography variant="caption">Test Cases</Typography>
+                <StyledLink>
+                  <Typography
+                    sx={{
+                      fontWeight: 500,
+                      lineHeight: 1,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-evenly",
+                    }}
+                    variant="h5"
+                  >
+                    <Icon icon="bx-archive" fontSize={20} /> {/* </div>{" "} */}
+                    {props.test_cases_count}
+                  </Typography>
+                  Test Cases
+                </StyledLink>
+              </Link>
             </div>
           </div>
         </div>
+        <div className="edit-btn" onClick={() => props.handleEdit(props.id)}>
+          {" "}
+          <StyledLink>
+            {" "}
+            <Icon icon="bx-edit" fontSize={20} />
+          </StyledLink>
+        </div>
       </div>
-      <Divider />
-      <div style={{ display: "flex" }}>
+      {/* <Divider /> */}
+      {/* <div style={{ display: "flex" }}>
         <Link
           href={`/projects/${props.id}/modules`}
           onClick={() => {
@@ -167,7 +189,7 @@ function ProjectCard(props) {
             Test Cases
           </StyledLink>
         </Link>
-      </div>
+      </div> */}
     </Card>
   );
 }
