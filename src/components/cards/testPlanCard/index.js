@@ -41,58 +41,61 @@ function TestPlanCard(props) {
   const router = useRouter();
 
   return (
-    <Card style={{ padding: 25, paddingBottom: 0 }}>
-      <div
+    <Card
+      style={{ padding: 25, paddingBottom: 0, position: "relative" }}
+      className="project-card"
+    >
+      {/* <div
         style={{
           display: "flex",
           justifyContent: "space-between",
         }}
-      >
-        <div>
-          {props.title.length > 23 ? (
-            <Tooltip
-              arrow
-              title={props.title}
-              placement="top"
-              TransitionComponent={Zoom}
-              TransitionProps={{ timeout: 500 }}
-            >
-              <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
-                {SliceName(titleize(props.title))}
-              </Typography>
-            </Tooltip>
-          ) : (
-            <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
-              {SliceName(titleize(props.title))}
-            </Typography>
-          )}
-          <Typography variant="caption">
-            {props.updated_by?.name ? (
-              <>
-                Updated by:
-                <span style={{ color: "#9155FD", marginLeft: 5 }}>
-                  {titleize(props.updated_by?.name)}
-                </span>
-              </>
-            ) : (
-              <>
-                Created by:
-                <span style={{ color: "#9155FD" }}>
-                  {titleize(props.created_by?.name)}
-                </span>
-              </>
-            )}
+      > */}
+
+      {props.title.length > 23 ? (
+        <Tooltip
+          arrow
+          title={props.title}
+          placement="top"
+          TransitionComponent={Zoom}
+          TransitionProps={{ timeout: 500 }}
+        >
+          <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
+            {SliceName(titleize(props.title))}
           </Typography>
-        </div>
-        <div
+        </Tooltip>
+      ) : (
+        <Typography style={{ fontSize: "1.25rem", fontWeight: 600 }}>
+          {SliceName(titleize(props.title))}
+        </Typography>
+      )}
+      <Typography variant="caption">
+        {props.updated_by?.name ? (
+          <>
+            Updated by:
+            <span style={{ color: "#9155FD", marginLeft: 5 }}>
+              {titleize(props.updated_by?.name)}
+            </span>
+          </>
+        ) : (
+          <>
+            Created by:
+            <span style={{ color: "#9155FD" }}>
+              {titleize(props.created_by?.name)}
+            </span>
+          </>
+        )}
+      </Typography>
+
+      {/* <div
           onClick={() => props.handleEdit(props.id)}
           style={{ cursor: "pointer" }}
         >
           <StyledLink>
             <Icon icon="bx-edit" fontSize={20} />
           </StyledLink>
-        </div>
-      </div>
+        </div> */}
+
       {/* <div
         style={{
           display: "flex",
@@ -218,6 +221,13 @@ function TestPlanCard(props) {
               <Icon icon="bxs-report" fontSize={20} />
             </span>
             Report
+          </StyledLink>
+        </div>
+        <div className="edit-btn" onClick={() => props.handleEdit(props.id)}>
+          {" "}
+          <StyledLink>
+            {" "}
+            <Icon icon="bx-edit" fontSize={20} />
           </StyledLink>
         </div>
       </div>

@@ -29,12 +29,14 @@ function PageHeader(props) {
           }
         >
           <Icon icon="bx:plus" />
-          <span style={{ fontWeight: 600, marginLeft: 1,fontSize:"0.9rem" }}>
+          <span style={{ fontWeight: 600, marginLeft: 1, fontSize: "0.9rem" }}>
             {props.buttonName}
           </span>
         </Button>
       </div>
-      <Divider />
+      <div style={{ paddingTop: "0.5rem" }}>
+        <Divider />
+      </div>
     </>
   );
 }

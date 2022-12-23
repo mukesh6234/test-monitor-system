@@ -12,6 +12,7 @@ import noData from "../../../../public/images/lottie/nodata.json";
 import { Skeleton } from "@mui/material";
 import { toast } from "react-hot-toast";
 import ModuleForm from "components/modals/moduleForm";
+import { Pagination } from "@mui/material";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -36,6 +37,8 @@ function Modules() {
   const [moduleId, setModuleId] = useState("");
   const [totalEntries, setTotalEntries] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const perPage = 24;
   const router = useRouter();
   const auth = useAuth();
   const searchValue = useSearch();
@@ -50,7 +53,11 @@ function Modules() {
   }, [searchValue]);
 
   const fetModulesIndex = async () => {
-    fetchModules(auth.user.auth_token, projectId, searchValue)
+    const params = {
+      page,
+      perPage,
+    };
+    fetchModules(auth.user.auth_token, projectId, params, searchValue)
       .then(({ data, total_entries }) => {
         setLoading(false);
         setTotalEntries(total_entries);
@@ -58,7 +65,7 @@ function Modules() {
       })
       .catch((err) => {
         if (err[1]) {
-          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
         } else {
           toast.error(err.message);
         }
@@ -134,7 +141,7 @@ function Modules() {
           />
         </div>
       )}
-      <Grid container spacing={6} marginTop>
+      <Grid container spacing={6} marginTop style={{ minHeight: "65vh" }}>
         {loading ? (
           <>{skeleton}</>
         ) : (
@@ -150,6 +157,21 @@ function Modules() {
       </Grid>
       {formOpen && <ModuleForm {...moduleFormProps} />}
       {modalOpen && <ModuleDialogue {...moduleCardProps} />}
+      {totalEntries !== 0 && (
+        <Pagination
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+          }}
+          count={Math.ceil(totalEntries / perPage)}
+          page={page}
+          shape="rounded"
+          color="primary"
+          onChange={(event, value) => setPage(value)}
+          pageSize={Number(perPage)}
+        />
+      )}
     </>
   );
 }

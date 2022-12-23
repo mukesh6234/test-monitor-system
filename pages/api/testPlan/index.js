@@ -1,8 +1,8 @@
 import makeRequest from "../index";
 
-export const fetchTestPlans = (token, id, search) => {
+export const fetchTestPlans = (token, id, params, search) => {
   return makeRequest({
-    uri: `/api/v1/projects/${id}/test_plans?query=${search}`,
+    uri: `/api/v1/projects/${id}/test_plans?page=${params.page}&per_page=${params.perPage}&query=${search}`,
     method: "GET",
     authorization: token,
   });
@@ -42,7 +42,7 @@ export function testPlanExecution(token, projectId, testPlanId) {
   });
 }
 
-export const testPlanReport = (token, project_id,test_plan_id) => {
+export const testPlanReport = (token, project_id, test_plan_id) => {
   return makeRequest({
     uri: `/api/v1/projects/${project_id}/test_plans/${test_plan_id}/report`,
     method: "GET",

@@ -69,6 +69,7 @@ function TestRun() {
   const auth = useAuth();
   const router = useRouter();
   const { projectId, testrun } = router.query;
+  console.log(testrun,"testrun")
 
   useEffect(() => {
     fetchTestCaseList();
@@ -110,13 +111,14 @@ function TestRun() {
       toast.error("Please fill the comments ");
     }
   };
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     let isEmpty = testStatus.some((val) => val.status == "");
     let emptyIndex = testStatus.findIndex((val) => val.status == "");
     // console.log(a, "yyyy", b);
     if (isEmpty && emptyIndex !== -1) {
       toast.error("Please update the testcase status");
-      setTestIndex(emptyIndex);
+      // setTestIndex(emptyIndex);
       setDisable(false);
     } else {
       const form = new FormData();
@@ -131,7 +133,7 @@ function TestRun() {
           toast.success(message);
           setTimeout(() => {
             router.push(
-              `/projects/${projectId}/testplans/report/ ${testrun[0]}`
+              `/projects/${projectId}/testplans/report/${testrun[0]}`
             );
           }, 1000);
         })
@@ -239,7 +241,7 @@ function TestRun() {
                     <Button
                       size="small"
                       variant="contained"
-                      onClick={() => handleSubmit()}
+                      onClick={(e) => handleSubmit(e)}
                     >
                       submit
                     </Button>
@@ -333,6 +335,7 @@ function TestRun() {
                         setTestIndex(testIndex - 1);
                         // testStatus.pop();
                         setDisable(false);
+                        <Divider />;
                       }}
                       style={{
                         pointerEvents: testIndex == 0 ? "none" : "",

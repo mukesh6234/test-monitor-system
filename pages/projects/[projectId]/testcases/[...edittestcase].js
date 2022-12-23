@@ -77,7 +77,11 @@ function EditTestCases() {
   });
 
   useEffect(() => {
-    fetchModules(auth.user.auth_token, projectId, searchValue)
+    const params = {
+      page: 1,
+      perPage: 100,
+    };
+    fetchModules(auth.user.auth_token, projectId, params, searchValue)
       .then(({ data }) => {
         setOptions(
           data.map((module) => {
@@ -87,7 +91,7 @@ function EditTestCases() {
       })
       .catch((err) => {
         if (err[1]) {
-          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
         } else {
           toast.error(err.message);
         }
@@ -102,7 +106,7 @@ function EditTestCases() {
         })
         .catch((err) => {
           if (err[1]) {
-            toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+            toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
           } else {
             toast.error(err.message);
           }
@@ -133,7 +137,7 @@ function EditTestCases() {
       })
       .catch((err) => {
         if (err[1]) {
-          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
         } else {
           toast.error(err.message);
         }
@@ -142,7 +146,7 @@ function EditTestCases() {
 
   const handleSteps = () => {
     // if (getValues("steps")[getValues("steps").length - 1].description !== "") {
-      append({ description: "", id: fields.length + 1 });
+    append({ description: "", id: fields.length + 1 });
     // }
   };
 

@@ -1,10 +1,8 @@
 import makeRequest from "../index";
 
-export const userList = (token, search) => {
-  console.log(search,"  ");
-
+export const userList = (token, params, search) => {
   return makeRequest({
-    uri: `/api/v1/users?query=${search}`,
+    uri: `/api/v1/users?page=${params.page}&per_page=${params.perPage}&query=${search}`,
     method: "GET",
     authorization: token,
   });

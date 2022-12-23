@@ -4,9 +4,31 @@ import Typography from "@mui/material/Typography";
 import { titleize } from "components/helper";
 import Icon from "@core/components/icon";
 import { useRouter } from "next/router";
+import { LinearProgress } from "@mui/material";
 
 function ExecutionCard({ projectId, execution, ...props }) {
   const router = useRouter();
+  const passPercentage = props.test_cases_count
+    ? props.sections_data.pass / props.test_cases_count
+    : props.test_cases_count * 100;
+
+  // let testingProgress = [
+  //   {
+  //     name: "Fail",
+  //     value: 60,
+  //     color: "#eb4d4b",
+  //   },
+  //   {
+  //     name: "Skipped",
+  //     value: 7,
+  //     color: "#22a6b3",
+  //   },
+  //   {
+  //     name: "Pass",
+  //     value: 23,
+  //     color: "#6ab04c",
+  //   },
+  // ];
 
   return (
     <Card
@@ -61,10 +83,7 @@ function ExecutionCard({ projectId, execution, ...props }) {
         <div style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
           <span style={{ marginRight: 5, color: "#6AB14B", fontWeight: 600 }}>
             {" "}
-            {props.test_cases_count
-              ? props.sections_data.pass / props.test_cases_count
-              : props.test_cases_count * 100}
-            %
+            {passPercentage}%
           </span>
           <Typography>Pass</Typography>
         </div>
@@ -103,7 +122,15 @@ function ExecutionCard({ projectId, execution, ...props }) {
             alignItems: "center",
           }}
         >
-          <div
+          {/* <div className="multicolor-bar">
+            <div className="values">{values == "" ? "" : values}</div>
+            <div className="scale">
+              {calibrations == "" ? "" : calibrations}
+            </div>
+            <div className="bars">{bars == "" ? "" : bars}</div>
+            <div className="legends">{legends == "" ? "" : legends}</div>
+          </div> */}
+          {/* <div
             style={{
               border: "1px solid #EEEEEE",
               borderRadius: 10,
@@ -134,7 +161,7 @@ function ExecutionCard({ projectId, execution, ...props }) {
               <span />
               <span />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </Card>

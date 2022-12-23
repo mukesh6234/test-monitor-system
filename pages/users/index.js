@@ -10,6 +10,7 @@ import Lottie from "lottie-react";
 import { Skeleton } from "@mui/material";
 import { toast } from "react-hot-toast";
 import UserForm from "components/modals/userForm";
+import { Pagination } from "@mui/material";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -27,6 +28,8 @@ function User() {
   const [userId, setUserId] = useState("");
   const [totalEntries, setTotalEntries] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const perPage = 10;
   const auth = useAuth();
   const searchValue = useSearch();
 
@@ -35,7 +38,11 @@ function User() {
   }, [searchValue]);
 
   const fetchUser = () => {
-    userList(auth.user.auth_token, searchValue)
+    const params = {
+      page,
+      perPage,
+    };
+    userList(auth.user.auth_token, params, searchValue)
       .then(({ data, total_entries }) => {
         setLoading(false);
         setTotalEntries(total_entries);
@@ -43,7 +50,7 @@ function User() {
       })
       .catch((err) => {
         if (err[1]) {
-          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
         } else {
           toast.error(err.message);
         }
@@ -99,7 +106,13 @@ function User() {
           />
         </div>
       )}
-      <Grid container spacing={6} marginTop alignItems={"stretch"}>
+      <Grid
+        container
+        spacing={6}
+        marginTop
+        alignItems={"stretch"}
+        style={{ minHeight: "65vh" }}
+      >
         {loading ? (
           <>{skeleton}</>
         ) : (
@@ -114,7 +127,22 @@ function User() {
         )}
       </Grid>
       {formOpen && <UserForm {...userFormProps} />}
-      
+
+      {totalEntries !== 0 && (
+        <Pagination
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+          }}
+          count={Math.ceil(totalEntries / perPage)}
+          page={page}
+          shape="rounded"
+          color="primary"
+          onChange={(event, value) => setPage(value)}
+          pageSize={Number(perPage)}
+        />
+      )}
     </>
   );
 }

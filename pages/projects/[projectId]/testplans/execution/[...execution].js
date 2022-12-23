@@ -24,7 +24,7 @@ function Execution() {
       })
       .catch((err) => {
         if (err[1]) {
-          toast.error(err[1] ? err[1]?.data[0] : "Something not right");
+          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
         } else {
           toast.error(err.message);
         }
