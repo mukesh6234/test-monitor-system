@@ -7,6 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import TextInput from "@core/components/input/textInput";
 
 function CreateProject(props) {
+  console.log(props.disabled, "iiii");
   return (
     <Dialog open={props.formOpen} onClose={props.handleClose}>
       <div
@@ -28,7 +29,10 @@ function CreateProject(props) {
             size={"small"}
             placeholder={"Enter your project name"}
             value={props.value.title ? props.value.title : props.value}
-            onChange={(e) => props.setValue(e.target.value)}
+            onChange={(e) => {
+              props.setValue(e.target.value);
+              props.setDisabled(false);
+            }}
           />
         </DialogContent>
 
@@ -42,6 +46,7 @@ function CreateProject(props) {
           </Button>
           <Button
             variant="contained"
+            style={{ pointerEvents: props.disabled ? "none" : "" }}
             onClick={() =>
               props.data.id
                 ? props.handleUpdate(props.data.id)

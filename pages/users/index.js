@@ -29,7 +29,7 @@ function User() {
   const [totalEntries, setTotalEntries] = useState(0);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const perPage = 10;
+  const perPage = 24;
   const auth = useAuth();
   const searchValue = useSearch();
 
@@ -89,7 +89,7 @@ function User() {
   return (
     <>
       <PageHeader {...pageHeaderProps} />
-      {!loading && totalEntries === 0 && (
+      {!loading && totalEntries === 0 ? (
         <div
           style={{
             display: "flex",
@@ -105,27 +105,28 @@ function User() {
             }}
           />
         </div>
+      ) : (
+        <Grid
+          container
+          spacing={6}
+          marginTop
+          alignItems={"stretch"}
+          style={{ minHeight: "65vh" }}
+        >
+          {loading ? (
+            <>{skeleton}</>
+          ) : (
+            userLists &&
+            userLists.map((userList, index) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
+                  <UserCard {...userList} handleEdit={handleEdit} />
+                </Grid>
+              );
+            })
+          )}
+        </Grid>
       )}
-      <Grid
-        container
-        spacing={6}
-        marginTop
-        alignItems={"stretch"}
-        style={{ minHeight: "65vh" }}
-      >
-        {loading ? (
-          <>{skeleton}</>
-        ) : (
-          userLists &&
-          userLists.map((userList, index) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
-                <UserCard {...userList} handleEdit={handleEdit} />
-              </Grid>
-            );
-          })
-        )}
-      </Grid>
       {formOpen && <UserForm {...userFormProps} />}
 
       {totalEntries !== 0 && (
@@ -140,7 +141,7 @@ function User() {
           shape="rounded"
           color="primary"
           onChange={(event, value) => setPage(value)}
-          pageSize={Number(perPage)}
+          pagesize={Number(perPage)}
         />
       )}
     </>

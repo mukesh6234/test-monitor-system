@@ -11,6 +11,7 @@ import testerImage from "../../../../public/images/pages/tester.png";
 import adminImage from "../../../../public/images/pages/admin.png";
 import developerImage from "../../../../public/images/pages/developer.png";
 import Image from "next/image";
+import Icon from "@core/components/icon";
 
 const StatusColor = (value) => {
   const colors = {
@@ -32,15 +33,14 @@ const RoleColor = (value) => {
 };
 
 const renderIcon = (props) => {
-
   return (
     <>
       {props.image_path ? (
         <Image
           src={props.image_path}
           alt="Role Image"
-          height={60}
-          width={60}
+          height={100}
+          width={100}
           style={{ marginRight: 10 }}
         />
       ) : (
@@ -69,46 +69,100 @@ function UserCard(props) {
     <Card style={{ padding: 10 }}>
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
+          // display: "flex",
+          // justifyContent: "space-between",
           cursor: "pointer",
           padding: 5,
+          position:"relative"
         }}
         onClick={() => props.handleEdit(props.id)}
-        
       >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {renderIcon(props)}
-
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "flex-start",
-              flexDirection: "column",
+        </Box>
+        {/* <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            flexDirection: "column",
+          }}
+        > */}
+        <div style={{ display: "flex" }}>
+          <span
+            style={{
+              // backgroundColor: "rgba(105, 108, 255, 0.16)",
+              // height: 42,
+              // width: 42,
+              marginRight: 10,
+              // marginTop: 5,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              // padding: 5,
+              borderRadius: 5,
             }}
           >
-            <Typography style={{ fontSize: "0.89rem" }}>
-              {titleize(props.name)}
-            </Typography>
-            <Typography
-              noWrap
-             
-              sx={{ color: "text.disabled",fontSize:"0.80rem" }}
-            >
-              {props.email}
-            </Typography>
-            <Typography variant="caption">
-              <CustomChip
-                rounded
-                size="small"
-                skin="light"
-                color={RoleColor(props.role_group.name)}
-                label={props.role_group.name}
-              />
-            </Typography>
-          </Box>
-        </Box>
-        <Typography sx={{ fontWeight: 500 }}>
+            {" "}
+            <Icon icon="bx:user"  fontSize={20} />{" "}
+          </span>
+          <Typography variant="h6">{titleize(props.name)}</Typography>
+        </div>
+        <div style={{ display: "flex" }}>
+          <span
+            style={{
+              // backgroundColor: "rgba(105, 108, 255, 0.16)",
+              // height: 42,
+              // width: 42,
+              marginRight: 10,
+              // marginTop: 5,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              // padding: 5,
+              borderRadius: 5,
+            }}
+          >
+            {" "}
+            <Icon icon="bx:envelope"  fontSize={20} />{" "}
+          </span>
+          <Typography variant="body2">{props.email}</Typography>
+        </div>
+        <div style={{ display: "flex"}}>
+          <span
+            style={{
+              // backgroundColor: "rgba(105, 108, 255, 0.16)",
+              // height: 42,
+              // width: 42,
+              marginRight: 10,
+              marginTop: 5,
+              display: "inline",
+              // alignItems: "center",
+              // justifyContent: "center",
+              // padding: 5,
+              borderRadius: 5,
+            }}
+          >
+            {" "}
+            <Icon icon="bx:star"  fontSize={20} />{" "}
+            </span>
+          <Typography variant="caption" marginTop={1}>
+            <CustomChip
+              rounded
+              size="small"
+              skin="light"
+              color={RoleColor(props.role_group.name)}
+              label={props.role_group.name}
+            />
+          </Typography>
+
+        </div>
+        <div style={{position:"absolute",top:0,right:0}}>
           {
             <CustomChip
               rounded
@@ -118,7 +172,8 @@ function UserCard(props) {
               label={props.status}
             />
           }
-        </Typography>
+        </div>
+        {/* </Box> */}
       </div>
     </Card>
   );

@@ -15,6 +15,7 @@ import { hexToRGBA } from "@core/utils/hex-to-rgba";
 import { styled } from "@mui/material/styles";
 import { Box, Grid } from "@mui/material";
 import TestCaseCard from "components/cards/testCaseCard";
+import { Pagination } from "@mui/material";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -48,6 +49,8 @@ export default function TestCases() {
   const [formOpen, setFormOpen] = useState(false);
   const [totalEntries, setTotalEntries] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const perPage = 24;
   const auth = useAuth();
   const searchValue = useSearch();
 
@@ -63,21 +66,25 @@ export default function TestCases() {
   }, [searchValue]);
 
   const fetchTestCaseIndex = async () => {
-    if (auth.user.role_group) {
-      await fetchTestCases(auth.user.auth_token, searchValue, projectId)
-        .then(({ data, total_entries }) => {
-          setLoading(false);
-          setTotalEntries(total_entries);
-          setTestCases(data);
-        })
-        .catch((err) => {
-          if (err[1]) {
-            toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-          } else {
-            toast.error(err.message);
-          }
-        });
-    }
+    const params = {
+      page,
+      perPage,
+    };
+    // if (auth.user.role_group) {
+    await fetchTestCases(auth.user.auth_token, searchValue, params, projectId)
+      .then(({ data, total_entries }) => {
+        setLoading(false);
+        setTotalEntries(total_entries);
+        setTestCases(data);
+      })
+      .catch((err) => {
+        if (err[1]) {
+          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
+      });
+    // }
   };
 
   const handleView = (id) => {
@@ -165,7 +172,7 @@ export default function TestCases() {
             testCases &&
             testCases.map((testcase, index) => {
               return (
-                <Grid item xs={12} sm={6} md={4} xl={3} key={index} >
+                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
                   <TestCaseCard {...testcase} {...testCaseCardProps} />
                 </Grid>
               );
@@ -174,6 +181,21 @@ export default function TestCases() {
         </Grid>
       )}
       {formOpen && <TestCaseDialogue {...testDialogueProps} />}
+      {totalEntries !== 0 && (
+        <Pagination
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+          }}
+          count={Math.ceil(totalEntries / perPage)}
+          page={page}
+          shape="rounded"
+          color="primary"
+          onChange={(event, value) => setPage(value)}
+          pagesize={Number(perPage)}
+        />
+      )}
     </div>
   );
 }

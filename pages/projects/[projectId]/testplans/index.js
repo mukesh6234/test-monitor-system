@@ -35,7 +35,7 @@ function TestPlans() {
   const [testPlanId, setTestPlanId] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const perPage = 10;
+  const perPage = 24;
   const router = useRouter();
   const auth = useAuth();
   const searchValue = useSearch();
@@ -102,7 +102,7 @@ function TestPlans() {
   return (
     <>
       <PageHeader {...pageHeaderProps} />
-      {!loading && totalEntries === 0 && (
+      {!loading && totalEntries === 0 ? (
         <div
           style={{
             display: "flex",
@@ -118,20 +118,21 @@ function TestPlans() {
             }}
           />
         </div>
+      ) : (
+        <Grid container spacing={6} marginTop style={{ minHeight: "65vh" }}>
+          {loading ? (
+            <>{skeleton}</>
+          ) : (
+            testPlanLists.map((testPlanList, index) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
+                  <TestPlanCard {...testPlanList} {...testPlanCardProps} />
+                </Grid>
+              );
+            })
+          )}
+        </Grid>
       )}
-      <Grid container spacing={6} marginTop style={{ minHeight: "65vh" }}>
-        {loading ? (
-          <>{skeleton}</>
-        ) : (
-          testPlanLists.map((testPlanList, index) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
-                <TestPlanCard {...testPlanList} {...testPlanCardProps} />
-              </Grid>
-            );
-          })
-        )}
-      </Grid>
       {formOpen && <TestPlanForm {...testPlanFormProps} />}
       {totalEntries !== 0 && (
         <Pagination
@@ -145,7 +146,7 @@ function TestPlans() {
           shape="rounded"
           color="primary"
           onChange={(event, value) => setPage(value)}
-          pageSize={Number(perPage)}
+          pagesize={Number(perPage)}
         />
       )}
     </>

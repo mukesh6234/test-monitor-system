@@ -58,7 +58,7 @@ const LinkStyled = styled("a")(({ theme }) => ({
 }));
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
+  email: yup.string().email().required("Please fill the email"),
 });
 
 const defaultValues = {

@@ -8,9 +8,9 @@ import { LinearProgress } from "@mui/material";
 
 function ExecutionCard({ projectId, execution, ...props }) {
   const router = useRouter();
-  const passPercentage = props.test_cases_count
+  const passPercentage = ((props.test_cases_count
     ? props.sections_data.pass / props.test_cases_count
-    : props.test_cases_count * 100;
+    : props.test_cases_count) * 100);
 
   // let testingProgress = [
   //   {
@@ -37,6 +37,7 @@ function ExecutionCard({ projectId, execution, ...props }) {
         display: "grid",
         gridAutoRows: "auto",
         gap: "50px !important",
+        cursor:"pointer"
       }}
       onClick={() =>
         router.push(
@@ -75,7 +76,7 @@ function ExecutionCard({ projectId, execution, ...props }) {
           </Typography>
         </div>
         <div style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
-          <Typography>{props.test_cases_count} Test Cases</Typography>
+        <span style={{ marginRight: 5 }}><Icon icon="bx-archive" fontSize={20} /></span> <Typography>   Test Cases  {props.test_cases_count}</Typography>
         </div>
         {/* <div style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
           <Typography >{props?.created_at}</Typography>
@@ -106,11 +107,11 @@ function ExecutionCard({ projectId, execution, ...props }) {
               alignItems: "center",
             }}
           >
-            <span style={{ marginRight: 5 }}>
+            {/* <span style={{ marginRight: 5,marginTop: 5 }}>
               {" "}
               <Icon icon="bx:spreadsheet" fontSize={20} />
-            </span>{" "}
-            Description
+            </span>{" "} */}
+           Module Description
           </Typography>
           <span style={{ display: "block" }}>{props.description}</span>
         </div>
@@ -122,6 +123,16 @@ function ExecutionCard({ projectId, execution, ...props }) {
             alignItems: "center",
           }}
         >
+            <div className="multicolor-bar">
+      	<div className="values">
+      	</div>
+      	<div className="scale">
+      	</div>
+      	<div className="bars">
+      	</div>
+      	<div className="legends">
+      	</div>
+      </div>
           {/* <div className="multicolor-bar">
             <div className="values">{values == "" ? "" : values}</div>
             <div className="scale">

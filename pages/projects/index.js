@@ -37,10 +37,11 @@ export default function Project() {
   const [formOpen, setFormOpen] = useState(false);
   const [totalEntries, setTotalEntries] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const [title, setTitle] = useState("");
   const [data, setData] = useState("");
   const [page, setPage] = useState(1);
-  const perPage = 10;
+  const perPage = 24;
   const auth = useAuth();
   const searchValue = useSearch();
   let auth_token = auth.user.auth_token;
@@ -78,6 +79,7 @@ export default function Project() {
   };
 
   const handleSave = () => {
+    setDisabled(true);
     let requestBody = {
       project: {
         title,
@@ -101,6 +103,7 @@ export default function Project() {
   };
 
   const handleUpdate = (id) => {
+    setDisabled(true);
     let requestBody = {
       project: {
         title,
@@ -145,12 +148,14 @@ export default function Project() {
     data,
     value: title,
     setValue: setTitle,
+    setDisabled,
+    disabled,
   };
 
   return (
     <div>
       <PageHeader {...pageHeaderProps} />
-      {!loading && totalEntries === 0 && (
+      {!loading && totalEntries === 0 ? (
         <div
           style={{
             display: "flex",
@@ -165,28 +170,28 @@ export default function Project() {
             }}
           />
         </div>
+      ) : (
+        <Grid
+          container
+          spacing={6}
+          marginTop
+          alignItems={"stretch"}
+          style={{ minHeight: "65vh" }}
+        >
+          {loading ? (
+            <>{skeleton}</>
+          ) : (
+            projects &&
+            projects.map((project, index) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
+                  <ProjectCard {...project} handleEdit={handleEdit} />
+                </Grid>
+              );
+            })
+          )}
+        </Grid>
       )}
-
-      <Grid
-        container
-        spacing={6}
-        marginTop
-        alignItems={"stretch"}
-        style={{ minHeight: "65vh" }}
-      >
-        {loading ? (
-          <>{skeleton}</>
-        ) : (
-          projects &&
-          projects.map((project, index) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
-                <ProjectCard {...project} handleEdit={handleEdit} />
-              </Grid>
-            );
-          })
-        )}
-      </Grid>
       {formOpen && <CreateProject {...createFormProps} />}
 
       {totalEntries !== 0 && (
@@ -201,7 +206,7 @@ export default function Project() {
           shape="rounded"
           color="primary"
           onChange={(event, value) => setPage(value)}
-          pageSize={Number(perPage)}
+          pagesize={Number(perPage)}
         />
       )}
     </div>

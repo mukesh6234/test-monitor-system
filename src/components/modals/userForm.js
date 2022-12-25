@@ -20,7 +20,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
+  email: yup.string().email().required("Please fill the email"),
   name: yup.string().required("Please fill the name"),
   role_group: yup.string().required("Please select a role"),
   status: yup.string().required("Please select a status"),

@@ -35,8 +35,8 @@ function Modules() {
   const [modalOpen, setModalOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
   const [moduleId, setModuleId] = useState("");
-  const [totalEntries, setTotalEntries] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [totalEntries, setTotalEntries] = useState(0);
   const [page, setPage] = useState(1);
   const perPage = 24;
   const router = useRouter();
@@ -124,7 +124,7 @@ function Modules() {
   return (
     <>
       <PageHeader {...pageHeaderProps} />
-      {!loading && totalEntries == 0 && (
+      {!loading && totalEntries == 0 ? (
         <div
           style={{
             display: "flex",
@@ -140,21 +140,22 @@ function Modules() {
             }}
           />
         </div>
+      ) : (
+        <Grid container spacing={6} marginTop style={{ minHeight: "65vh" }}>
+          {loading ? (
+            <>{skeleton}</>
+          ) : (
+            moduleList &&
+            moduleList.map((module, index) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
+                  <ModuleCard {...module} {...moduleCardProps} />
+                </Grid>
+              );
+            })
+          )}
+        </Grid>
       )}
-      <Grid container spacing={6} marginTop style={{ minHeight: "65vh" }}>
-        {loading ? (
-          <>{skeleton}</>
-        ) : (
-          moduleList &&
-          moduleList.map((module, index) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
-                <ModuleCard {...module} {...moduleCardProps} />
-              </Grid>
-            );
-          })
-        )}
-      </Grid>
       {formOpen && <ModuleForm {...moduleFormProps} />}
       {modalOpen && <ModuleDialogue {...moduleCardProps} />}
       {totalEntries !== 0 && (
@@ -169,7 +170,7 @@ function Modules() {
           shape="rounded"
           color="primary"
           onChange={(event, value) => setPage(value)}
-          pageSize={Number(perPage)}
+          pagesize={Number(perPage)}
         />
       )}
     </>

@@ -69,7 +69,7 @@ function TestRun() {
   const auth = useAuth();
   const router = useRouter();
   const { projectId, testrun } = router.query;
-  console.log(testrun,"testrun")
+  console.log(testrun, "testrun");
 
   useEffect(() => {
     fetchTestCaseList();
@@ -112,6 +112,7 @@ function TestRun() {
     }
   };
   const handleSubmit = (e) => {
+    console.log(testStatus, "testStatustestStatus");
     e.preventDefault();
     let isEmpty = testStatus.some((val) => val.status == "");
     let emptyIndex = testStatus.findIndex((val) => val.status == "");
@@ -123,9 +124,14 @@ function TestRun() {
     } else {
       const form = new FormData();
       testStatus.map((val) =>
-        Object.keys(val).filter((keys) =>
-          form.append(`results[][${keys}]`, val[keys])
-        )
+        Object.keys(val).filter((keys) => {
+          if (val[keys].length > 0 && keys == "file") {
+            console.log(keys, "keys", val[keys][0]);
+            form.append(`results[][${keys}]`, val[keys][0]);
+          } else {
+            form.append(`results[][${keys}]`, val[keys]);
+          }
+        })
       );
       form.append("test_plan[section_id]", testrun[1]);
       updateTestRun(auth.user.auth_token, projectId, testrun[0], form)
@@ -271,6 +277,15 @@ function TestRun() {
                           </span>
                         </>
                       )}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontWeight: 600,
+                        fontSize: "1rem",
+                        marginTop: "1rem",
+                      }}
+                    >
+                      Description
                     </Typography>
                     <Typography
                       style={{ fontSize: "16px", margin: "10px auto" }}
