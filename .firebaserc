@@ -5,7 +5,10 @@
   "targets": {
     "katomaran-website": {
       "hosting": {
-        "kato-test-monit": ["kato-test-monit"]
+        "kato-test-monit": ["kato-test-monit"],
+        "stage-kato-test-monit": [
+          "stage-kato-test-monit"
+        ]
       }
     }
   }

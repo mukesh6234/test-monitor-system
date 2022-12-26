@@ -42,6 +42,7 @@ eslint:
   allow_failure: true
   only:
     - develop
+    - release
 
 install:
   stage: npm-install
@@ -54,6 +55,7 @@ install:
   only:
     refs:
       - develop
+      - release
     changes:
       - package-lock.json
 
@@ -65,4 +67,16 @@ deploy:stage:
     - develop
   variables:
     SITE: stage
+    HOSTING_LOCATION: stage-kato-test-monit
+
+deploy:prod:
+  <<: *deploy-stage
+  stage: deploy
+  when: manual
+  allow_failure: false
+  environment: production
+  only:
+    - release
+  variables:
+    SITE: production
     HOSTING_LOCATION: kato-test-monit
