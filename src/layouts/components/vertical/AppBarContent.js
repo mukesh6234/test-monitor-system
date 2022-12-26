@@ -29,7 +29,7 @@ const AppBarContent = (props) => {
     >
       <Box
         className="actions-left"
-        sx={{ mr: 2, display: "flex", alignItems: "center" }}
+        sx={{ mr: 2, display: "flex", alignItems: "center", width: "80%" }}
       >
         {hidden && !settings.navHidden ? (
           <IconButton
@@ -44,6 +44,7 @@ const AppBarContent = (props) => {
           <Icon icon="bx:search" />
         </IconButton>
         <TextField
+          fullWidth
           className="search"
           placeholder="Search..."
           value={searchValue}
@@ -52,7 +53,6 @@ const AppBarContent = (props) => {
             handleSearch(e.target.value);
           }}
         />
-          
       </Box>
       <Box
         className="actions-right"

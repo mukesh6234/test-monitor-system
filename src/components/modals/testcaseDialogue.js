@@ -1,10 +1,10 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import { titleize } from "components/helper";
+import { SliceName, titleize } from "components/helper";
 import Typography from "@mui/material/Typography";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
@@ -40,26 +40,53 @@ function TestCaseDialogue(props) {
         >
           <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span>{titleize(props.data.title)}</span>
-              <span>{titleize(props.data.section.title)}</span>
+              {props.data.title > 23 ? (
+                <Tooltip
+                  arrow
+                  title={props.title}
+                  placement="top"
+                  TransitionComponent={Zoom}
+                  TransitionProps={{ timeout: 500 }}
+                >
+                  {SliceName(titleize(props.data.title))}
+                </Tooltip>
+              ) : (
+                <span>{SliceName(titleize(props.data.title))}</span>
+              )}
+              <div class="tag">
+                <span class="arrow"></span>
+                {props.data.section.title > 23 ? (
+                  <Tooltip
+                    arrow
+                    title={props.title}
+                    placement="top"
+                    TransitionComponent={Zoom}
+                    TransitionProps={{ timeout: 500 }}
+                  >
+                    {SliceName(titleize(props.data.section.title))}
+                  </Tooltip>
+                ) : (
+                  <span>{SliceName(titleize(props.data.section.title))}</span>
+                )}
+              </div>
             </div>
 
-            <Typography variant="caption">
+            <Typography variant="caption" style={{ lineHeight: 0 }}>
               {props.data.updated_by?.name ? (
                 <>
-                  Updated by:{" "}
-                  <span style={{ color: "#9155FD" }}>
+                  Updated by:
+                  <span style={{ color: "#9155FD", marginLeft: 5 }}>
                     {titleize(props.data.updated_by?.name)}
-                  </span>{" "}
+                  </span>
                 </>
               ) : (
                 <>
-                  Created by:{" "}
-                  <span style={{ color: "#9155FD" }}>
+                  Created by:
+                  <span style={{ color: "#9155FD", marginLeft: 5 }}>
                     {titleize(props.data.created_by?.name)}
                   </span>
                 </>
-              )}{" "}
+              )}
             </Typography>
           </div>
           {/* <div
@@ -82,7 +109,7 @@ function TestCaseDialogue(props) {
               }
             </Typography>
             <Typography variant="caption">
-              No.of test case:{" "}
+              No.of test case:
               <span style={{ fontWeight: 600, fontSize: "1rem" }}>10</span>
             </Typography>
           </div> */}
@@ -97,6 +124,11 @@ function TestCaseDialogue(props) {
             value={props.value.title ? props.value.title : props.value}
             onChange={(e) => props.setValue(e.target.value)}
           /> */}
+          <Typography
+            sx={{ fontWeight: 600, fontSize: "1rem", margin: "10px auto" }}
+          >
+            Test Case Description
+          </Typography>
           <Typography sx={{ color: "text.secondary", fontSize: "0.87rem" }}>
             {props.data.description}
           </Typography>
@@ -106,12 +138,14 @@ function TestCaseDialogue(props) {
             Steps
           </Typography>
 
-          <Timeline>
+          <Timeline style={{ padding: 0 }}>
             {props.data.steps.map((step, index) => (
               <TimelineItem key={index}>
                 <TimelineSeparator>
                   <CustomTimelineDot skin="light" color="primary">
-                    <span style={{ fontSize: 10 }}>{index + 1}</span>
+                    <span style={{ fontSize: 10, padding: "2px 6px" }}>
+                      {index + 1}
+                    </span>
                   </CustomTimelineDot>
                   <TimelineConnector />
                 </TimelineSeparator>

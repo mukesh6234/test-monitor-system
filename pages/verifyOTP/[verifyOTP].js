@@ -21,7 +21,6 @@ import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
 import katoIcon from "../../public/images/pages/kato-icon.png";
 
-
 const RightWrapper = styled(Box)(({ theme }) => ({
   width: "100%",
   display: "flex",
@@ -87,11 +86,13 @@ const VerifyOTP = () => {
         toast.success(message);
         router.push(`/resetPassword/${data.auth_token}`);
       })
-      .catch((err) => {
+
+      .catch((error) => {
         setError("otp", {
           type: "manual",
-          message: err[1] ? err[1]?.data : err.message,
+          message: "Email or Password is invalid",
         });
+        toast.error(error[1].message);
       });
   };
 
@@ -110,11 +111,9 @@ const VerifyOTP = () => {
           <Image
             src={verifyOtpImage}
             alt="forgot-password-illustration"
-            placeholder="blur"
             width={700}
             style={{ height: "auto", maxWidth: "100%" }}
           />
-          {/* <Image src={BoyWithPhone}   alt="forgot-password-illustration" placeholder='blur' height={"100%"} width={700} style={{position:"absolute"}}/> */}
         </Box>
       ) : null}
       <RightWrapper
@@ -125,7 +124,7 @@ const VerifyOTP = () => {
       >
         <Box sx={{ mx: "auto", maxWidth: 400 }}>
           <Box sx={{ mb: 8, display: "flex", alignItems: "center" }}>
-          <Image src={katoIcon} width={22} height={32} alt="kato-logo" />
+            <Image src={katoIcon} height={32} alt="kato-logo" />
             <Typography
               variant="h5"
               sx={{
@@ -157,7 +156,6 @@ const VerifyOTP = () => {
                   <TextInput
                     label={"OTP"}
                     fullWidth
-                    autoFocus={true}
                     placeholder={"Enter your 4 digit security code"}
                     value={value}
                     onBlur={onBlur}
@@ -185,7 +183,7 @@ const VerifyOTP = () => {
                 justifyContent: "center",
               }}
             >
-              <Link passHref href="/login" style={{textDecoration:"none"}}>
+              <Link passHref href="/login" style={{ textDecoration: "none" }}>
                 <LinkStyled>
                   <Icon icon="bx:chevron-left" />
                   <span>Back to login</span>

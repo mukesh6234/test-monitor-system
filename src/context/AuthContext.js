@@ -62,6 +62,7 @@ const AuthProvider = ({ children }) => {
           authConfig.storageTokenKeyName,
           data?.auth_token
         );
+        window.localStorage.setItem("userData", JSON.stringify(data));
         const returnUrl = router.query.returnUrl;
         const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/";
         router.replace(redirectURL);

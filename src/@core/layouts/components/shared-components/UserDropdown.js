@@ -62,17 +62,11 @@ const UserDropdown = (props) => {
   };
 
   const renderIcon = (props) => {
-    const image = {
-      Tester: testerImage,
-      Developer: developerImage,
-      "Super Admin": adminImage,
-    };
-    
     return (
       <>
-        {image[user.role_group.name] ? (
+        {props.image_path ? (
           <Image
-            src={image[user.role_group.name]}
+            src={props.image_path}
             alt="Role Image"
             height={40}
             width={40}
@@ -88,7 +82,7 @@ const UserDropdown = (props) => {
               fontWeight: "semi-bold",
             }}
           >
-            {titleize(getInitials(user.name))}
+            {titleize(getInitials(props.name))}
           </CustomAvatar>
         )}
       </>
@@ -175,7 +169,7 @@ const UserDropdown = (props) => {
         <Divider sx={{ mt: "0 !important" }} />
         <MenuItem
           sx={{ p: 0 }}
-          onClick={() => handleDropdownClose("/pages/user-profile/profile")}
+          onClick={() => handleDropdownClose("/users/profile")}
         >
           <Box sx={styles}>
             <Icon icon="bx:user" />

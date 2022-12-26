@@ -5,7 +5,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Layout from "@core/layouts/Layout";
 
 // ** Navigation Imports
-import VerticalNavItems from "navigation/vertical";
+import { primary, secondary } from "navigation/vertical";
+
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 // ** Component Import
 // Uncomment the below line (according to the layout type) when using server-side menu
@@ -15,8 +18,23 @@ import VerticalAppBarContent from "./components/vertical/AppBarContent";
 
 // ** Hook Import
 import { useSettings } from "../@core/hooks/useSettings";
+import { useEffect } from "react";
+
 
 const UserLayout = ({ children, contentHeightFixed }) => {
+  const router = useRouter();
+  // console.log(router.query, 'apoew')
+
+  const { projectId } = router.query;
+  console.log(router,"kkkkkkkkkkkkkkkkkkk");
+  // const projectId = '123'
+  console.log(projectId, 'apoew')
+  const [navItems, setNavItems] = useState([]);
+
+  useEffect(() => {
+  setNavItems(!projectId ? primary() : secondary(projectId))
+  }, [router.query]);
+
   // ** Hooks
   const { settings, saveSettings } = useSettings();
 
@@ -34,6 +52,7 @@ const UserLayout = ({ children, contentHeightFixed }) => {
 
   const hidden = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
+  console.log(navItems, 'apoew')
   return (
     <Layout
       hidden={hidden}
@@ -42,7 +61,7 @@ const UserLayout = ({ children, contentHeightFixed }) => {
       contentHeightFixed={contentHeightFixed}
       verticalLayoutProps={{
         navMenu: {
-          navItems: VerticalNavItems(),
+          navItems: navItems,
 
           // Uncomment the below line when using server-side menu in vertical layout and comment the above line
           // navItems: verticalMenuItems

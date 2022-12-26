@@ -25,7 +25,6 @@ import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
 import katoIcon from "../../public/images/pages/kato-icon.png";
 
-
 // Styled Components
 const ForgotPasswordIllustration = styled("img")({
   height: "auto",
@@ -59,7 +58,7 @@ const LinkStyled = styled("a")(({ theme }) => ({
 }));
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
+  email: yup.string().email().required("Please fill the email"),
 });
 
 const defaultValues = {
@@ -101,6 +100,11 @@ const ForgotPassword = () => {
           type: "manual",
           message: err[1] ? err[1]?.data : err.message,
         });
+        if (err[1]) {
+          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
+        } else {
+          toast.error(err.message);
+        }
       });
   };
 
@@ -119,7 +123,6 @@ const ForgotPassword = () => {
           <Image
             src={forgetPasswordImage}
             alt="forgot-password-illustration"
-            placeholder="blur"
             width={700}
             style={{ height: "auto", maxWidth: "100%" }}
           />
@@ -133,7 +136,7 @@ const ForgotPassword = () => {
       >
         <Box sx={{ mx: "auto", maxWidth: 400 }}>
           <Box sx={{ mb: 8, display: "flex", alignItems: "center" }}>
-            <Image src={katoIcon} width={22} height={32} alt="kato-logo" />
+            <Image src={katoIcon} height={32} alt="kato-logo" />
             <Typography
               variant="h5"
               sx={{
@@ -165,7 +168,6 @@ const ForgotPassword = () => {
                   <TextInput
                     label={"Email"}
                     fullWidth
-                    autoFocus={true}
                     placeholder={"Enter your email address"}
                     value={value}
                     onBlur={onBlur}

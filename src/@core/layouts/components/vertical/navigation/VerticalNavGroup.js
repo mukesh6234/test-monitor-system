@@ -114,6 +114,7 @@ const VerticalNavGroup = (props) => {
   // ** Menu Group Click
   const handleGroupClick = () => {
     const openGroup = groupActive;
+    console.log(openGroup,"openGroup");
     if (verticalNavToggleType === "collapse") {
       if (openGroup.includes(item.title)) {
         openGroup.splice(openGroup.indexOf(item.title), 1);

@@ -1,8 +1,8 @@
 import makeRequest from "../index";
 
-export const fetchTestCases = (token, search, id) => {
+export const fetchTestCases = (token, search, params, id) => {
   return makeRequest({
-    uri: `/api/v1/projects/${id}/test_cases?query=${search}`,
+    uri: `/api/v1/projects/${id}/test_cases?page=${params.page}&per_page=${params.perPage}&query=${search}`,
     method: "GET",
     authorization: token,
   });

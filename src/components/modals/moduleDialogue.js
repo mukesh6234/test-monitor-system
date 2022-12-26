@@ -21,7 +21,7 @@ const StatusColor = (value) => {
 
 function ModuleDialogue(props) {
   return (
-    <Dialog open={props.formOpen} onClose={props.handleClose}>
+    <Dialog open={props.modalOpen} onClose={props.handleClose}>
       <div
         style={{
           boxShadow: " 3px 3px 18px rgba(145, 85, 253, 0.11)",
@@ -37,19 +37,19 @@ function ModuleDialogue(props) {
             <Typography variant="caption">
               {props.moduleData.updated_by?.name ? (
                 <>
-                  Updated by:{" "}
-                  <span style={{ color: "#9155FD" }}>
+                  Updated by:
+                  <span style={{ color: "#9155FD", marginLeft: 5 }}>
                     {titleize(props.moduleData.updated_by?.name)}
-                  </span>{" "}
+                  </span>
                 </>
               ) : (
                 <>
-                  Created by:{" "}
-                  <span style={{ color: "#9155FD" }}>
+                  Created by:
+                  <span style={{ color: "#9155FD", marginLeft: 5 }}>
                     {titleize(props.moduleData.created_by?.name)}
                   </span>
                 </>
-              )}{" "}
+              )}
             </Typography>
           </div>
           <div
@@ -72,8 +72,10 @@ function ModuleDialogue(props) {
               }
             </Typography>
             <Typography variant="caption">
-              No.of test case:{" "}
-              <span style={{ fontWeight: 600, fontSize: "1rem" }}>
+              No.of test case:
+              <span
+                style={{ fontWeight: 600, fontSize: "1rem", marginLeft: 5 }}
+              >
                 {props.moduleData.test_cases_count
                   ? props.moduleData.test_cases_count
                   : 0}

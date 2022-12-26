@@ -20,6 +20,7 @@ cache:
   script:
     - unset CI
     - npm run build
+    - npm run export
     - firebase deploy --only hosting:$HOSTING_LOCATION --token $FIREBASE_DEPLOY_KEY
 
 #### MAIN CONFIG ####

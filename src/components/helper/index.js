@@ -21,7 +21,7 @@ export function SliceName(str ) {
     return "Empty";
   }
   if (str.length > 23) {
-    return str.slice(0, 23) + "....";
+    return str.slice(0, 23) + "...";
   }
   
   return str;

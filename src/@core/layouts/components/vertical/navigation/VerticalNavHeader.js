@@ -110,7 +110,7 @@ const VerticalNavHeader = (props) => {
       ) : (
         <Link href="/" passHref style={{ textDecoration: "none" }}>
           <StyledLink>
-            <Image src={katoIcon} width={22} height={32} alt="kato-logo" />
+            <Image src={katoIcon} height={32} alt="kato-logo" />
             <Typography
               variant="h5"
               sx={{
