@@ -141,20 +141,22 @@ function Modules() {
           />
         </div>
       ) : (
-        <Grid container spacing={6} marginTop style={{ minHeight: "65vh" }}>
-          {loading ? (
-            <>{skeleton}</>
-          ) : (
-            moduleList &&
-            moduleList.map((module, index) => {
-              return (
-                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
-                  <ModuleCard {...module} {...moduleCardProps} />
-                </Grid>
-              );
-            })
-          )}
-        </Grid>
+        <div style={{ minHeight: "65vh" }}>
+          <Grid container spacing={6} marginTop>
+            {loading ? (
+              <>{skeleton}</>
+            ) : (
+              moduleList &&
+              moduleList.map((module, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
+                    <ModuleCard {...module} {...moduleCardProps} />
+                  </Grid>
+                );
+              })
+            )}
+          </Grid>
+        </div>
       )}
       {formOpen && <ModuleForm {...moduleFormProps} />}
       {modalOpen && <ModuleDialogue {...moduleCardProps} />}

@@ -22,11 +22,11 @@ const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
   description: yup.string().required("Please fill the description"),
   prerequisite: yup.string().required("Please fill the prerequisite"),
-  steps: yup.array().of(
-    yup.object().shape({
-      description: yup.string().required("Please fill the testing_steps"),
-    })
-  ),
+  // steps: yup.array().of(
+  //   yup.object().shape({
+  //     description: yup.string().required("Please fill the testing_steps"),
+  //   })
+  // ),
   expected_result: yup.string().required("Please fill the expected_result"),
   section: yup.string().required("Please select a module"),
 });
@@ -52,6 +52,7 @@ const ContentLayout = styled(Box)(({ theme }) => ({
 
 function EditTestCases() {
   const [options, setOptions] = useState([]);
+  const [update, setupdate] = useState(0);
   const auth = useAuth();
   const router = useRouter();
   const searchValue = useSearch();
@@ -115,7 +116,19 @@ function EditTestCases() {
     fetchTestCase();
   }, [reset]);
 
+  useEffect(() => {
+    if (getValues("steps")[getValues("steps").length - 1].description !== "") {
+      handleSteps();
+    }
+  }, [update]);
+
   const onSubmit = (data) => {
+    let stepData = [];
+    data.steps.filter(
+      (testStep) =>
+        testStep.description != "" &&
+        stepData.push({ description: testStep.description })
+    );
     let payload = {
       test_case: {
         title: data.title,
@@ -123,11 +136,10 @@ function EditTestCases() {
         description: data.description,
         expected_result: data.expected_result,
         section_id: data.section,
-        steps: data.steps.map((testStep) => {
-          return { description: testStep.description };
-        }),
+        steps: stepData,
       },
     };
+    console.log(payload, "payload");
     updateTestCase(auth.user.auth_token, projectId, edittestcase[0], payload)
       .then(({ message }) => {
         toast.success(message);
@@ -215,7 +227,7 @@ function EditTestCases() {
             </Grid>
             <Grid item xs={6}>
               Modules
-              <FormControl fullWidth sx={{ mb: 6 }}>
+              <FormControl fullWidth>
                 <Controller
                   name="section"
                   control={control}
@@ -299,7 +311,10 @@ function EditTestCases() {
                       placeholder={"Enter testing steps..."}
                       value={value}
                       onBlur={onBlur}
-                      onChange={onChange}
+                      onChange={(e) => {
+                        setupdate(update + 1);
+                        onChange(e);
+                      }}
                       error={Boolean(errors.steps)}
                       helperText={
                         errors.steps &&

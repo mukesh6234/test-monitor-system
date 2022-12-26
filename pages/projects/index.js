@@ -171,26 +171,28 @@ export default function Project() {
           />
         </div>
       ) : (
-        <Grid
-          container
-          spacing={6}
-          marginTop
-          alignItems={"stretch"}
-          style={{ minHeight: "65vh" }}
-        >
-          {loading ? (
-            <>{skeleton}</>
-          ) : (
-            projects &&
-            projects.map((project, index) => {
-              return (
-                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
-                  <ProjectCard {...project} handleEdit={handleEdit} />
-                </Grid>
-              );
-            })
-          )}
-        </Grid>
+        <div style={{ minHeight: "65vh" }}>
+          <Grid
+            container
+            spacing={6}
+            marginTop
+            // alignItems={"stretch"}
+            // style={{ minHeight: "65vh" }}
+          >
+            {loading ? (
+              <>{skeleton}</>
+            ) : (
+              projects &&
+              projects.map((project, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
+                    <ProjectCard {...project} handleEdit={handleEdit} />
+                  </Grid>
+                );
+              })
+            )}
+          </Grid>
+        </div>
       )}
       {formOpen && <CreateProject {...createFormProps} />}
 

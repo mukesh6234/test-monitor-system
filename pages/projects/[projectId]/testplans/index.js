@@ -119,7 +119,8 @@ function TestPlans() {
           />
         </div>
       ) : (
-        <Grid container spacing={6} marginTop style={{ minHeight: "65vh" }}>
+        <div style={{ minHeight: "65vh" }}>
+        <Grid container spacing={6} marginTop >
           {loading ? (
             <>{skeleton}</>
           ) : (
@@ -132,6 +133,7 @@ function TestPlans() {
             })
           )}
         </Grid>
+        </div>
       )}
       {formOpen && <TestPlanForm {...testPlanFormProps} />}
       {totalEntries !== 0 && (

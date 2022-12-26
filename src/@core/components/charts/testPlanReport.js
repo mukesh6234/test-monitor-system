@@ -11,6 +11,7 @@ import { Tooltip, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 // ** Icon Imports
 import Icon from "@core/components/icon";
+import { titleize } from "components/helper";
 
 const RADIAN = Math.PI / 180;
 
@@ -38,20 +39,25 @@ const renderCustomizedLabel = (props) => {
 };
 
 const TestPlanReport = (props) => {
+  const { skipped, pass, fail, total_count } = props;
   let reportValue = {
-    Skipped: `${((props.skipped / props.total_count) * 100).toFixed(0)}%`,
-    Pass: `${((props.pass / props.total_count) * 100).toFixed(0)}%`,
-    Fail: `${((props.fail / props.total_count) * 100).toFixed(0)}%`,
+    Skipped: `${((skipped / total_count) * 100).toFixed(0)}%`,
+    Pass: `${((pass / total_count) * 100).toFixed(0)}%`,
+    Fail: `${((fail / total_count) * 100).toFixed(0)}%`,
+    Not_Started: !skipped && !pass && !fail ? "100%" : "0%",
   };
   console.log(props, "vvvv", reportValue);
   const data = [
-    { name: "Fail", value: props.fail, color: "#E8381A" },
-    { name: "Pass", value: props.pass, color: "#67C932" },
+    { name: "Fail", value: fail, color: "#E8381A" },
+    { name: "Pass", value: pass, color: "#67C932" },
     {
       name: "Skipped",
-      value: props.skipped,
+      value: skipped,
       color: "#03B1D7",
     },
+    !skipped &&
+      !pass &&
+      !fail && { name: "Not Started", value: total_count, color: "#ffe700" },
   ];
 
   return (
@@ -65,7 +71,7 @@ const TestPlanReport = (props) => {
             justifyContent: "flex-start",
           }}
         >
-          <Typography variant="h4">{props.title}</Typography>
+          <Typography variant="h4">{titleize(props.title)}</Typography>
         </Box>
         <div style={{ display: "flex" }}>
           <Box sx={{ height: 350, display: "flex", flex: 0.5 }}>
@@ -179,6 +185,33 @@ const TestPlanReport = (props) => {
                 </div>
                 <div style={{ display: "flex", flex: 2 }}>
                   <Typography variant="body1">{reportValue.Fail}</Typography>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ display: "flex", flex: 1 }}>
+                  <Box
+                    sx={{
+                      margin: 2,
+                      display: "flex",
+                      alignItems: "center",
+                      "& svg": { mr: 1.5, color: "#ffe700" },
+                      // justifyContent:"space-between"
+                    }}
+                  >
+                    <Icon icon="bxs:circle" fontSize="0.75rem" />
+                    <Typography variant="body1">Not Started</Typography>
+                  </Box>
+                </div>
+                <div style={{ display: "flex", flex: 2 }}>
+                  <Typography variant="body1">
+                    {reportValue.Not_Started}
+                  </Typography>
                 </div>
               </div>
             </div>

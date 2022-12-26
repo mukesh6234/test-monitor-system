@@ -10,14 +10,14 @@ import MuiTimeline from "@mui/lab/Timeline";
 import CustomTimelineDot from "@core/components/mui/timeline-dot";
 import Icon from "@core/components/icon";
 import TextInput from "@core/components/input/textInput";
-import { testCaseList, updateTestRun } from "../../../../api/modules";
+import { testCaseList, updateTestRun } from "../../../../../api/modules";
 import { useAuth } from "hooks/useAuth";
 import { useRouter } from "next/router";
 import Spinner from "@core/components/spinner";
 import { titleize } from "components/helper";
 import { toast } from "react-hot-toast";
 import FileUploader from "components/fileUploader/imageUpload";
-import noData from "../../../../../public/images/lottie/nodata.json";
+import noData from "../../../../../../public/images/lottie/nodata.json";
 import Lottie from "lottie-react";
 
 const ContentLayout = styled(Box)(({ theme }) => ({
@@ -68,15 +68,14 @@ function TestRun() {
   // const [image, setImage] = useState([]);
   const auth = useAuth();
   const router = useRouter();
-  const { projectId, testrun } = router.query;
-  console.log(testrun, "testrun");
+  const { projectId, testPlanId, testRunId } = router.query;
 
   useEffect(() => {
     fetchTestCaseList();
   }, []);
 
   const fetchTestCaseList = () => {
-    testCaseList(auth.user.auth_token, projectId, testrun[1]).then(
+    testCaseList(auth.user.auth_token, projectId, testRunId).then(
       ({ data, total_entries }) => {
         setTotalEntries(total_entries);
         setTestCases(data);
@@ -133,13 +132,13 @@ function TestRun() {
           }
         })
       );
-      form.append("test_plan[section_id]", testrun[1]);
-      updateTestRun(auth.user.auth_token, projectId, testrun[0], form)
+      form.append("test_plan[section_id]", testRunId);
+      updateTestRun(auth.user.auth_token, projectId, testPlanId, form)
         .then(({ message }) => {
           toast.success(message);
           setTimeout(() => {
             router.push(
-              `/projects/${projectId}/testplans/report/${testrun[0]}`
+              `/projects/${projectId}/testplans/${testPlanId}/report`
             );
           }, 1000);
         })

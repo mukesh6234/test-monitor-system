@@ -39,18 +39,18 @@ function ProjectCard(props) {
   return (
     <Card
       style={{
-        overflow: "hidden",
+        // overflow: "hidden",
         padding: 25,
-        paddingBottom: 0,
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-        gridAutoRows: "auto",
-        gridTemplateRows: "auto",
+        // paddingBottom: 0,
+        // display: "grid",
+        // gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+        // gridAutoRows: "auto",
+        // gridTemplateRows: "auto",
         position: "relative",
       }}
       className="project-card"
     >
-      <div style={{ cursor: "pointer" }}>
+      <div>
         {props.title.length > 23 ? (
           <Tooltip
             arrow
@@ -77,19 +77,26 @@ function ProjectCard(props) {
             margin: "20px auto 10px auto",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {/* <Image src={bundleIcon} height={30} alt="test-case-logo" /> */}
-            <div style={{ marginLeft: 10 }}>
-              <Link
-                href={`/projects/${props.id}/modules`}
-                onClick={() => {
-                  setCookie("project-title", props.title);
-                }}
+          <Link
+            href={`/projects/${props.id}/testcases`}
+            onClick={() => {
+              setCookie("project-title", props.title);
+            }}
+            style={{
+              textDecoration: "none",
+              width: "40%",
+            }}
+          >
+            <StyledLink>
+              <div
                 style={{
-                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
                 }}
               >
-                <StyledLink>
+                {/* <Image src={bundleIcon} height={30} alt="test-case-logo" /> */}
+                <div style={{ marginLeft: 10 }}>
                   <Typography
                     sx={{ fontWeight: 500, lineHeight: 1 }}
                     variant="h5"
@@ -98,24 +105,32 @@ function ProjectCard(props) {
                     {props.sections_count}
                   </Typography>
                   Modules
-                </StyledLink>
-              </Link>
-            </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {/* <Image src={testRunIcon} height={30} alt="test-case-logo" /> */}
-
-            <div style={{ marginLeft: 10 }}>
-              <Link
-                href={`/projects/${props.id}/testcases`}
-                onClick={() => {
-                  setCookie("project-title", props.title);
-                }}
+                </div>
+              </div>
+            </StyledLink>
+          </Link>
+          <Link
+            href={`/projects/${props.id}/testcases`}
+            onClick={() => {
+              setCookie("project-title", props.title);
+            }}
+            style={{
+              textDecoration: "none",
+              width: "40%",
+            }}
+          >
+            <StyledLink>
+              <div
                 style={{
-                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  justifyContent: "flex-end",
                 }}
               >
-                <StyledLink>
+                {/* <Image src={testRunIcon} height={30} alt="test-case-logo" /> */}
+
+                <div style={{ marginLeft: 10 }}>
                   <Typography
                     sx={{
                       fontWeight: 500,
@@ -130,10 +145,10 @@ function ProjectCard(props) {
                     {props.test_cases_count}
                   </Typography>
                   Test Cases
-                </StyledLink>
-              </Link>
-            </div>
-          </div>
+                </div>
+              </div>
+            </StyledLink>
+          </Link>
         </div>
         <div className="edit-btn" onClick={() => props.handleEdit(props.id)}>
           {" "}

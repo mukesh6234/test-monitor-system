@@ -39,8 +39,8 @@ const renderIcon = (props) => {
         <Image
           src={props.image_path}
           alt="Role Image"
-          height={100}
-          width={100}
+          height={70}
+          width={70}
           style={{ marginRight: 10 }}
         />
       ) : (
@@ -69,7 +69,7 @@ function UserCard(props) {
     <Card style={{ padding: 10 }}>
       <div
         style={{
-          // display: "flex",
+          display: "flex",
           // justifyContent: "space-between",
           cursor: "pointer",
           padding: 5,
@@ -86,13 +86,13 @@ function UserCard(props) {
         >
           {renderIcon(props)}
         </Box>
-        {/* <Box
+        <Box
           sx={{
             display: "flex",
             alignItems: "flex-start",
             flexDirection: "column",
           }}
-        > */}
+        >
         <div style={{ display: "flex" }}>
           <span
             style={{
@@ -173,7 +173,7 @@ function UserCard(props) {
             />
           }
         </div>
-        {/* </Box> */}
+        </Box>
       </div>
     </Card>
   );

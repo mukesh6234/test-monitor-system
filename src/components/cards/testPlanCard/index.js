@@ -188,7 +188,7 @@ function TestPlanCard(props) {
           }}
           onClick={() =>
             router.push(
-              `/projects/${props.projectId}/testplans/execution/${props.id}`
+              `/projects/${props.projectId}/testplans/${props.id}/execution`
             )
           }
         >
@@ -212,7 +212,7 @@ function TestPlanCard(props) {
           //   onClick={() => props.handleView(props.id)}
           onClick={() =>
             router.push(
-              `/projects/${props.projectId}/testplans/report/${props.id}`
+              `/projects/${props.projectId}/testplans/${props.id}/report`
             )
           }
         >

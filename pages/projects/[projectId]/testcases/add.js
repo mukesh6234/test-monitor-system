@@ -25,16 +25,20 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { hexToRGBA } from "@core/utils/hex-to-rgba";
 import { styled } from "@mui/material/styles";
+import { keys } from "@mui/system";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
   description: yup.string().required("Please fill the description"),
   prerequisite: yup.string().required("Please fill the prerequisite"),
-  steps: yup.array().of(
-    yup.object().shape({
-      description: yup.string().required("Please fill the testing steps"),
-    })
-  ),
+  // steps: yup.object().shape({
+  //   description: yup.string().required("Please fill the testing steps"),
+  // }),
+  // yup.array().of(
+  //   yup.object().shape({
+  //     description: yup.string().required("Please fill the testing steps"),
+  //   })
+  // ),
   expected_result: yup.string().required("Please fill the expected_result"),
   module: yup.string().required("Please select a module"),
 });
@@ -60,6 +64,7 @@ const ContentLayout = styled(Box)(({ theme }) => ({
 
 function AddTestCases() {
   const [options, setOptions] = useState([]);
+  const [update, setupdate] = useState(0);
   const auth = useAuth();
   const router = useRouter();
   const searchValue = useSearch();
@@ -104,7 +109,26 @@ function AddTestCases() {
       });
   }, []);
 
+  // useEffect(() => {
+  //   if (getValues("steps")[getValues("steps").length - 1].description !== "") {
+  //     handleSteps();
+  //   }
+  //   console.log(getValues("steps")[getValues("steps").length - 1].description, "ddd");
+  // }, [getValues("steps")[getValues("steps").length - 1].description]);
+
+  useEffect(() => {
+    if (getValues("steps")[getValues("steps").length - 1].description !== "") {
+      handleSteps();
+    }
+  }, [update]);
+
   const onSubmit = (data) => {
+    let stepData = [];
+    data.steps.filter(
+      (testStep) =>
+        testStep.description != "" &&
+        stepData.push({ description: testStep.description })
+    );
     let payload = {
       test_case: {
         title: data.title,
@@ -112,9 +136,7 @@ function AddTestCases() {
         description: data.description,
         expected_result: data.expected_result,
         section_id: data.module,
-        steps: data.steps.map((testStep) => {
-          return { description: testStep.description };
-        }),
+        steps: stepData,
       },
     };
     createTestCase(auth.user.auth_token, projectId, payload)
@@ -141,6 +163,7 @@ function AddTestCases() {
 
   return (
     <>
+      {console.log("hijjjjj")}
       <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <h3 style={{ margin: "5px 0" }}>Add Test Case</h3>
@@ -204,7 +227,7 @@ function AddTestCases() {
             </Grid>
             <Grid item xs={6}>
               Modules
-              <FormControl fullWidth sx={{ mb: 6 }}>
+              <FormControl fullWidth>
                 <Controller
                   name="module"
                   control={control}
@@ -289,7 +312,10 @@ function AddTestCases() {
                         placeholder={"Enter testing steps..."}
                         value={value}
                         onBlur={onBlur}
-                        onChange={onChange}
+                        onChange={(e) => {
+                          setupdate(update + 1);
+                          onChange(e);
+                        }}
                         error={Boolean(errors?.steps?.[index])}
                         helperText={
                           errors.steps &&
@@ -362,3 +388,10 @@ function AddTestCases() {
 }
 
 export default AddTestCases;
+
+// for (var i = 0; i < test.length; i++) {
+//   if (!test[i]) {
+//     test[i] = "Cloe";
+//     break;
+//   }
+// }

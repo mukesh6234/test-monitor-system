@@ -11,14 +11,14 @@ function Execution() {
   const [moduleList, setModuleList] = useState([]);
   const auth = useAuth();
   const router = useRouter();
-  const { projectId, execution } = router.query;
+  const { projectId, testPlanId } = router.query;
 
   useEffect(() => {
     fetchExecutionList();
   }, []);
 
   const fetchExecutionList = async () => {
-    await testPlanExecution(auth.user.auth_token, projectId, execution[0])
+    await testPlanExecution(auth.user.auth_token, projectId, testPlanId)
       .then(({ data }) => {
         setModuleList(data);
       })
@@ -32,7 +32,7 @@ function Execution() {
   };
   const cardProps = {
     projectId,
-    execution,
+    testPlanId,
   };
   return (
     <>

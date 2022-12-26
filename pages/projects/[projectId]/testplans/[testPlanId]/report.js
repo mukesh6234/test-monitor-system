@@ -41,7 +41,7 @@ function Report() {
   const [reports, setReports] = useState([]);
   const auth = useAuth();
   const router = useRouter();
-  const { projectId, report } = router.query;
+  const { projectId, testPlanId } = router.query;
   const [loading, setLoading] = useState(true);
 
   console.log(router.query, " router.query");
@@ -51,7 +51,7 @@ function Report() {
   }, []);
 
   const fetchExecutionList = async () => {
-    await testPlanReport(auth.user.auth_token, projectId, report[0])
+    await testPlanReport(auth.user.auth_token, projectId, testPlanId)
       .then(({ data }) => {
         setReports(data);
         setLoading(false);
@@ -85,27 +85,26 @@ function Report() {
       > */}
       <TestPlanReport {...reports} />
       {/* </ContentLayout> */}
-      <Grid
-        container
-        spacing={6}
-        marginTop
+      <div
         style={{
           minHeight: "65vh",
         }}
       >
-        {loading ? (
-          <>{skeleton}</>
-        ) : (
-          reports &&
-          reports.sections.map((module, index) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} xl={4} key={index}>
-                <ModuleReport {...module} />
-              </Grid>
-            );
-          })
-        )}
-      </Grid>
+        <Grid container spacing={6} marginTop>
+          {loading ? (
+            <>{skeleton}</>
+          ) : (
+            reports &&
+            reports.sections.map((module, index) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} xl={4} key={index}>
+                  <ModuleReport {...module} />
+                </Grid>
+              );
+            })
+          )}
+        </Grid>
+      </div>
     </>
   );
 }

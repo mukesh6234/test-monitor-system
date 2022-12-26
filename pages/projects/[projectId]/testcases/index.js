@@ -158,27 +158,26 @@ export default function TestCases() {
         //     loading={loading}
         //   />
         // </ContentLayout>
-        <Grid
-          container
-          spacing={6}
-          marginTop
+        <div
           style={{
             minHeight: "65vh",
           }}
         >
-          {loading ? (
-            <>{skeleton}</>
-          ) : (
-            testCases &&
-            testCases.map((testcase, index) => {
-              return (
-                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
-                  <TestCaseCard {...testcase} {...testCaseCardProps} />
-                </Grid>
-              );
-            })
-          )}
-        </Grid>
+          <Grid container spacing={6} marginTop>
+            {loading ? (
+              <>{skeleton}</>
+            ) : (
+              testCases &&
+              testCases.map((testcase, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
+                    <TestCaseCard {...testcase} {...testCaseCardProps} />
+                  </Grid>
+                );
+              })
+            )}
+          </Grid>
+        </div>
       )}
       {formOpen && <TestCaseDialogue {...testDialogueProps} />}
       {totalEntries !== 0 && (

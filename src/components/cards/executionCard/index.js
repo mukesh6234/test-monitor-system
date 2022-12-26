@@ -6,11 +6,12 @@ import Icon from "@core/components/icon";
 import { useRouter } from "next/router";
 import { LinearProgress } from "@mui/material";
 
-function ExecutionCard({ projectId, execution, ...props }) {
+function ExecutionCard({ projectId, testPlanId, ...props }) {
   const router = useRouter();
-  const passPercentage = ((props.test_cases_count
-    ? props.sections_data.pass / props.test_cases_count
-    : props.test_cases_count) * 100);
+  const passPercentage =
+    (props.test_cases_count
+      ? props.sections_data.pass / props.test_cases_count
+      : props.test_cases_count) * 100;
 
   // let testingProgress = [
   //   {
@@ -37,11 +38,11 @@ function ExecutionCard({ projectId, execution, ...props }) {
         display: "grid",
         gridAutoRows: "auto",
         gap: "50px !important",
-        cursor:"pointer"
+        cursor: "pointer",
       }}
       onClick={() =>
         router.push(
-          `/projects/${projectId}/testplans/testrun/${execution[0]}/${props.id}`
+          `/projects/${projectId}/testplans/${testPlanId}/${props.id}/testrun`
         )
       }
     >
@@ -76,7 +77,10 @@ function ExecutionCard({ projectId, execution, ...props }) {
           </Typography>
         </div>
         <div style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
-        <span style={{ marginRight: 5 }}><Icon icon="bx-archive" fontSize={20} /></span> <Typography>   Test Cases  {props.test_cases_count}</Typography>
+          <span style={{ marginRight: 5 }}>
+            <Icon icon="bx-archive" fontSize={20} />
+          </span>{" "}
+          <Typography> Test Cases {props.test_cases_count}</Typography>
         </div>
         {/* <div style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
           <Typography >{props?.created_at}</Typography>
@@ -111,7 +115,7 @@ function ExecutionCard({ projectId, execution, ...props }) {
               {" "}
               <Icon icon="bx:spreadsheet" fontSize={20} />
             </span>{" "} */}
-           Module Description
+            Module Description
           </Typography>
           <span style={{ display: "block" }}>{props.description}</span>
         </div>
@@ -123,16 +127,12 @@ function ExecutionCard({ projectId, execution, ...props }) {
             alignItems: "center",
           }}
         >
-            <div className="multicolor-bar">
-      	<div className="values">
-      	</div>
-      	<div className="scale">
-      	</div>
-      	<div className="bars">
-      	</div>
-      	<div className="legends">
-      	</div>
-      </div>
+          <div className="multicolor-bar">
+            <div className="values"></div>
+            <div className="scale"></div>
+            <div className="bars"></div>
+            <div className="legends"></div>
+          </div>
           {/* <div className="multicolor-bar">
             <div className="values">{values == "" ? "" : values}</div>
             <div className="scale">
