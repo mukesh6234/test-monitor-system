@@ -3,6 +3,7 @@ const jsonHeaders = {
   Accept: "application/json",
   "Content-type": "application/json",
 };
+import { apiHost } from "../../config";
 
 export default function ({
   uri,
@@ -12,7 +13,7 @@ export default function ({
   baseAuthorization,
   controller,
 }) {
-  return fetch("https://api-test-monit.katomaran.in" + uri, {
+  return fetch(apiHost + uri, {
     method,
     body,
     headers: authorization
