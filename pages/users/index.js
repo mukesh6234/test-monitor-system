@@ -11,6 +11,7 @@ import { Skeleton } from "@mui/material";
 import { toast } from "react-hot-toast";
 import UserForm from "components/modals/userForm";
 import { Pagination } from "@mui/material";
+import { errorHandler } from "components/helper/errorHandling";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -31,10 +32,11 @@ function User() {
   const [page, setPage] = useState(1);
   const perPage = 24;
   const auth = useAuth();
-  const searchValue = useSearch();
+  const { searchValue, handleShowSearch } = useSearch();
 
   useEffect(() => {
     fetchUser();
+    handleShowSearch(false);
   }, [searchValue]);
 
   const fetchUser = () => {
@@ -48,12 +50,8 @@ function User() {
         setTotalEntries(total_entries);
         setUserLists(data);
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   };
 

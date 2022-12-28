@@ -12,6 +12,7 @@ import TestPlanCard from "components/cards/testPlanCard";
 import { toast } from "react-hot-toast";
 import TestPlanForm from "components/modals/testPlanForm";
 import { Pagination } from "@mui/material";
+import { errorHandler } from "components/helper/errorHandling";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -38,11 +39,12 @@ function TestPlans() {
   const perPage = 24;
   const router = useRouter();
   const auth = useAuth();
-  const searchValue = useSearch();
+  const { searchValue, handleShowSearch } = useSearch();
   const { projectId } = router.query;
 
   useEffect(() => {
     testPlanIndex();
+    handleShowSearch(true)
   }, [searchValue]);
 
   const testPlanIndex = () => {
@@ -56,12 +58,8 @@ function TestPlans() {
         setTotalEntries(total_entries);
         setTestPlanLists(data);
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   };
 

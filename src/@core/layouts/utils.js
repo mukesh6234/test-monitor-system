@@ -6,7 +6,7 @@
  * @param activeItem
  */
 export const handleURLQueries = (router, path) => {
-
+console.log(router.asPath.includes(path),"router.asPath",router.asPath,path);
   if (Object.keys(router.query).length && path) {
     console.log("ggggggg",router.asPath,path);
     const arr = Object.keys(router.query)

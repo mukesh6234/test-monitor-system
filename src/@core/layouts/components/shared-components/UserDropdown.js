@@ -169,7 +169,7 @@ const UserDropdown = (props) => {
         <Divider sx={{ mt: "0 !important" }} />
         <MenuItem
           sx={{ p: 0 }}
-          onClick={() => handleDropdownClose("/users/profile")}
+          onClick={() => handleDropdownClose(`/users/${user.id}/profile`)}
         >
           <Box sx={styles}>
             <Icon icon="bx:user" />

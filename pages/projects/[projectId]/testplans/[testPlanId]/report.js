@@ -11,6 +11,9 @@ import { toast } from "react-hot-toast";
 import TestPlanReport from "@core/components/charts/testPlanReport";
 import { Skeleton } from "@mui/material";
 import ModuleReport from "@core/components/charts/moduleReport";
+import { useSearch } from "context/searchContext";
+import { errorHandler } from "components/helper/errorHandling";
+
 
 const ContentLayout = styled(Box)(({ theme }) => ({
   transition: "none",
@@ -43,11 +46,13 @@ function Report() {
   const router = useRouter();
   const { projectId, testPlanId } = router.query;
   const [loading, setLoading] = useState(true);
+  const { handleShowSearch } = useSearch();
 
   console.log(router.query, " router.query");
 
   useEffect(() => {
     fetchExecutionList();
+    handleShowSearch(false);
   }, []);
 
   const fetchExecutionList = async () => {
@@ -56,12 +61,8 @@ function Report() {
         setReports(data);
         setLoading(false);
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   };
 

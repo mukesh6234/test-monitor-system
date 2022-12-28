@@ -26,21 +26,33 @@ const Timeline = styled(MuiTimeline)({
 });
 
 function TestCaseDialogue(props) {
+  var regexhtml = props.data.prerequisite.replace(/\n/g, "<br />");
   return (
-    <Dialog open={props.formOpen} onClose={props.handleClose} scroll={"paper"}>
-      <div
-        style={{
-          boxShadow: " 3px 3px 18px rgba(145, 85, 253, 0.11)",
-          borderRadius: "15px",
-          minWidth: "600px",
-        }}
-      >
-        <DialogTitle
-          style={{ display: "flex", justifyContent: "space-between" }}
-        >
-          <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              {props.data.title > 23 ? (
+    <Dialog
+      sx={{ "& .MuiPaper-root": { width: "100%", maxWidth: 700 } }}
+      open={props.formOpen}
+      onClose={props.handleClose}
+      scroll={"paper"}
+    >
+      <DialogTitle style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            {props.data.title > 23 ? (
+              <Tooltip
+                arrow
+                title={props.title}
+                placement="top"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 500 }}
+              >
+                {SliceName(titleize(props.data.title))}
+              </Tooltip>
+            ) : (
+              <span>{SliceName(titleize(props.data.title))}</span>
+            )}
+            <div class="tag">
+              <span class="arrow"></span>
+              {props.data.section.title > 23 ? (
                 <Tooltip
                   arrow
                   title={props.title}
@@ -48,48 +60,33 @@ function TestCaseDialogue(props) {
                   TransitionComponent={Zoom}
                   TransitionProps={{ timeout: 500 }}
                 >
-                  {SliceName(titleize(props.data.title))}
+                  {SliceName(titleize(props.data.section.title))}
                 </Tooltip>
               ) : (
-                <span>{SliceName(titleize(props.data.title))}</span>
+                <span>{SliceName(titleize(props.data.section.title))}</span>
               )}
-              <div class="tag">
-                <span class="arrow"></span>
-                {props.data.section.title > 23 ? (
-                  <Tooltip
-                    arrow
-                    title={props.title}
-                    placement="top"
-                    TransitionComponent={Zoom}
-                    TransitionProps={{ timeout: 500 }}
-                  >
-                    {SliceName(titleize(props.data.section.title))}
-                  </Tooltip>
-                ) : (
-                  <span>{SliceName(titleize(props.data.section.title))}</span>
-                )}
-              </div>
             </div>
-
-            <Typography variant="caption" style={{ lineHeight: 0 }}>
-              {props.data.updated_by?.name ? (
-                <>
-                  Updated by:
-                  <span style={{ color: "#9155FD", marginLeft: 5 }}>
-                    {titleize(props.data.updated_by?.name)}
-                  </span>
-                </>
-              ) : (
-                <>
-                  Created by:
-                  <span style={{ color: "#9155FD", marginLeft: 5 }}>
-                    {titleize(props.data.created_by?.name)}
-                  </span>
-                </>
-              )}
-            </Typography>
           </div>
-          {/* <div
+
+          <Typography variant="caption">
+            {props.data.updated_by?.name ? (
+              <>
+                Updated by:
+                <span style={{ color: "#9155FD", marginLeft: 5 }}>
+                  {titleize(props.data.updated_by?.name)}
+                </span>
+              </>
+            ) : (
+              <>
+                Created by:
+                <span style={{ color: "#9155FD", marginLeft: 5 }}>
+                  {titleize(props.data.created_by?.name)}
+                </span>
+              </>
+            )}
+          </Typography>
+        </div>
+        {/* <div
             style={{
               display: "flex",
               flex: "0.5",
@@ -113,78 +110,79 @@ function TestCaseDialogue(props) {
               <span style={{ fontWeight: 600, fontSize: "1rem" }}>10</span>
             </Typography>
           </div> */}
-        </DialogTitle>
+      </DialogTitle>
 
-        <DialogContent>
-          {/* {props.moduleData.description} */}
-          {/* <TextInput
+      <DialogContent>
+        {/* {props.moduleData.description} */}
+        {/* <TextInput
             fullWidth
             size={"small"}
             placeholder={"Enter your project name"}
             value={props.value.title ? props.value.title : props.value}
             onChange={(e) => props.setValue(e.target.value)}
           /> */}
-          <Typography
-            sx={{ fontWeight: 600, fontSize: "1rem", margin: "10px auto" }}
-          >
-            Test Case Description
-          </Typography>
-          <Typography sx={{ color: "text.secondary", fontSize: "0.87rem" }}>
-            {props.data.description}
-          </Typography>
-          <Typography
-            sx={{ fontWeight: 600, fontSize: "1rem", marginTop: "1rem" }}
-          >
-            Steps
-          </Typography>
+        <Typography
+          sx={{ fontWeight: 600, fontSize: "1rem", margin: "10px auto" }}
+        >
+          Test Case Description
+        </Typography>
+        <Typography variant="body2">{props.data.description}</Typography>
+        <Typography
+          sx={{ fontWeight: 600, fontSize: "1rem", margin: "10px auto" }}
+        >
+          Prerequisites
+        </Typography>
+        <Typography
+          variant="body2"
+          dangerouslySetInnerHTML={{ __html: regexhtml }}
+        ></Typography>
+        <Typography
+          sx={{ fontWeight: 600, fontSize: "1rem", marginTop: "1rem" }}
+        >
+          Steps
+        </Typography>
 
-          <Timeline style={{ padding: 0 }}>
-            {props.data.steps.map((step, index) => (
-              <TimelineItem key={index}>
-                <TimelineSeparator>
-                  <CustomTimelineDot skin="light" color="primary">
-                    <span style={{ fontSize: 10, padding: "2px 6px" }}>
-                      {index + 1}
-                    </span>
-                  </CustomTimelineDot>
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>{step.description}</TimelineContent>
-              </TimelineItem>
-            ))}
-          </Timeline>
-          <Typography
-            sx={{ fontWeight: 600, fontSize: "1rem", margin: "10px auto" }}
-          >
-            Expected Result
-          </Typography>
-          <Typography
-            sx={{
-              color: "text.secondary",
-              fontSize: "0.87rem",
-              margin: "10px auto",
-            }}
-          >
-            {props.data.expected_result}
-          </Typography>
-        </DialogContent>
-
-        <DialogActions
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+        <Timeline style={{ padding: 0 }}>
+          {props.data.steps.map((step, index) => (
+            <TimelineItem key={index}>
+              <TimelineSeparator>
+                <CustomTimelineDot skin="light" color="primary">
+                  <span style={{ fontSize: 10, padding: "2px 6px" }}>
+                    {index + 1}
+                  </span>
+                </CustomTimelineDot>
+                <TimelineConnector />
+              </TimelineSeparator>
+              <TimelineContent>{step.description}</TimelineContent>
+            </TimelineItem>
+          ))}
+        </Timeline>
+        <Typography
+          sx={{ fontWeight: 600, fontSize: "1rem", margin: "10px auto" }}
+        >
+          Expected Result
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            margin: "10px auto",
           }}
         >
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={props.handleClose}
-          >
-            Done
-          </Button>
-        </DialogActions>
-      </div>
+          {props.data.expected_result}
+        </Typography>
+      </DialogContent>
+
+      <DialogActions
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Button variant="outlined" color="primary" onClick={props.handleClose}>
+          Done
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 }

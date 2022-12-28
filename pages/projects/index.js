@@ -16,6 +16,7 @@ import Lottie from "lottie-react";
 import noData from "../../public/images/lottie/nodata.json";
 import { Skeleton } from "@mui/material";
 import { Pagination } from "@mui/material";
+import { errorHandler } from "components/helper/errorHandling";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -43,11 +44,12 @@ export default function Project() {
   const [page, setPage] = useState(1);
   const perPage = 24;
   const auth = useAuth();
-  const searchValue = useSearch();
+  const { searchValue, handleShowSearch } = useSearch();
   let auth_token = auth.user.auth_token;
 
   useEffect(() => {
     fetchProject();
+    handleShowSearch(true);
   }, [searchValue, page]);
 
   const fetchProject = async () => {
@@ -62,12 +64,8 @@ export default function Project() {
           setTotalEntries(total_entries);
           setProjects(data);
         })
-        .catch((err) => {
-          if (err[1]) {
-            toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-          } else {
-            toast.error(err.message);
-          }
+        .catch((error) => {
+          errorHandler(error);
         });
     }
   };
@@ -93,12 +91,8 @@ export default function Project() {
         setTitle("");
         fetchProject();
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   };
 
@@ -116,12 +110,8 @@ export default function Project() {
         setFormOpen(!formOpen);
         fetchProject();
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   };
 

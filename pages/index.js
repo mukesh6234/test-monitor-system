@@ -31,6 +31,7 @@ const Home = () => {
       router.replace(homeRoute);
     } else {
       console.log("11111111111");
+      router.replace("/login");
     }
   }, []);
 

@@ -24,6 +24,7 @@ import { FormControl } from "@mui/material";
 import { useRouter } from "next/router";
 import TextInput from "@core/components/input/textInput";
 import katoIcon from "../../public/images/pages/kato-icon.png";
+import { errorHandler } from "components/helper/errorHandling";
 
 // Styled Components
 const ForgotPasswordIllustration = styled("img")({
@@ -95,16 +96,12 @@ const ForgotPassword = () => {
         toast.success(message);
         router.push(`/verifyOTP/${data}`);
       })
-      .catch((err) => {
+      .catch((error) => {
         setError("email", {
           type: "manual",
-          message: err[1] ? err[1]?.data : err.message,
+          message: error[1] ? error[1]?.data : error.message,
         });
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+        errorHandler(error);
       });
   };
 

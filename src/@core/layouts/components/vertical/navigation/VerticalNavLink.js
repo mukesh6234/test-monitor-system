@@ -78,9 +78,12 @@ const VerticalNavLink = ({
 
   const isNavLinkActive = () => {
     console.log(
-      router.pathname===item.path,
+      router.pathname === item.path,
       // handleURLQueries(router, item.path),
-      "hhhhhhhhh"
+      "hhhhhhhhh",
+      item.path[1],
+      router.pathname,
+      handleURLQueries(router, item.path)
     );
     if (router.pathname === item.path || handleURLQueries(router, item.path)) {
       return true;

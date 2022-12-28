@@ -170,3 +170,10 @@ p {
 .tag:active:after {
 	box-shadow: inset 0px 0px 30px rgba(0,0,0,0.3), 0px 0px 5px rgba(0,0,0,0.2);
 }
+
+/* 
+p{
+  background-color: linear-gradient(to right,rgb("67,124,205",rgb("69,214,202")));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color: transparent;
+} */

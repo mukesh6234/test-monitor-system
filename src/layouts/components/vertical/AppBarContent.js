@@ -15,8 +15,7 @@ import { useSearch, useSearchUpdate } from "context/searchContext";
 const AppBarContent = (props) => {
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props;
-  const searchValue = useSearch();
-  const handleSearch = useSearchUpdate();
+  const {searchValue,handleSearch,showSearch } = useSearch();
 
   return (
     <Box
@@ -40,19 +39,27 @@ const AppBarContent = (props) => {
             <Icon icon="bx:menu" />
           </IconButton>
         ) : null}
-        <IconButton color="inherit" sx={!hidden ? { mr: 1, ml: -2.75 } : {}}>
-          <Icon icon="bx:search" />
-        </IconButton>
-        <TextField
-          fullWidth
-          className="search"
-          placeholder="Search..."
-          value={searchValue}
-          autoComplete="off"
-          onChange={(e) => {
-            handleSearch(e.target.value);
-          }}
-        />
+        {showSearch && (
+          <>
+            {" "}
+            <IconButton
+              color="inherit"
+              sx={!hidden ? { mr: 1, ml: -2.75 } : {}}
+            >
+              <Icon icon="bx:search" />
+            </IconButton>
+            <TextField
+              fullWidth
+              className="search"
+              placeholder="Search..."
+              value={searchValue}
+              autoComplete="off"
+              onChange={(e) => {
+                handleSearch(e.target.value);
+              }}
+            />
+          </>
+        )}
       </Box>
       <Box
         className="actions-right"

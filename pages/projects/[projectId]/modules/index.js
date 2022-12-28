@@ -13,6 +13,7 @@ import { Skeleton } from "@mui/material";
 import { toast } from "react-hot-toast";
 import ModuleForm from "components/modals/moduleForm";
 import { Pagination } from "@mui/material";
+import { errorHandler } from "components/helper/errorHandling";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -41,11 +42,12 @@ function Modules() {
   const perPage = 24;
   const router = useRouter();
   const auth = useAuth();
-  const searchValue = useSearch();
+  const { searchValue, handleShowSearch } = useSearch();
   const { projectId } = router.query;
 
   useEffect(() => {
     fetModulesIndex();
+    handleShowSearch(true);
   }, []);
 
   useEffect(() => {
@@ -63,12 +65,8 @@ function Modules() {
         setTotalEntries(total_entries);
         setModuleList(data);
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   };
 

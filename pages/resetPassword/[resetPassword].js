@@ -22,6 +22,7 @@ import { newPassword } from "../api/authentication";
 import TextInput from "@core/components/input/textInput";
 import { useRouter } from "next/router";
 import katoIcon from "../../public/images/pages/kato-icon.png";
+import { errorHandler } from "components/helper/errorHandling";
 
 const RightWrapper = styled(Box)(({ theme }) => ({
   width: "100%",
@@ -86,16 +87,12 @@ const RestPassword = () => {
         toast.success(message);
         router.push(`/login`);
       })
-      .catch((err) => {
+      .catch((error) => {
         setError("password", {
           type: "manual",
-          message: err[1] ? err[1]?.data : err.message,
+          message: error[1] ? error[1]?.data : error.message,
         });
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+        errorHandler(error);
       });
   };
   return (

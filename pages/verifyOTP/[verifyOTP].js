@@ -92,7 +92,7 @@ const VerifyOTP = () => {
           type: "manual",
           message: "Email or Password is invalid",
         });
-        toast.error(error[1].message);
+        errorHandler(error);
       });
   };
 

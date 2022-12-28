@@ -17,6 +17,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { hexToRGBA } from "@core/utils/hex-to-rgba";
 import { styled } from "@mui/material/styles";
+import { errorHandler } from "components/helper/errorHandling";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
@@ -29,6 +30,8 @@ const schema = yup.object().shape({
   // ),
   expected_result: yup.string().required("Please fill the expected_result"),
   section: yup.string().required("Please select a module"),
+  automation: yup.string().required("Please select a automation type"),
+  app_type: yup.string().required("Please select a app type"),
 });
 
 const defaultValues = {
@@ -38,6 +41,8 @@ const defaultValues = {
   prerequisite: "",
   steps: [{ description: "" }],
   expected_result: "",
+  automation: "",
+  app_type: "",
 };
 
 const ContentLayout = styled(Box)(({ theme }) => ({
@@ -50,12 +55,32 @@ const ContentLayout = styled(Box)(({ theme }) => ({
   paddingBottom: "20px",
 }));
 
+const automationOption = [
+  {
+    label: "Applicable",
+    value: "applicable",
+  },
+  { label: "Not-Applicable", value: "not_applicable" },
+  {
+    label: "Automated",
+    value: "automated",
+  },
+];
+
+const apptypeOption = [
+  {
+    label: "Mobile App",
+    value: "mobile_app",
+  },
+  { label: "Web App", value: "web_app" },
+];
+
 function EditTestCases() {
   const [options, setOptions] = useState([]);
   const [update, setupdate] = useState(0);
   const auth = useAuth();
   const router = useRouter();
-  const searchValue = useSearch();
+  const { searchValue, handleShowSearch } = useSearch();
   const { edittestcase, projectId } = router.query;
   console.log(router, "edittestcase");
 
@@ -78,6 +103,7 @@ function EditTestCases() {
   });
 
   useEffect(() => {
+    handleShowSearch(false);
     const params = {
       page: 1,
       perPage: 100,
@@ -90,12 +116,8 @@ function EditTestCases() {
           })
         );
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   }, []);
 
@@ -105,12 +127,8 @@ function EditTestCases() {
         .then(({ data }) => {
           reset(data);
         })
-        .catch((err) => {
-          if (err[1]) {
-            toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-          } else {
-            toast.error(err.message);
-          }
+        .catch((error) => {
+          errorHandler(error);
         });
     };
     fetchTestCase();
@@ -137,9 +155,11 @@ function EditTestCases() {
         expected_result: data.expected_result,
         section_id: data.section,
         steps: stepData,
+        automation: data.automation,
+        app_type: data.app_type,
       },
     };
-    console.log(payload, "payload");
+
     updateTestCase(auth.user.auth_token, projectId, edittestcase[0], payload)
       .then(({ message }) => {
         toast.success(message);
@@ -147,12 +167,8 @@ function EditTestCases() {
           router.push(`/projects/${projectId}/testcases`);
         }, 1000);
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   };
 
@@ -198,14 +214,8 @@ function EditTestCases() {
             //   height: "80vh",
           }}
         >
-          <Grid
-            container
-            spacing={5}
-            columnSpacing={30}
-            padding={"0 20px"}
-            marginTop
-          >
-            <Grid item xs={6}>
+          <Grid container spacing={5} padding={"0 20px"} marginTop>
+            <Grid item xs={3}>
               Title
               <Controller
                 name="title"
@@ -225,7 +235,7 @@ function EditTestCases() {
                 )}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               Modules
               <FormControl fullWidth>
                 <Controller
@@ -243,6 +253,56 @@ function EditTestCases() {
                       error={Boolean(errors.section)}
                       helperText={errors.section ? errors.section.message : ""}
                       options={options}
+                    />
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={3}>
+              Automation
+              <FormControl fullWidth>
+                <Controller
+                  name="automation"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <SelectInput
+                      size={"small"}
+                      fullWidth
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      placeholder={"Select Module"}
+                      error={Boolean(errors.automation)}
+                      helperText={
+                        errors.automation ? errors.automation.message : ""
+                      }
+                      options={automationOption}
+                    />
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={3}>
+              App Type
+              <FormControl fullWidth>
+                <Controller
+                  name="app_type"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <SelectInput
+                      size={"small"}
+                      fullWidth
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      placeholder={"Select Module"}
+                      error={Boolean(errors.app_type)}
+                      helperText={
+                        errors.app_type ? errors.app_type.message : ""
+                      }
+                      options={apptypeOption}
                     />
                   )}
                 />
@@ -282,7 +342,7 @@ function EditTestCases() {
                   <TextInput
                     fullWidth
                     multi
-                    rows={3}
+                    rows={5}
                     size={"small"}
                     placeholder={"Enter your prerequisite"}
                     value={value}

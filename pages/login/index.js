@@ -118,7 +118,6 @@ const LoginPage = () => {
         type: "manual",
         message: "Email or Password is invalid",
       });
-      toast.error("Email or Password is invalid");
     });
   };
 
@@ -182,7 +181,7 @@ const LoginPage = () => {
                   <TextInput
                     label={"Email"}
                     fullWidth
-                    placeholder={"Enter your email address"}
+                    placeholder={"Enter your email"}
                     value={value}
                     onBlur={onBlur}
                     onChange={onChange}
@@ -193,12 +192,12 @@ const LoginPage = () => {
               />
             </FormControl>
             <FormControl fullWidth sx={{ mb: 2 }}>
-              <InputLabel
+              {/* <InputLabel
                 htmlFor="auth-login-v2-password"
                 error={Boolean(errors.password)}
               >
                 Password
-              </InputLabel>
+              </InputLabel> */}
               <Controller
                 name="password"
                 control={control}
@@ -207,8 +206,9 @@ const LoginPage = () => {
                   <OutlinedInput
                     value={value}
                     onBlur={onBlur}
-                    label="Password"
+                    // label="Password"
                     onChange={onChange}
+                    placeholder="Enter your Password"
                     id="auth-login-v2-password"
                     error={Boolean(errors.password)}
                     type={showPassword ? "text" : "password"}

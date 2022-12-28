@@ -16,6 +16,7 @@ import { styled } from "@mui/material/styles";
 import { Box, Grid } from "@mui/material";
 import TestCaseCard from "components/cards/testCaseCard";
 import { Pagination } from "@mui/material";
+import { errorHandler } from "components/helper/errorHandling";
 
 const skeleton = [];
 for (let i = 0; i < 12; i++) {
@@ -52,13 +53,14 @@ export default function TestCases() {
   const [page, setPage] = useState(1);
   const perPage = 24;
   const auth = useAuth();
-  const searchValue = useSearch();
+  const { searchValue, handleShowSearch } = useSearch();
 
   const router = useRouter();
   const { projectId } = router.query;
 
   useEffect(() => {
     fetchTestCaseIndex();
+    handleShowSearch(true)
   }, []);
 
   useEffect(() => {
@@ -77,12 +79,8 @@ export default function TestCases() {
         setTotalEntries(total_entries);
         setTestCases(data);
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
     // }
   };

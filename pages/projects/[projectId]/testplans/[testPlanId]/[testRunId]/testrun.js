@@ -19,6 +19,9 @@ import { toast } from "react-hot-toast";
 import FileUploader from "components/fileUploader/imageUpload";
 import noData from "../../../../../../public/images/lottie/nodata.json";
 import Lottie from "lottie-react";
+import { useSearch } from "context/searchContext";
+import { errorHandler } from "components/helper/errorHandling";
+
 
 const ContentLayout = styled(Box)(({ theme }) => ({
   transition: "none",
@@ -65,13 +68,14 @@ function TestRun() {
   const [totalEntries, setTotalEntries] = useState(0);
   const [disable, setDisable] = useState(false);
   const [loading, setLoding] = useState(true);
-  // const [image, setImage] = useState([]);
+  const { handleShowSearch } = useSearch();
   const auth = useAuth();
   const router = useRouter();
   const { projectId, testPlanId, testRunId } = router.query;
 
   useEffect(() => {
     fetchTestCaseList();
+    handleShowSearch(false);
   }, []);
 
   const fetchTestCaseList = () => {
@@ -142,14 +146,8 @@ function TestRun() {
             );
           }, 1000);
         })
-        .catch((err) => {
-          if (err[1]) {
-            toast.error(
-              err[1]?.data ? err[1]?.data[0] : "Internal Server Error"
-            );
-          } else {
-            toast.error(err.message);
-          }
+        .catch((error) => {
+          errorHandler(error);
         });
     }
   };

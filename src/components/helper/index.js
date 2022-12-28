@@ -26,3 +26,10 @@ export function SliceName(str ) {
   
   return str;
 }
+
+export async function kickUser() {
+  await window.localStorage.clear();
+  if (window.location.pathname !== "/login") {
+    await window.location.reload();
+  }
+}

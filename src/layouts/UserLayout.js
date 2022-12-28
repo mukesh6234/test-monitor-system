@@ -72,6 +72,7 @@ const UserLayout = ({ children, contentHeightFixed }) => {
               hidden={hidden}
               settings={settings}
               saveSettings={saveSettings}
+              toggleNavVisibility={props.toggleNavVisibility}
             />
           ),
         },

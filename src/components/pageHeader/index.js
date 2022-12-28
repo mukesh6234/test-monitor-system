@@ -19,7 +19,6 @@ function PageHeader(props) {
         <h3 style={{ margin: "5px 0" }}>{props.title}</h3>
 
         <Button
-          style={{ padding: "10px " }}
           size="small"
           variant="contained"
           onClick={() =>

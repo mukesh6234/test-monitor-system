@@ -8,11 +8,10 @@ import { LinearProgress } from "@mui/material";
 
 function ExecutionCard({ projectId, testPlanId, ...props }) {
   const router = useRouter();
-  const passPercentage =
-    (props.test_cases_count
-      ? props.sections_data.pass / props.test_cases_count
-      : props.test_cases_count) * 100;
-
+  const passPercentage = props.test_cases_count
+    ? Math.floor((props.sections_data.pass / props.test_cases_count) * 100)
+    : props.test_cases_count * 100;
+    
   // let testingProgress = [
   //   {
   //     name: "Fail",

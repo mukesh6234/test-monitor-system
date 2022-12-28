@@ -5,16 +5,20 @@ import { useAuth } from "hooks/useAuth";
 import { testPlanExecution } from "../../../../api/testPlan";
 import { Divider } from "@mui/material";
 import ExecutionCard from "components/cards/executionCard";
+import { useSearch } from "context/searchContext";
 import { toast } from "react-hot-toast";
+import { errorHandler } from "components/helper/errorHandling";
 
 function Execution() {
   const [moduleList, setModuleList] = useState([]);
+  const { handleShowSearch } = useSearch();
   const auth = useAuth();
   const router = useRouter();
   const { projectId, testPlanId } = router.query;
 
   useEffect(() => {
     fetchExecutionList();
+    handleShowSearch(false);
   }, []);
 
   const fetchExecutionList = async () => {
@@ -22,12 +26,8 @@ function Execution() {
       .then(({ data }) => {
         setModuleList(data);
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   };
   const cardProps = {

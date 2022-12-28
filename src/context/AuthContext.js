@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 
 // ** Config
 import authConfig from "../configs/auth";
+import { errorHandler } from "components/helper/errorHandling";
 
 // ** Defaults
 const defaultProvider = {
@@ -70,6 +71,7 @@ const AuthProvider = ({ children }) => {
       })
       .catch((err) => {
         if (errorCallback) errorCallback(err);
+        errorHandler(err);
       });
   };
 

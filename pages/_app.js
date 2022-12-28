@@ -101,15 +101,12 @@ const App = (props) => {
           sizes="180x180"
           href="../public/images/pages/kato-icon.png"
         />
-        <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
+        <title>{`${themeConfig.templateName} - Katomaran Test Monitoring`}</title>
         <meta
           name="description"
-          content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
+          content={`${themeConfig.templateName} – Katomaran Test Monitoring.`}
         />
-        <meta
-          name="keywords"
-          content="Material Design, MUI, Admin Template, React Admin Template"
-        />
+        <meta name="keywords" content="Katomaran Test Monitoring" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
 
         {/* <link rel='preconnect' href='https://fonts.googleapis.com' />
@@ -130,7 +127,6 @@ const App = (props) => {
               {({ settings }) => {
                 return (
                   <ThemeComponent settings={settings}>
-                    <WindowWrapper>
                       <Guard authGuard={authGuard} guestGuard={guestGuard}>
                         <AclGuard
                           aclAbilities={aclAbilities}
@@ -139,7 +135,6 @@ const App = (props) => {
                           {getLayout(<Component {...pageProps} />)}
                         </AclGuard>
                       </Guard>
-                    </WindowWrapper>
                     <ReactHotToast>
                       <Toaster
                         position={settings.toastPosition}

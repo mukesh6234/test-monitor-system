@@ -20,6 +20,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
+import { errorHandler } from "components/helper/errorHandling";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
@@ -34,7 +35,7 @@ const defaultValues = {
 function TestPlanForm(props) {
   const [options, setOptions] = useState([]);
   const auth = useAuth();
-  const searchValue = useSearch();
+  const {searchValue} = useSearch();
   const router = useRouter();
   const { projectId } = router.query;
 
@@ -63,12 +64,8 @@ function TestPlanForm(props) {
           })
         );
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   }, []);
 
@@ -78,12 +75,8 @@ function TestPlanForm(props) {
         .then(({ data }) => {
           props.id && reset(data);
         })
-        .catch((err) => {
-          if (err[1]) {
-            toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-          } else {
-            toast.error(err.message);
-          }
+        .catch((error) => {
+          errorHandler(error);
         });
     };
     fetchTestPlan();
@@ -106,12 +99,8 @@ function TestPlanForm(props) {
         toast.success(message);
         props.handleSave();
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   };
 

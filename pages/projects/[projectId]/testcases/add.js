@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  alertClasses,
   Divider,
   FormControl,
   FormHelperText,
@@ -26,6 +25,7 @@ import IconButton from "@mui/material/IconButton";
 import { hexToRGBA } from "@core/utils/hex-to-rgba";
 import { styled } from "@mui/material/styles";
 import { keys } from "@mui/system";
+import { errorHandler } from "components/helper/errorHandling";
 
 const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
@@ -41,6 +41,8 @@ const schema = yup.object().shape({
   // ),
   expected_result: yup.string().required("Please fill the expected_result"),
   module: yup.string().required("Please select a module"),
+  automation: yup.string().required("Please select a automation type"),
+  app_type: yup.string().required("Please select a app type"),
 });
 
 const defaultValues = {
@@ -50,6 +52,8 @@ const defaultValues = {
   prerequisite: "",
   steps: [{ description: "" }],
   expected_result: "",
+  automation: "",
+  app_type: "",
 };
 
 const ContentLayout = styled(Box)(({ theme }) => ({
@@ -62,14 +66,33 @@ const ContentLayout = styled(Box)(({ theme }) => ({
   paddingBottom: "20px",
 }));
 
+const automationOption = [
+  {
+    label: "Applicable",
+    value: "applicable",
+  },
+  { label: "Not-Applicable", value: "not_applicable" },
+  {
+    label: "Automated",
+    value: "automated",
+  },
+];
+
+const apptypeOption = [
+  {
+    label: "Mobile App",
+    value: "mobile_app",
+  },
+  { label: "Web App", value: "web_app" },
+];
+
 function AddTestCases() {
   const [options, setOptions] = useState([]);
   const [update, setupdate] = useState(0);
   const auth = useAuth();
   const router = useRouter();
-  const searchValue = useSearch();
+  const { searchValue, handleShowSearch } = useSearch();
   const { projectId } = router.query;
-
   const {
     control,
     setError,
@@ -88,6 +111,7 @@ function AddTestCases() {
   });
 
   useEffect(() => {
+    handleShowSearch(false);
     const params = {
       page: 1,
       perPage: 100,
@@ -100,12 +124,8 @@ function AddTestCases() {
           })
         );
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   }, []);
 
@@ -137,6 +157,8 @@ function AddTestCases() {
         expected_result: data.expected_result,
         section_id: data.module,
         steps: stepData,
+        automation: data.automation,
+        app_type: data.app_type,
       },
     };
     createTestCase(auth.user.auth_token, projectId, payload)
@@ -146,12 +168,8 @@ function AddTestCases() {
           router.push(`/projects/${projectId}/testcases`);
         }, 1000);
       })
-      .catch((err) => {
-        if (err[1]) {
-          toast.error(err[1]?.data ? err[1]?.data[0] : "Something not right");
-        } else {
-          toast.error(err.message);
-        }
+      .catch((error) => {
+        errorHandler(error);
       });
   };
 
@@ -163,7 +181,6 @@ function AddTestCases() {
 
   return (
     <>
-      {console.log("hijjjjj")}
       <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <h3 style={{ margin: "5px 0" }}>Add Test Case</h3>
@@ -198,14 +215,8 @@ function AddTestCases() {
             //   height: "80vh",
           }}
         >
-          <Grid
-            container
-            spacing={5}
-            columnSpacing={30}
-            padding={"0 20px"}
-            marginTop
-          >
-            <Grid item xs={6}>
+          <Grid container spacing={5} padding={"0 20px"} marginTop>
+            <Grid item xs={3}>
               Title
               <Controller
                 name="title"
@@ -225,7 +236,7 @@ function AddTestCases() {
                 )}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               Modules
               <FormControl fullWidth>
                 <Controller
@@ -243,6 +254,56 @@ function AddTestCases() {
                       error={Boolean(errors.module)}
                       helperText={errors.module ? errors.module.message : ""}
                       options={options}
+                    />
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={3}>
+              Automation
+              <FormControl fullWidth>
+                <Controller
+                  name="automation"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <SelectInput
+                      size={"small"}
+                      fullWidth
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      placeholder={"Select Module"}
+                      error={Boolean(errors.automation)}
+                      helperText={
+                        errors.automation ? errors.automation.message : ""
+                      }
+                      options={automationOption}
+                    />
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={3}>
+              App Type
+              <FormControl fullWidth>
+                <Controller
+                  name="app_type"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <SelectInput
+                      size={"small"}
+                      fullWidth
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      placeholder={"Select Module"}
+                      error={Boolean(errors.app_type)}
+                      helperText={
+                        errors.app_type ? errors.app_type.message : ""
+                      }
+                      options={apptypeOption}
                     />
                   )}
                 />
@@ -282,7 +343,7 @@ function AddTestCases() {
                   <TextInput
                     fullWidth
                     multi
-                    rows={3}
+                    rows={5}
                     size={"small"}
                     placeholder={"Enter your prerequisite"}
                     value={value}

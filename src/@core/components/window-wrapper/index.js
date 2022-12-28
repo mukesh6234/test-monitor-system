@@ -11,7 +11,7 @@ const WindowWrapper = ({ children }) => {
   useEffect(
     () => {
       if (typeof window !== 'undefined') {
-        setWindowReadyFlag(true)
+        setWindowReadyFlag(false)
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

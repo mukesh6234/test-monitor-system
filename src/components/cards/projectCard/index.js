@@ -78,7 +78,7 @@ function ProjectCard(props) {
           }}
         >
           <Link
-            href={`/projects/${props.id}/testcases`}
+            href={`/projects/${props.id}/modules`}
             onClick={() => {
               setCookie("project-title", props.title);
             }}
