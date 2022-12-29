@@ -1,4 +1,4 @@
-// ** React ImportsuserLogin
+// ** React Imports
 import { createContext, useEffect, useState } from "react";
 import { userLogin, userProfile } from "../../pages/api/authentication";
 
@@ -17,8 +17,8 @@ const defaultProvider = {
   setLoading: () => Boolean,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
-  register: () => Promise.resolve(),
 };
+
 const AuthContext = createContext(defaultProvider);
 
 const AuthProvider = ({ children }) => {
