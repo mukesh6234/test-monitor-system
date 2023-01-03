@@ -104,19 +104,10 @@ const App = (props) => {
         <title>{`${themeConfig.templateName} - Katomaran Test Monitoring`}</title>
         <meta
           name="description"
-          content={`${themeConfig.templateName} – Katomaran Test Monitoring.`}
+          content={`${themeConfig.templateName} - Katomaran Test Monitoring.`}
         />
         <meta name="keywords" content="Katomaran Test Monitoring" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
-
-        {/* <link rel='preconnect' href='https://fonts.googleapis.com' />
-          <link rel='preconnect' href='https://fonts.gstatic.com' />
-          <link
-            rel='stylesheet'
-            href='https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap'
-          />
-          <link rel='apple-touch-icon' sizes='180x180' href='../public/images/pages/kato-icon.png"' />
-          <link rel='shortcut icon' href='../public/favicon.ico' /> */}
       </Head>
       <AuthProvider>
         <SearchProvider>
