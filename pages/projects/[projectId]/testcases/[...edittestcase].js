@@ -50,7 +50,6 @@ const ContentLayout = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   borderRadius: 8,
-  // backgroundColor: "transparent",
   color: theme.palette.text.primary,
   paddingBottom: "20px",
 }));

@@ -50,12 +50,15 @@ const AppBarContent = (props) => {
             </IconButton>
             <TextField
               fullWidth
-              className="search"
+              variant="standard"
               placeholder="Search..."
               value={searchValue}
               autoComplete="off"
               onChange={(e) => {
                 handleSearch(e.target.value);
+              }}
+              InputProps={{
+                disableUnderline: true,
               }}
             />
           </>

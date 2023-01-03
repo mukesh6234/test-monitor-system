@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import MuiDivider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
 import Icon from "@core/components/icon";
-import CustomChip from "@core/components/mui/chip";
 import { Tooltip, Zoom } from "@mui/material";
 
 const Divider = styled(MuiDivider)(({ theme }) => ({
@@ -104,15 +103,24 @@ function TestCaseCard(props) {
       </div>
       <div
         style={{
-          //   display: "flex",
-          //   justifyContent: "space-between",
-          //   alignItems: "center",
+          margin: "20px auto",
+          // display: "flex",
+        }}
+        // className="girdCard"
+      >
+        <Typography  style={{fontWeight:800,fontSize:"0.8rem"}}>Module:</Typography>
+        <Typography variant="body1">{titleize(props.section.title)}</Typography>
+      </div>
+      <div
+        style={{
           margin: "20px auto",
         }}
         className="girdCard"
       >
         <Typography variant="body2">{props.description}</Typography>
       </div>
+    
+
       {/* <div
         className="edit-btn"
         onClick={() =>

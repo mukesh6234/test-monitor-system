@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-// import { testPlanExecution } from "../api/testPlan";
 import { useRouter } from "next/router";
 import { useAuth } from "hooks/useAuth";
 import { testPlanExecution } from "../../../../api/testPlan";
 import { Divider } from "@mui/material";
 import ExecutionCard from "components/cards/executionCard";
 import { useSearch } from "context/searchContext";
-import { toast } from "react-hot-toast";
 import { errorHandler } from "components/helper/errorHandling";
+import { titleize } from "components/helper";
 
 function Execution() {
   const [moduleList, setModuleList] = useState([]);
@@ -34,10 +33,11 @@ function Execution() {
     projectId,
     testPlanId,
   };
+  
   return (
     <>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h3 style={{ margin: "5px 0" }}>{moduleList.title}</h3>
+        <h3 style={{ margin: "5px 0" }}>{titleize(moduleList.title)}</h3>
       </div>
       <Divider />
       {moduleList.sections?.map((value, index) => {

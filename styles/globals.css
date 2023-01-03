@@ -30,15 +30,6 @@ p {
   border-top: 0 !important;
 }
 
-.search .MuiOutlinedInput-notchedOutline {
-  border: none !important;
-}
-.search .Mui-focused {
-  box-shadow: none !important;
-}
-.search .MuiOutlinedInput-input {
-  padding: 0 !important;
-}
 .edit-btn {
   position: absolute;
   top: 10px;

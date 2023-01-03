@@ -4,31 +4,12 @@ import Typography from "@mui/material/Typography";
 import { titleize } from "components/helper";
 import Icon from "@core/components/icon";
 import { useRouter } from "next/router";
-import { LinearProgress } from "@mui/material";
 
 function ExecutionCard({ projectId, testPlanId, ...props }) {
   const router = useRouter();
   const passPercentage = props.test_cases_count
-    ? Math.floor((props.sections_data.pass / props.test_cases_count) * 100)
+    ? Math.floor((props.section_data.pass / props.test_cases_count) * 100)
     : props.test_cases_count * 100;
-    
-  // let testingProgress = [
-  //   {
-  //     name: "Fail",
-  //     value: 60,
-  //     color: "#eb4d4b",
-  //   },
-  //   {
-  //     name: "Skipped",
-  //     value: 7,
-  //     color: "#22a6b3",
-  //   },
-  //   {
-  //     name: "Pass",
-  //     value: 23,
-  //     color: "#6ab04c",
-  //   },
-  // ];
 
   return (
     <Card
@@ -49,7 +30,6 @@ function ExecutionCard({ projectId, testPlanId, ...props }) {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          //   alignItems: "center",
           padding: 10,
         }}
       >
@@ -81,9 +61,6 @@ function ExecutionCard({ projectId, testPlanId, ...props }) {
           </span>{" "}
           <Typography> Test Cases {props.test_cases_count}</Typography>
         </div>
-        {/* <div style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
-          <Typography >{props?.created_at}</Typography>
-        </div> */}
         <div style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
           <span style={{ marginRight: 5, color: "#6AB14B", fontWeight: 600 }}>
             {" "}
@@ -96,7 +73,6 @@ function ExecutionCard({ projectId, testPlanId, ...props }) {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          //   alignItems: "center",
           padding: 10,
           gap: 10,
         }}
@@ -110,10 +86,6 @@ function ExecutionCard({ projectId, testPlanId, ...props }) {
               alignItems: "center",
             }}
           >
-            {/* <span style={{ marginRight: 5,marginTop: 5 }}>
-              {" "}
-              <Icon icon="bx:spreadsheet" fontSize={20} />
-            </span>{" "} */}
             Module Description
           </Typography>
           <span style={{ display: "block" }}>{props.description}</span>
