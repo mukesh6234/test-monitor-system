@@ -44,7 +44,7 @@ function TestPlans() {
 
   useEffect(() => {
     testPlanIndex();
-    handleShowSearch(true)
+    handleShowSearch(true);
   }, [searchValue]);
 
   const testPlanIndex = () => {
@@ -118,19 +118,19 @@ function TestPlans() {
         </div>
       ) : (
         <div style={{ minHeight: "65vh" }}>
-        <Grid container spacing={6} marginTop >
-          {loading ? (
-            <>{skeleton}</>
-          ) : (
-            testPlanLists.map((testPlanList, index) => {
-              return (
-                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
-                  <TestPlanCard {...testPlanList} {...testPlanCardProps} />
-                </Grid>
-              );
-            })
-          )}
-        </Grid>
+          <Grid container spacing={6} marginTop>
+            {loading ? (
+              <>{skeleton}</>
+            ) : (
+              testPlanLists.map((testPlanList, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
+                    <TestPlanCard {...testPlanList} {...testPlanCardProps} />
+                  </Grid>
+                );
+              })
+            )}
+          </Grid>
         </div>
       )}
       {formOpen && <TestPlanForm {...testPlanFormProps} />}
@@ -140,6 +140,7 @@ function TestPlans() {
             display: "flex",
             justifyContent: "flex-end",
             alignItems: "flex-end",
+            margin: "20px",
           }}
           count={Math.ceil(totalEntries / perPage)}
           page={page}

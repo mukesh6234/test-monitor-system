@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, useState, useEffect } from "react";
+import { Fragment } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -17,25 +17,15 @@ import List from "@mui/material/List";
 // ** Third Party Imports
 import { useDropzone } from "react-dropzone";
 
-// Styled component for the upload image inside the dropzone area
-
-// Styled component for the heading inside the dropzone area
-
 const FileUploader = ({
-  //   handleUpload,
   setTestStatus,
   testIndex,
   testStatus,
 }) => {
-  // ** State
-  //   const [files, setFiles] = useState([]);
 
   // ** Hook
   const theme = useTheme();
 
-  //   useEffect(() => {
-  //     handleUpload(files);
-  //   }, [files]);
 
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
@@ -43,7 +33,6 @@ const FileUploader = ({
       "image/*": [".png", ".jpg", ".jpeg", ".gif"],
     },
     onDrop: (acceptedFiles) => {
-      //   setFiles(acceptedFiles.map((file) => Object.assign(file)));
       const newValue = [...testStatus];
       newValue[testIndex] = {
         ...testStatus[testIndex],
@@ -58,7 +47,6 @@ const FileUploader = ({
   };
 
   const renderFilePreview = (file) => {
-    console.log(file, "66666");
     if (file[0].type.startsWith("image")) {
       return (
         <img
@@ -75,7 +63,6 @@ const FileUploader = ({
 
   const handleRemoveFile = (file) => {
     const filtered = testStatus.findIndex((val) => val.file[0] !== file.name);
-    // setFiles([...filtered]);
     const newValue = [...testStatus];
     newValue[filtered] = {
       ...testStatus[filtered],
@@ -86,7 +73,6 @@ const FileUploader = ({
 
   const fileList = testStatus.map((value, index) => (
     <ListItem key={index}>
-      {console.log(value, "vvv", testStatus[testIndex].file.length, "9999")}
       <div
         className="file-details"
         style={{ display: "flex", justifyContent: "space-between" }}
@@ -106,12 +92,10 @@ const FileUploader = ({
       </IconButton>
     </ListItem>
   ));
-  // {testStatus[testIndex].file.length?alert("true"):alert("false")}
   return (
     <Fragment>
       <Box
         {...getRootProps({ className: "dropzone" })}
-        //   sx={acceptedFiles.length ? { height: 450 } : {}}
       >
         <input {...getInputProps()} />
         <Box
@@ -130,17 +114,6 @@ const FileUploader = ({
             src={theme.palette.mode == "light" ? uploadLight : uploadDark}
             height={100}
           />
-          {/* <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            // textAlign: ["center", "center", "inherit"],
-          }}
-        > */}
-          {/* <HeadingTypography variant="h5">
-            Drop files here or click to upload.
-          </HeadingTypography> */}
           <Typography color="textSecondary">
             Drop files here or click{" "}
             <Link href="/" onClick={handleLinkClick}>
@@ -148,9 +121,7 @@ const FileUploader = ({
             </Link>{" "}
             through your machine
           </Typography>
-          {/* </Box> */}
         </Box>
-        {/* {files.length ? img : null} */}
       </Box>
       {testStatus[testIndex].file.length ? (
         <Fragment>

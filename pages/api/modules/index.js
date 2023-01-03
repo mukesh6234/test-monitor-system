@@ -1,4 +1,5 @@
 import makeRequest from "../index";
+import { apiHost } from "../../../config";
 
 export function fetchModules(token, projectId, params, search) {
   return makeRequest({
@@ -57,7 +58,7 @@ export function updateTestRun(token, projectId, test_plan_id, requestBody) {
     Authorization: `API_KEY ${token}`,
   };
   return fetch(
-    `https://api-test-monit.katomaran.in/api/v1/projects/${projectId}/test_plans/${test_plan_id}/test_result`,
+    `${apiHost}/api/v1/projects/${projectId}/test_plans/${test_plan_id}/test_result`,
     {
       method: "POST",
       body: requestBody,

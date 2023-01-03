@@ -184,6 +184,7 @@ export default function TestCases() {
             display: "flex",
             justifyContent: "flex-end",
             alignItems: "flex-end",
+            margin:"20px"
           }}
           count={Math.ceil(totalEntries / perPage)}
           page={page}

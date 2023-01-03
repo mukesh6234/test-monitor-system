@@ -44,7 +44,10 @@ const ModuleReport = (props) => {
     Skipped: `${((skipped / total_count) * 100).toFixed(0)}%`,
     Pass: `${((pass / total_count) * 100).toFixed(0)}%`,
     Fail: `${((fail / total_count) * 100).toFixed(0)}%`,
-    Not_Started: !skipped && !pass && !fail ? "100%" : "0%",
+    Not_Started: `${(
+      ((total_count - (fail + skipped + pass)) / total_count) *
+      100
+    ).toFixed(0)}%`,
   };
   console.log(props, "vvvv", reportValue);
   const data = [
@@ -55,9 +58,11 @@ const ModuleReport = (props) => {
       value: skipped,
       color: "#03B1D7",
     },
-    !skipped &&
-      !pass &&
-      !fail && { name: "Not Started", value: total_count, color: "#ffe700" },
+    {
+      name: "Not Started",
+      value: total_count - (fail + skipped + pass),
+      color: "#ffe700",
+    },
   ];
 
   return (

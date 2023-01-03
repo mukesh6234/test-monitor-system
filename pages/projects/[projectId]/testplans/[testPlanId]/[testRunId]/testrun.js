@@ -22,7 +22,6 @@ import Lottie from "lottie-react";
 import { useSearch } from "context/searchContext";
 import { errorHandler } from "components/helper/errorHandling";
 
-
 const ContentLayout = styled(Box)(({ theme }) => ({
   transition: "none",
   alignItems: "center",
@@ -89,8 +88,8 @@ function TestRun() {
   };
 
   const handleStatus = (status) => {
+    const newValue = [...testStatus];
     if (status == "failed" && testStatus[testIndex].comment !== "") {
-      const newValue = [...testStatus];
       newValue[testIndex] = {
         ...testStatus[testIndex],
         status: status,
@@ -100,7 +99,6 @@ function TestRun() {
       setDisable(true);
       toast.success("Update Successfully... ");
     } else if (status != "failed") {
-      const newValue = [...testStatus];
       newValue[testIndex] = {
         ...testStatus[testIndex],
         status: status,
@@ -114,22 +112,20 @@ function TestRun() {
       toast.error("Please fill the comments ");
     }
   };
+
   const handleSubmit = (e) => {
-    console.log(testStatus, "testStatustestStatus");
     e.preventDefault();
     let isEmpty = testStatus.some((val) => val.status == "");
     let emptyIndex = testStatus.findIndex((val) => val.status == "");
-    // console.log(a, "yyyy", b);
     if (isEmpty && emptyIndex !== -1) {
       toast.error("Please update the testcase status");
-      // setTestIndex(emptyIndex);
+      setTestIndex(emptyIndex);
       setDisable(false);
     } else {
       const form = new FormData();
       testStatus.map((val) =>
         Object.keys(val).filter((keys) => {
           if (val[keys].length > 0 && keys == "file") {
-            console.log(keys, "keys", val[keys][0]);
             form.append(`results[][${keys}]`, val[keys][0]);
           } else {
             form.append(`results[][${keys}]`, val[keys]);
@@ -153,21 +149,11 @@ function TestRun() {
   };
 
   const handleNextChange = () => {
-    setTestIndex(testIndex + 1);
-    testIndex < testCases.length &&
-      testStatus.push({ comment: "", status: "", file: [], test_case_id: "" });
-    setDisable(false);
+    (setTestIndex(testIndex + 1),
+    testStatus.length < totalEntries &&
+      testStatus.push({ comment: "", status: "", file: [], test_case_id: "" }),
+      setDisable(false));
   };
-
-  // const handleUpload = (value) => {
-  //   const newValue = [...testStatus];
-  //   newValue[testIndex] = {
-  //     ...testStatus[testIndex],
-  //     file: value,
-  //   };
-  //   setTestStatus(newValue);
-  //   // testCases && setTestStatus[testIndex].file(value)
-  // };
 
   const handleChange = (e) => {
     const newValue = [...testStatus];
@@ -179,14 +165,7 @@ function TestRun() {
     setDisable(false);
   };
 
-  console.log(
-    testStatus[testIndex],
-    "testStatus",
-    testCases.length,
-    testStatus
-  );
   const fileUploaderProps = {
-    // handleUpload,
     setTestStatus,
     testIndex,
     testStatus,
@@ -203,7 +182,7 @@ function TestRun() {
             backgroundColor: (theme) =>
               hexToRGBA(theme.palette.background.paper, 1),
             boxShadow: 6,
-            height: "80vh",
+            // height: "80vh",
           }}
         >
           {totalEntries === 0 ? (
@@ -233,10 +212,12 @@ function TestRun() {
               >
                 <div>
                   <Typography style={{ fontSize: "1.5rem", fontWeight: 400 }}>
-                    {titleize(testCases[testIndex].section_name)}
+                    {testCases.length > 0 &&
+                      titleize(testCases[testIndex].section_name)}
                   </Typography>
                   <span style={{ fontSize: "16px" }}>
-                    {testCases[testIndex].section_description}
+                    {testCases.length > 0 &&
+                      testCases[testIndex].section_description}
                   </span>
                 </div>
                 {testIndex === testCases.length - 1 && (
@@ -253,8 +234,13 @@ function TestRun() {
               </div>
               <Divider />
               <div style={{ display: "flex", padding: "20px 0", gap: 20 }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ height: "64vh", overflow: "auto" }}>
+                <div style={{ flex: 1, position: "relative" }}>
+                  <div
+                    style={{
+                      height: "600px",
+                      overflow: "scroll",
+                    }}
+                  >
                     <Typography style={{ fontSize: "1rem", fontWeight: 600 }}>
                       {testIndex + 1}.{testCases[testIndex].title}
                     </Typography>
@@ -337,7 +323,7 @@ function TestRun() {
                       justifyContent: "space-between",
                       // alignItems:"flex-end"
                       position: "sticky",
-                      bottom: 72,
+                      bottom: 0,
                       // width: "47%",
                       backgroundColor: "white",
                     }}
