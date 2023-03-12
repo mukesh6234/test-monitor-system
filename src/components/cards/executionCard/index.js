@@ -4,9 +4,43 @@ import Typography from "@mui/material/Typography";
 import { titleize } from "components/helper";
 import Icon from "@core/components/icon";
 import { useRouter } from "next/router";
+import MuiSlider from "@mui/material/Slider";
+import { hexToRGBA } from "@core/utils/hex-to-rgba";
+import { useTheme, styled } from "@mui/material/styles";
+
+const progressColor = (value) => {
+  switch (true) {
+    case value >= 80:
+      return "#339900";
+
+    case value >= 60 && value < 80:
+      return "#99cc33";
+
+    case value >= 40 && value < 60:
+      return "#ffcc00";
+
+    case value >= 20 && value < 40:
+      return "	#cc3300";
+
+    default:
+      return "#cc3300";
+  }
+};
+
+const Slider = styled(MuiSlider)(({ theme }) => ({
+  padding: "0",
+  height: "15px !important",
+  "& .MuiSlider-track": {
+    border: "none",
+  },
+  "& .MuiSlider-thumb": {
+    display: "none",
+  },
+}));
 
 function ExecutionCard({ projectId, testPlanId, ...props }) {
   const router = useRouter();
+  const theme = useTheme();
   const passPercentage = props.test_cases_count
     ? Math.floor((props.section_data.pass / props.test_cases_count) * 100)
     : props.test_cases_count * 100;
@@ -62,7 +96,13 @@ function ExecutionCard({ projectId, testPlanId, ...props }) {
           <Typography> Test Cases {props.test_cases_count}</Typography>
         </div>
         <div style={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
-          <span style={{ marginRight: 5, color: "#6AB14B", fontWeight: 600 }}>
+          <span
+            style={{
+              marginRight: 5,
+              color: progressColor(passPercentage),
+              fontWeight: 600,
+            }}
+          >
             {" "}
             {passPercentage}%
           </span>
@@ -93,57 +133,19 @@ function ExecutionCard({ projectId, testPlanId, ...props }) {
         <div
           style={{
             display: "flex",
-            flex: 1,
+            flex: 0.8,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <div className="multicolor-bar">
-            <div className="values"></div>
-            <div className="scale"></div>
-            <div className="bars"></div>
-            <div className="legends"></div>
-          </div>
-          {/* <div className="multicolor-bar">
-            <div className="values">{values == "" ? "" : values}</div>
-            <div className="scale">
-              {calibrations == "" ? "" : calibrations}
-            </div>
-            <div className="bars">{bars == "" ? "" : bars}</div>
-            <div className="legends">{legends == "" ? "" : legends}</div>
-          </div> */}
-          {/* <div
-            style={{
-              border: "1px solid #EEEEEE",
-              borderRadius: 10,
-              height: 15,
-              width: "100%",
-              background: "#EEEEEE",
-              position: "relative",
+          <Slider
+            sx={{
+              color: hexToRGBA(progressColor(passPercentage, theme), 1),
+              height: "12px !important",
+              pointerEvents: "none",
             }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                height: "100%",
-                width: "100px",
-              }}
-            >
-              {" "}
-              <span
-                style={{
-                  borderRadius: 10,
-                  position: "absolute",
-                  background: "green",
-                  height: "100%",
-                  width: "100px",
-                  display: "inline-block",
-                }}
-              ></span>
-              <span />
-              <span />
-            </div>
-          </div> */}
+            value={passPercentage}
+          />
         </div>
       </div>
     </Card>

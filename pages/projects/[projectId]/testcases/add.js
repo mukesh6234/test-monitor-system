@@ -129,12 +129,6 @@ function AddTestCases() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   if (getValues("steps")[getValues("steps").length - 1].description !== "") {
-  //     handleSteps();
-  //   }
-  //   console.log(getValues("steps")[getValues("steps").length - 1].description, "ddd");
-  // }, [getValues("steps")[getValues("steps").length - 1].description]);
 
   useEffect(() => {
     if (getValues("steps")[getValues("steps").length - 1].description !== "") {
@@ -142,45 +136,57 @@ function AddTestCases() {
     }
   }, [update]);
 
-  const onSubmit = (data) => {
-    let stepData = [];
-    data.steps.filter(
-      (testStep) =>
-        testStep.description != "" &&
-        stepData.push({ description: testStep.description })
+  const formValidate = () => {
+    const isValid = getValues("steps").some(
+      (steps) => steps.description
     );
-    let payload = {
-      test_case: {
-        title: data.title,
-        prerequisite: data.prerequisite,
-        description: data.description,
-        expected_result: data.expected_result,
-        section_id: data.module,
-        steps: stepData,
-        automation: data.automation,
-        app_type: data.app_type,
-      },
-    };
-    createTestCase(auth.user.auth_token, projectId, payload)
-      .then(({ message }) => {
-        toast.success(message);
-        setTimeout(() => {
-          router.push(`/projects/${projectId}/testcases`);
-        }, 1000);
-      })
-      .catch((error) => {
-        errorHandler(error);
+    if (!isValid) {
+      setError(`steps[${0}].description`, {
+        type: "manual",
+        message: "Please fill the testing steps",
       });
+      return true;
+    }
+  };
+
+  const onSubmit = (data) => {
+    if (!formValidate()) {
+      let stepData = [];
+      data.steps.filter(
+        (testStep) =>
+          testStep.description != "" &&
+          stepData.push({ description: testStep.description })
+      );
+      let payload = {
+        test_case: {
+          title: data.title,
+          prerequisite: data.prerequisite,
+          description: data.description,
+          expected_result: data.expected_result,
+          section_id: data.module,
+          steps: stepData,
+          automation: data.automation,
+          app_type: data.app_type,
+        },
+      };
+      createTestCase(auth.user.auth_token, projectId, payload)
+        .then(({ message }) => {
+          toast.success(message);
+          setTimeout(() => {
+            router.push(`/projects/${projectId}/testcases`);
+          }, 1000);
+        })
+        .catch((error) => {
+          errorHandler(error);
+        });
+    }
   };
 
   const handleSteps = () => {
-    // if (getValues("steps")[getValues("steps").length - 1].description !== "") {
     append({ description: "", id: fields.length + 1 });
-    // }
   };
 
   return (
-    <>
       <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <h3 style={{ margin: "5px 0" }}>Add Test Case</h3>
@@ -362,7 +368,7 @@ function AddTestCases() {
               {fields.map((testingStep, index) => (
                 <Controller
                   key={testingStep.id}
-                  name={`steps.${index}.description`}
+                  name={`steps[${index}].description`}
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange, onBlur } }) => (
@@ -377,9 +383,9 @@ function AddTestCases() {
                           setupdate(update + 1);
                           onChange(e);
                         }}
-                        error={Boolean(errors?.steps?.[index])}
+                        error={Boolean(errors?.steps?.[index]?.description)}
                         helperText={
-                          errors.steps &&
+                          Boolean(errors?.steps?.[index]?.description) &&
                           errors?.steps?.[index]?.description?.message
                         }
                         endAdornment={
@@ -444,15 +450,8 @@ function AddTestCases() {
           </Grid>
         </ContentLayout>
       </form>
-    </>
   );
 }
 
 export default AddTestCases;
 
-// for (var i = 0; i < test.length; i++) {
-//   if (!test[i]) {
-//     test[i] = "Cloe";
-//     break;
-//   }
-// }

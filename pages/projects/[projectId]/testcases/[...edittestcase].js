@@ -23,11 +23,6 @@ const schema = yup.object().shape({
   title: yup.string().required("Please fill the title"),
   description: yup.string().required("Please fill the description"),
   prerequisite: yup.string().required("Please fill the prerequisite"),
-  // steps: yup.array().of(
-  //   yup.object().shape({
-  //     description: yup.string().required("Please fill the testing_steps"),
-  //   })
-  // ),
   expected_result: yup.string().required("Please fill the expected_result"),
   section: yup.string().required("Please select a module"),
   automation: yup.string().required("Please select a automation type"),
@@ -139,7 +134,21 @@ function EditTestCases() {
     }
   }, [update]);
 
+  const formValidate = () => {
+    const isValid = getValues("steps").some(
+      (steps) => steps.description
+    );
+    if (!isValid) {
+      setError(`steps[${0}].description`, {
+        type: "manual",
+        message: "Please fill the testing steps",
+      });
+      return true;
+    }
+  };
+
   const onSubmit = (data) => {
+    if (!formValidate()) {
     let stepData = [];
     data.steps.filter(
       (testStep) =>
@@ -169,16 +178,14 @@ function EditTestCases() {
       .catch((error) => {
         errorHandler(error);
       });
+    }
   };
 
   const handleSteps = () => {
-    // if (getValues("steps")[getValues("steps").length - 1].description !== "") {
     append({ description: "", id: fields.length + 1 });
-    // }
   };
 
   return (
-    <>
       <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <h3 style={{ margin: "5px 0" }}>Edit Test Case</h3>
@@ -359,7 +366,7 @@ function EditTestCases() {
               Testing Steps
               {fields.map((testingStep, index) => (
                 <Controller
-                  name={`steps.${index}.description`}
+                name={`steps[${index}].description`}
                   key={testingStep.id}
                   control={control}
                   rules={{ required: true }}
@@ -374,9 +381,9 @@ function EditTestCases() {
                         setupdate(update + 1);
                         onChange(e);
                       }}
-                      error={Boolean(errors.steps)}
+                      error={Boolean(errors?.steps?.[index]?.description)}
                       helperText={
-                        errors.steps &&
+                        Boolean(errors?.steps?.[index]?.description) &&
                         errors?.steps?.[index]?.description?.message
                       }
                       endAdornment={
@@ -438,7 +445,6 @@ function EditTestCases() {
           </Grid>
         </ContentLayout>
       </form>
-    </>
   );
 }
 
