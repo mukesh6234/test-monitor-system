@@ -78,7 +78,11 @@ function ProjectCard(props) {
           }}
         >
           <Link
-            href={`/projects/${props.id}/modules`}
+            // href={`/projects/${props.id}/modules`}
+            href={{
+              pathname: `/projects/[projectId]/modules`,
+              query: { projectId: props.id },
+            }}
             onClick={() => {
               setCookie("project-title", props.title);
             }}
@@ -110,7 +114,10 @@ function ProjectCard(props) {
             </StyledLink>
           </Link>
           <Link
-            href={`/projects/${props.id}/testcases`}
+            href={{
+              pathname: `/projects/[projectId]/testcases`,
+              query: { projectId: props.id },
+            }}
             onClick={() => {
               setCookie("project-title", props.title);
             }}
